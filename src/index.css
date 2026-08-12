@@ -1,0 +1,167 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* ── Codetern design tokens ─────────────────────────── */
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
+  --font-grotesk: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+
+  /* core palette */
+  --color-ink: #0b0e1a;
+  --color-ink-soft: #11152a;
+  --color-paper: #f6f7fb;
+  --color-mist: #e9ecf4;
+
+  /* accents */
+  --color-cyan-snap: #22d3ee;
+  --color-neon: #b4ff39;
+  --color-mint: #38ffb0;
+  --color-violet-deep: #7c5cff;
+  --color-coral: #ff5c7a;
+
+  /* text tints */
+  --color-slatefade: #8a92ab;
+
+  /* motion tokens (consumed by gsap presets) */
+  --ease-snap: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 0.35s;
+  --duration-base: 0.6s;
+
+  --shadow-float: 0 24px 60px -20px rgb(11 14 26 / 0.35);
+  --shadow-card: 0 10px 40px -14px rgb(11 14 26 / 0.18);
+
+  --radius-bubble: 999px;
+  --radius-panel: 1.5rem;
+  --radius-tile: 1rem;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-paper text-ink font-sans antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--color-cyan-snap);
+  color: var(--color-ink);
+}
+
+/* slim scrollbars */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(11 14 26 / 0.25);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ── reusable component utilities ─────────────────────── */
+
+@utility text-balance {
+  text-wrap: balance;
+}
+
+@utility glass {
+  background: rgb(255 255 255 / 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+@utility glass-dark {
+  background: rgb(11 14 26 / 0.62);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+@utility text-gradient-snap {
+  background: linear-gradient(100deg, var(--color-cyan-snap), var(--color-mint) 60%, var(--color-violet-deep));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility grid-lines {
+  background-image: linear-gradient(to right, rgb(11 14 26 / 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(11 14 26 / 0.05) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+@utility dot-grid {
+  background-image: radial-gradient(rgb(11 14 26 / 0.12) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+@utility shine {
+  position: relative;
+  overflow: hidden;
+}
+.shine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-120%) skewX(-18deg);
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.5), transparent);
+  width: 40%;
+  transition: transform 0.7s var(--ease-snap);
+  pointer-events: none;
+}
+.shine:hover::after {
+  transform: translateX(420%) skewX(-18deg);
+}
+
+/* GSAP helper states */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  will-change: opacity, transform;
+}
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.7s var(--ease-snap), transform 0.7s var(--ease-snap);
+}
+
+/* interview scanning line */
+.cdt-scanline {
+  animation: cdt-scan 2.4s linear infinite;
+}
+@keyframes cdt-scan {
+  0% {
+    top: 0%;
+  }
+  50% {
+    top: calc(100% - 4rem);
+  }
+  100% {
+    top: 0%;
+  }
+}
+
+/* reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}

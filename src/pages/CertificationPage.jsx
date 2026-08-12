@@ -1,0 +1,165 @@
+import { useEffect, useRef, useState } from 'react'
+import { BadgeCheck, Search, ShieldCheck, Sparkles, X } from 'lucide-react'
+import { Page } from '../components/layout/Page.jsx'
+import { useApp } from '../context/AppContext.jsx'
+import { useRevealScope } from '../hooks/useReveal.js'
+import { gsap } from '../lib/gsap.js'
+import { CERT_SAMPLE_ID } from '../data/seed.js'
+import { getProgramme } from '../data/programmes.js'
+
+function Certificate({ candidate }) {
+  const seal = useRef(null)
+  const p = getProgramme(candidate.domain)
+
+  useEffect(() => {
+    if (seal.current) {
+      const tl = gsap.timeline()
+      tl.fromTo(seal.current, { scale: 0, rotate: -120, opacity: 0 }, { scale: 1, rotate: 0, opacity: 1, duration: 1, ease: 'elastic.out(1,0.5)' })
+      tl.to('.cdt-cert-ring', { rotate: 360, duration: 8, repeat: -1, ease: 'linear' }, 0)
+    }
+  }, [])
+
+  return (
+    <div className="relative overflow-hidden rounded-[2.25rem] border border-ink/10 bg-gradient-to-br from-white to-mist p-1 shadow-float">
+      <div className="dot-grid absolute inset-0 opacity-25" />
+      <div className="relative rounded-[2rem] border border-ink/8 bg-white/80 p-8 backdrop-blur-sm sm:p-12">
+        <div className="flex flex-wrap items-start justify-between gap-6">
+          <div>
+            <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-cyan-snap">Codetern · Verified Certificate</p>
+            <h2 className="mt-2 font-display text-2xl font-extrabold text-ink sm:text-3xl">Certificate of Completion</h2>
+          </div>
+          <div ref={seal} className="relative grid place-items-center">
+            <div className="cdt-cert-ring absolute inset-0 rounded-full border-2 border-dashed border-cyan-snap/40" />
+            <div className="grid h-20 w-20 place-items-center rounded-full bg-ink text-neon shadow-card">
+              <BadgeCheck size={34} />
+            </div>
+          </div>
+        </div>
+
+        <p className="mt-8 text-xs font-medium uppercase tracking-[0.2em] text-ink/40">This certifies that</p>
+        <p className="mt-1 font-display text-3xl font-extrabold text-ink sm:text-4xl">{candidate.name}</p>
+        <p className="mt-4 max-w-lg text-sm leading-relaxed text-ink/60">
+          has successfully completed the{' '}
+          <span className="font-bold text-ink">{p?.title || candidate.domainTitle}</span> internship programme at Codetern,
+          delivering verifiable production work and passing all screening milestones.
+        </p>
+
+        <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
+          {[
+            { label: 'Verification ID', value: candidate.cert?.id || '—' },
+            { label: 'Screening quiz', value: candidate.quizScore ? `${candidate.quizScore}%` : '—' },
+            { label: 'Mock interview', value: candidate.interviewScore ? `${candidate.interviewScore}%` : '—' },
+            { label: 'Applied', value: candidate.appliedAt || '—' },
+          ].map((s) => (
+            <div key={s.label} className="rounded-2xl border border-ink/8 bg-paper px-4 py-3">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-ink/40">{s.label}</p>
+              <p className="mt-1 font-display text-base font-bold text-ink">{s.value}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-8 flex items-center gap-3 border-t border-ink/8 pt-6">
+          <div className="grid h-10 w-10 place-items-center rounded-full bg-gradient-to-br from-cyan-snap to-violet-deep text-ink">
+            <Sparkles size={18} />
+          </div>
+          <p className="text-sm text-ink/55">
+            Digitally verified by <span className="font-bold text-ink">Codetern</span> — key matched to on-chain record.
+          </p>
+          <span className="ml-auto hidden items-center gap-1.5 rounded-bubble bg-mint/10 px-3 py-1 text-[11px] font-bold text-mint sm:inline-flex">
+            <ShieldCheck size={13} />
+            Authentic
+          </span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default function CertificationPage() {
+  const scope = useRevealScope()
+  const { candidates } = useApp()
+  const [query, setQuery] = useState('')
+  const [result, setResult] = useState(null)
+
+  const lookup = (e) => {
+    e.preventDefault()
+    const allCerts = candidates.filter((c) => c.cert)
+    const found = allCerts.find((c) => (c.cert?.id || '').toLowerCase() === query.trim().toLowerCase())
+    setResult(found || null)
+  }
+
+  return (
+    <Page className="overflow-hidden">
+      <section className="relative overflow-hidden bg-ink py-20 text-white">
+        <div className="grid-lines absolute inset-0 opacity-20" />
+        <div className="pointer-events-none absolute right-[-10%] top-[-20%] h-80 w-80 rounded-full bg-neon/15 blur-[110px]" />
+        <div className="relative mx-auto max-w-4xl px-5 text-center lg:px-8">
+          <span data-enter className="mb-5 inline-block rounded-bubble border border-neon/40 bg-neon/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-neon">
+            Employer verification
+          </span>
+          <h1 data-enter className="font-display text-4xl font-extrabold leading-tight tracking-tight sm:text-6xl">
+            Verify a Codetern <span className="text-gradient-snap">certificate.</span>
+          </h1>
+          <p data-enter className="mx-auto mt-5 max-w-2xl text-base text-white/60">
+            Every certificate carries a unique ID tied to quiz, interview and project data. Enter the ID below to
+            inspect the interactive record.
+          </p>
+        </div>
+      </section>
+
+      <section ref={scope} className="bg-paper py-20">
+        <div className="mx-auto max-w-3xl px-5 lg:px-8">
+          <form onSubmit={lookup} className="relative" data-reveal>
+            <span className="pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 text-ink/35">
+              <Search size={18} />
+            </span>
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder={`Enter certificate ID — e.g. ${CERT_SAMPLE_ID}`}
+              className="w-full rounded-full border border-ink/15 bg-white px-12 py-4 pr-32 text-sm text-ink shadow-card outline-none transition placeholder:text-ink/30 focus:border-cyan-snap/60 focus:ring-4 focus:ring-cyan-snap/10"
+            />
+            <button
+              type="submit"
+              className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-ink px-6 py-2.5 text-sm font-semibold text-paper transition hover:bg-ink-soft"
+            >
+              Verify
+            </button>
+          </form>
+
+          <div className="mt-4 text-center" data-reveal>
+            <p className="text-sm text-ink/40">
+              Try sample ID{' '}
+              <button onClick={() => setQuery(CERT_SAMPLE_ID)} className="font-semibold text-cyan-snap underline underline-offset-2">
+                {CERT_SAMPLE_ID}
+              </button>
+            </p>
+          </div>
+
+          {result === null && query !== '' && (
+            <div className="mt-8 flex items-center justify-between rounded-2xl border border-coral/30 bg-coral/8 px-5 py-4">
+              <p className="text-sm font-medium text-coral">No certificate matches this ID. Double-check the format.</p>
+              <button onClick={() => setQuery('')} aria-label="Clear"><X size={16} className="text-coral/70" /></button>
+            </div>
+          )}
+
+          {result && (
+            <div className="mt-10" data-reveal>
+              <Certificate candidate={result} />
+            </div>
+          )}
+
+          {!result && query === '' && (
+            <div className="mt-12 rounded-panel border border-dashed border-ink/15 bg-white/60 p-8 text-center" data-reveal>
+              <p className="font-display text-lg font-bold text-ink">Not sure what to enter?</p>
+              <p className="mx-auto mt-2 max-w-md text-sm text-ink/55">
+                You’ll find the ID at the top-right of the certificate you received, e.g. CDT-2026-0007. Production
+                certificates are also mailed from certificates@codetern.dev.
+              </p>
+            </div>
+          )}
+        </div>
+      </section>
+    </Page>
+  )
+}
