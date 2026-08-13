@@ -13,6 +13,7 @@ import { useToast } from '../context/ToastContext.jsx'
 import { DURATIONS, DOMAIN_COLORS } from '../data/programmes.js'
 import { useRevealScope } from '../hooks/useReveal.js'
 import { cn } from '../lib/utils.js'
+import { AuroraBackground } from '../components/ui/backgrounds/AuroraBackground.jsx'
 
 const ALL = 'ALL'
 
@@ -59,8 +60,7 @@ export default function DomainsPage() {
       {/* ── hero ── */}
       <section className="relative overflow-hidden bg-ink py-20 text-white">
         <div className="grid-lines absolute inset-0 opacity-20" />
-        <div className="pointer-events-none absolute left-1/2 top-[-30%] h-96 w-[760px] -translate-x-1/2 rounded-full bg-cyan-snap/15 blur-[120px]" />
-        <div className="pointer-events-none absolute bottom-[-40%] right-[-10%] h-80 w-80 rounded-full bg-violet-deep/25 blur-[120px]" />
+        <AuroraBackground className="opacity-40" />
         <div className="relative mx-auto max-w-4xl px-5 text-center lg:px-8">
           <span data-enter className="mb-5 inline-block rounded-bubble border border-neon/40 bg-neon/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-neon">
             Career tracks

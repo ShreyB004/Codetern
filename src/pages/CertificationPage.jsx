@@ -6,6 +6,7 @@ import { useRevealScope } from '../hooks/useReveal.js'
 import { gsap } from '../lib/gsap.js'
 import { CERT_SAMPLE_ID } from '../data/seed.js'
 import { getProgramme } from '../data/programmes.js'
+import { AuroraBackground } from '../components/ui/backgrounds/AuroraBackground.jsx'
 
 function Certificate({ candidate }) {
   const seal = useRef(null)
@@ -92,7 +93,7 @@ export default function CertificationPage() {
     <Page className="overflow-hidden">
       <section className="relative overflow-hidden bg-ink py-20 text-white">
         <div className="grid-lines absolute inset-0 opacity-20" />
-        <div className="pointer-events-none absolute right-[-10%] top-[-20%] h-80 w-80 rounded-full bg-neon/15 blur-[110px]" />
+        <AuroraBackground className="opacity-50" />
         <div className="relative mx-auto max-w-4xl px-5 text-center lg:px-8">
           <span data-enter className="mb-5 inline-block rounded-bubble border border-neon/40 bg-neon/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-neon">
             Employer verification

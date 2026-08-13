@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Github, Instagram, Linkedin, Twitter, Zap } from 'lucide-react'
+import { StarfieldBackground } from '../ui/backgrounds/StarfieldBackground.jsx'
 
 const COLUMNS = [
   {
@@ -27,6 +28,7 @@ const COLUMNS = [
 export function Footer() {
   return (
     <footer className="relative overflow-hidden bg-ink text-paper">
+      <StarfieldBackground count={40} speed={0.4} className="opacity-30" />
       <div className="dot-grid pointer-events-none absolute inset-0 opacity-40" style={{ backgroundImage: 'radial-gradient(rgb(255 255 255 / 0.06) 1px, transparent 1px)' }} />
       <div className="relative mx-auto max-w-7xl px-5 py-16 lg:px-8">
         <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr]">

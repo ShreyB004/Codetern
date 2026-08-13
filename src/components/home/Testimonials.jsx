@@ -2,6 +2,7 @@ import { Quote } from 'lucide-react'
 import { TESTIMONIALS } from '../../data/portfolio.js'
 import { useRevealScope } from '../../hooks/useReveal.js'
 import { TiltCard } from '../ui/TiltCard.jsx'
+import { ConstellationBackground } from '../ui/backgrounds/ConstellationBackground.jsx'
 
 export function Testimonials() {
   const scope = useRevealScope()
@@ -9,6 +10,7 @@ export function Testimonials() {
   return (
     <section ref={scope} className="relative overflow-hidden bg-ink py-24 text-white">
       <div className="pointer-events-none absolute left-1/2 top-0 h-80 w-[720px] -translate-x-1/2 rounded-full bg-violet-deep/15 blur-[140px]" />
+      <ConstellationBackground count={36} className="opacity-70" />
       <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
         <div className="mx-auto mb-14 max-w-2xl text-center" data-reveal>
           <span className="mb-4 inline-block rounded-bubble border border-neon/40 bg-neon/10 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-neon">

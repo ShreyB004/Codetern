@@ -6,9 +6,12 @@ import { useSeats } from '../../context/SeatsContext.jsx'
 import { DOMAIN_COLORS } from '../../data/programmes.js'
 import { SeatCounter } from '../ui/SeatCounter.jsx'
 import { DomainIcon } from '../ui/Icon.jsx'
+import { MeshGradientBackground } from '../ui/backgrounds/MeshGradientBackground.jsx'
+import { useTheme } from '../../context/ThemeContext.jsx'
 
 export function ProgrammeShowcase() {
   const scope = useRevealScope()
+  const { isDark } = useTheme()
   const { programmes } = useApp()
   const { getRemaining, getTotal } = useSeats()
   const navigate = useNavigate()
@@ -16,8 +19,9 @@ export function ProgrammeShowcase() {
   const featured = programmes.slice(0, 8)
 
   return (
-    <section ref={scope} className="bg-paper py-24 dark:bg-ink">
-      <div className="mx-auto max-w-7xl px-5 lg:px-8">
+    <section ref={scope} className="relative overflow-hidden bg-paper py-24 dark:bg-ink">
+      <MeshGradientBackground dark={isDark} opacity={isDark ? 0.4 : 0.5} className="opacity-60" />
+      <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
         <div className="mb-12 flex flex-col items-start justify-between gap-4 lg:flex-row lg:items-end" data-reveal>
           <div>
             <span className="mb-4 inline-block rounded-bubble border border-cyan-snap/30 bg-cyan-snap/10 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-cyan-snap">

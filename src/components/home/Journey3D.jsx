@@ -5,6 +5,7 @@ import { gsap } from '../../lib/gsap.js'
 import { useAuth } from '../../context/AppContext.jsx'
 import { useLoginModal } from '../ui/LoginModal.jsx'
 import { cn } from '../../lib/utils.js'
+import { StarfieldBackground } from '../ui/backgrounds/StarfieldBackground.jsx'
 
 const MILESTONES = [
   { icon: CalendarCheck, step: '01', title: 'Book your seat', desc: 'Pick a track and batch while live seats last.', color: '#22d3ee', z: 0 },
@@ -120,6 +121,7 @@ export function Journey3D() {
   return (
     <section className="relative overflow-hidden bg-ink py-24 text-white">
       <div className="grid-lines absolute inset-0 opacity-15" />
+      <StarfieldBackground count={90} speed={0.7} className="opacity-60" />
       <div className="cdt-blob pointer-events-none absolute left-[-10%] top-1/3 h-96 w-96 rounded-full bg-violet-deep/20 blur-[130px]" />
       <div className="cdt-blob pointer-events-none absolute right-[-10%] top-1/4 h-96 w-96 rounded-full bg-cyan-snap/15 blur-[130px]" style={{ animationDelay: '-8s' }} />
 

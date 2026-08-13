@@ -3,6 +3,7 @@ import { useRevealScope } from '../../hooks/useReveal.js'
 import { useParallax } from '../../hooks/useParallax.js'
 import { FloatingCard } from '../ui/FloatingCard.jsx'
 import { Pill } from '../ui/Pill.jsx'
+import { BeamsBackground } from '../ui/backgrounds/BeamsBackground.jsx'
 
 const CHECKPOINTS = [
   { icon: CheckCircle2, text: 'Sprint grader reviews code, not attendance' },
@@ -21,6 +22,7 @@ export function RealWorkSection() {
       <svg className="absolute inset-x-0 top-0 w-full" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden>
         <path d="M0,80 C320,20 720,120 1440,40 L1440,0 L0,0 Z" fill="#0b0e1a" />
       </svg>
+      <BeamsBackground className="opacity-40" />
 
       <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-5 pb-28 pt-6 lg:grid-cols-2 lg:px-8">
         {/* decorative curve highlight */}

@@ -84,6 +84,121 @@ body {
   transform: none !important;
 }
 
+/* ── animated background layers ─────────────────────────── */
+@keyframes cdt-aurora-drift {
+  0% {
+    transform: translate3d(-12%, -8%, 0) rotate(0deg) scale(1);
+  }
+  50% {
+    transform: translate3d(14%, 10%, 0) rotate(12deg) scale(1.18);
+  }
+  100% {
+    transform: translate3d(-12%, -8%, 0) rotate(0deg) scale(1);
+  }
+}
+@keyframes cdt-aurora-drift-alt {
+  0% {
+    transform: translate3d(10%, 12%, 0) rotate(0deg) scale(1.1);
+  }
+  50% {
+    transform: translate3d(-14%, -10%, 0) rotate(-14deg) scale(0.94);
+  }
+  100% {
+    transform: translate3d(10%, 12%, 0) rotate(0deg) scale(1.1);
+  }
+}
+.cdt-aurora {
+  animation: cdt-aurora-drift 24s ease-in-out infinite;
+  will-change: transform;
+  mix-blend-mode: screen;
+}
+.cdt-aurora-alt {
+  animation: cdt-aurora-drift-alt 30s ease-in-out infinite;
+  mix-blend-mode: screen;
+}
+.cdt-aurora-fast {
+  animation-duration: 14s;
+}
+.cdt-aurora-blob {
+  mix-blend-mode: normal;
+}
+
+@keyframes cdt-beam-stream {
+  0% {
+    transform: translate3d(0, -30vh, 0) rotate(8deg);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.8;
+  }
+  88% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate3d(0, 130vh, 0) rotate(8deg);
+    opacity: 0;
+  }
+}
+.cdt-beam {
+  position: absolute;
+  top: 0;
+  width: 2px;
+  height: 26vh;
+  transform: rotate(8deg);
+  animation: cdt-beam-stream 10s linear infinite;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.cdt-beam-glow {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgb(34 211 238 / 0.9) 35%,
+    rgb(124 92 255 / 0.9) 65%,
+    transparent
+  );
+  filter: blur(3px);
+  box-shadow: 0 0 12px 3px rgb(34 211 238 / 0.35);
+  border-radius: 999px;
+}
+
+@keyframes cdt-mesh-blob-light {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(24px, -18px, 0) scale(1.12);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+@keyframes cdt-mesh-blob-dark {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translate3d(20px, -16px, 0) scale(1.15);
+    opacity: 0.75;
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.55;
+  }
+}
+.cdt-mesh-blob {
+  will-change: transform;
+}
+.cdt-mesh-light {
+  animation: cdt-mesh-blob-light 18s ease-in-out infinite;
+}
+.cdt-mesh-dark {
+  animation: cdt-mesh-blob-dark 18s ease-in-out infinite;
+}
+
 /* ── aurora blob drift (hero / band backdrops) ─────────────── */
 @keyframes cdt-blob-drift {
   0% {

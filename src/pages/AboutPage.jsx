@@ -4,6 +4,8 @@ import { SectionHeading } from '../components/ui/SectionHeading.jsx'
 import { useRevealScope } from '../hooks/useReveal.js'
 import { useCountUp } from '../hooks/useCountUp.js'
 import { COMPANY_STATS } from '../data/portfolio.js'
+import { AuroraBackground } from '../components/ui/backgrounds/AuroraBackground.jsx'
+import { ConstellationBackground } from '../components/ui/backgrounds/ConstellationBackground.jsx'
 
 function StatCount({ value, suffix = '', label }) {
   const { ref, value: v } = useCountUp(value)
@@ -55,8 +57,7 @@ export default function AboutPage() {
       {/* hero */}
       <section className="relative overflow-hidden bg-ink py-24 text-white">
         <div className="grid-lines absolute inset-0 opacity-20" />
-        <div className="cdt-blob pointer-events-none absolute -right-24 top-[-20%] h-80 w-80 rounded-full bg-cyan-snap/20 blur-[110px]" />
-        <div className="cdt-blob pointer-events-none absolute -left-20 bottom-[-30%] h-80 w-80 rounded-full bg-violet-deep/25 blur-[110px]" style={{ animationDelay: '-7s' }} />
+        <AuroraBackground className="opacity-60" />
         <div className="relative mx-auto max-w-4xl px-5 text-center lg:px-8">
           <span data-enter className="mb-5 inline-block rounded-bubble border border-neon/40 bg-neon/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-neon">
             About Codetern
@@ -117,7 +118,8 @@ export default function AboutPage() {
 
       {/* mentor network */}
       <section ref={mentorScope} className="relative overflow-hidden bg-ink py-24 text-white">
-        <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 lg:grid-cols-2 lg:px-8">
+        <ConstellationBackground count={44} className="opacity-50" />
+        <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-5 lg:grid-cols-2 lg:px-8">
           <div data-reveal>
             <span className="mb-4 inline-block rounded-bubble border border-cyan-snap/30 bg-cyan-snap/10 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-cyan-snap">
               The mentor network

@@ -5,6 +5,7 @@ import { PORTFOLIO_PROJECTS } from '../data/portfolio.js'
 import { DOMAIN_COLORS } from '../data/programmes.js'
 import { TiltCard } from '../components/ui/TiltCard.jsx'
 import { cn } from '../lib/utils.js'
+import { AuroraBackground } from '../components/ui/backgrounds/AuroraBackground.jsx'
 
 export default function PortfolioPage() {
   const scope = useRevealScope()
@@ -13,7 +14,7 @@ export default function PortfolioPage() {
     <Page className="overflow-hidden">
       <section className="relative overflow-hidden bg-ink py-20 text-white">
         <div className="grid-lines absolute inset-0 opacity-20" />
-        <div className="pointer-events-none absolute -left-20 top-[-20%] h-80 w-80 rounded-full bg-violet-deep/25 blur-[110px]" />
+        <AuroraBackground className="opacity-50" />
         <div className="relative mx-auto max-w-4xl px-5 text-center lg:px-8">
           <span data-enter className="mb-5 inline-block rounded-bubble border border-neon/40 bg-neon/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-neon">
             Live project gallery
