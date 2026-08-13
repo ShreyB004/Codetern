@@ -17,7 +17,7 @@ export function Page({ children, dark = false, className = '' }) {
   }, [pathname])
 
   return (
-    <main ref={root} className={`relative min-h-screen ${dark ? 'bg-ink text-white' : 'bg-paper'} ${className}`}>
+    <main ref={root} className={`relative min-h-screen ${dark ? 'bg-ink text-white' : 'bg-paper dark:bg-ink dark:text-paper'} ${className}`}>
       {children}
     </main>
   )

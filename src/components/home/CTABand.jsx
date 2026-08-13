@@ -16,11 +16,11 @@ export function CTABand() {
   const go = () => (isAuthenticated ? navigate('/dashboard') : openLogin('signup'))
 
   return (
-    <section ref={scope} className="bg-paper px-5 pb-24 lg:px-8">
+    <section ref={scope} className="bg-paper px-5 pb-24 lg:px-8 dark:bg-ink">
       <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[2.5rem] bg-ink px-6 py-16 text-center text-white shadow-float sm:px-16 sm:py-20" data-reveal>
         <div className="grid-lines absolute inset-0 opacity-15" />
-        <div className="pointer-events-none absolute -left-20 top-[-40%] h-72 w-72 rounded-full bg-cyan-snap/25 blur-[100px]" />
-        <div className="pointer-events-none absolute -right-20 bottom-[-40%] h-72 w-72 rounded-full bg-violet-deep/30 blur-[100px]" />
+        <div className="cdt-blob pointer-events-none absolute -left-20 top-[-40%] h-72 w-72 rounded-full bg-cyan-snap/25 blur-[100px]" />
+        <div className="cdt-blob pointer-events-none absolute -right-20 bottom-[-40%] h-72 w-72 rounded-full bg-violet-deep/30 blur-[100px]" style={{ animationDelay: '-7s' }} />
 
         <div className="relative">
           <span className="mb-5 inline-block rounded-bubble border border-neon/40 bg-neon/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-neon">

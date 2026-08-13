@@ -114,7 +114,7 @@ export function RealWorkSection() {
 
           <FloatingCard className="bottom-[-8%] right-[4%]" amplitude={16} duration={5} delay={0.7}>
             <div className="flex items-center gap-3 rounded-2xl border border-neon/30 bg-ink-soft px-4 py-3 shadow-float">
-              <span className="grid h-9 w-9 place-items-center rounded-xl bg-neon text-ink">
+              <span className="grid h-9 w-9 place-items-center rounded-xl bg-neon text-ink dark:text-paper">
                 <Trophy size={16} />
               </span>
               <div>

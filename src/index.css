@@ -46,6 +46,82 @@ body {
   overflow-x: hidden;
 }
 
+/* dark mode base */
+.dark body {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgb(255 255 255 / 0.22);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+.dark .glass {
+  background: rgb(17 21 42 / 0.72);
+  border-color: rgb(255 255 255 / 0.1);
+}
+
+.dark .grid-lines {
+  background-image: linear-gradient(to right, rgb(255 255 255 / 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.05) 1px, transparent 1px);
+}
+
+.dark .dot-grid {
+  background-image: radial-gradient(rgb(255 255 255 / 0.1) 1px, transparent 1px);
+}
+
+.dark [data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+}
+
+/* reveal fallback for reduced-motion paths */
+[data-reveal].is-visible {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* ── aurora blob drift (hero / band backdrops) ─────────────── */
+@keyframes cdt-blob-drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  33% {
+    transform: translate3d(36px, -28px, 0) scale(1.12);
+  }
+  66% {
+    transform: translate3d(-28px, 22px, 0) scale(0.94);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+.cdt-blob {
+  animation: cdt-blob-drift 16s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* ── keyword marquee strip ─────────────────────────────────── */
+@keyframes cdt-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.cdt-marquee {
+  display: flex;
+  width: max-content;
+  animation: cdt-marquee 32s linear infinite;
+}
+.cdt-marquee:hover {
+  animation-play-state: paused;
+}
+
 ::selection {
   background: var(--color-cyan-snap);
   color: var(--color-ink);
@@ -67,6 +143,30 @@ body {
 }
 
 /* ── reusable component utilities ─────────────────────── */
+
+/* form inputs shared across admin + student surfaces */
+.cdt-input {
+  border: 1px solid rgb(11 14 26 / 0.12);
+  background: #fff;
+  color: var(--color-ink);
+  transition: border-color 0.25s, box-shadow 0.25s, background-color 0.25s;
+}
+.dark .cdt-input {
+  border-color: rgb(255 255 255 / 0.15);
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+.cdt-input::placeholder {
+  color: rgb(11 14 26 / 0.32);
+}
+.dark .cdt-input::placeholder {
+  color: rgb(255 255 255 / 0.32);
+}
+.cdt-input:focus {
+  border-color: color-mix(in srgb, var(--color-cyan-snap) 60%, transparent);
+  box-shadow: 0 0 0 4px rgb(34 211 238 / 0.1);
+  outline: none;
+}
 
 @utility text-balance {
   text-wrap: balance;

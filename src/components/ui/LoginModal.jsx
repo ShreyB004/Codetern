@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { ArrowRight, Eye, EyeOff, Lock, Mail, User as UserIcon, X } from 'lucide-react'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+import { ArrowRight, Eye, EyeOff, Gift, Lock, Mail, User as UserIcon, X } from 'lucide-react'
 import { useAuth } from '../../context/AppContext.jsx'
 import { useToast } from '../../context/ToastContext.jsx'
 import { Modal } from './Modal.jsx'
@@ -29,14 +29,14 @@ export function useLoginModal() {
 
 function Docs({ active, onTab }) {
   return (
-    <div className="mb-6 grid grid-cols-2 gap-1 rounded-2xl border border-ink/10 bg-ink/5 p-1">
+    <div className="mb-6 grid grid-cols-2 gap-1 rounded-2xl border border-ink/10 bg-ink/5 p-1 dark:bg-paper/10">
       {(['login', 'signup']).map((m) => (
         <button
           key={m}
           onClick={() => onTab(m)}
           className={cn(
             'rounded-xl py-2.5 text-sm font-semibold capitalize transition-all',
-            active === m ? 'bg-white text-ink shadow-card' : 'text-ink/50 hover:text-ink',
+            active === m ? 'bg-white text-ink dark:text-paper shadow-card' : 'text-ink/50 hover:text-ink dark:text-paper/50 dark:hover:text-paper',
           )}
         >
           {m === 'login' ? 'Sign in' : 'Create account'}
@@ -54,18 +54,25 @@ function LoginSignupModal({ mode, onClose }) {
   const { login, signup } = useAuth()
   const { push } = useToast()
   const navigate = useNavigate()
+  const [params] = useSearchParams()
+  const refCode = params.get('ref')
+  const preselect = params.get('d')
 
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }))
 
   const submit = (e) => {
     e.preventDefault()
     setError('')
-    const res = tab === 'login' ? login(form.email, form.password) : signup(form.name, form.email, form.password)
+    const res = tab === 'login' ? login(form.email, form.password) : signup(form.name, form.email, form.password, refCode)
     if (res.error) return setError(res.error)
-    push(tab === 'login' ? 'Welcome back to Codetern' : 'Account created — let’s build', 'success')
+    if (tab === 'signup' && refCode) {
+      push(res.referred ? 'Account created — referral applied, earn ₹50 when you book!' : 'Account created — let’s build', 'success')
+    } else {
+      push(tab === 'login' ? 'Welcome back to Codetern' : 'Account created — let’s build', 'success')
+    }
     gsap.fromTo('.cdt-modal-panel', { scale: 0.96, opacity: 0.5 }, { scale: 1, opacity: 1, duration: 0.3 })
     onClose()
-    navigate('/dashboard')
+    navigate(preselect ? `/dashboard?d=${preselect}` : '/dashboard')
   }
 
   return (
@@ -73,7 +80,7 @@ function LoginSignupModal({ mode, onClose }) {
       <div className="relative p-6 sm:p-8">
         <button
           onClick={onClose}
-          className="absolute right-5 top-5 grid h-8 w-8 place-items-center rounded-full border border-ink/10 text-ink/60 transition hover:bg-ink/5"
+          className="absolute right-5 top-5 grid h-8 w-8 place-items-center rounded-full border border-ink/10 text-ink/60 transition hover:bg-ink/5 dark:border-paper/15 dark:text-paper/60 dark:hover:bg-paper/5"
           aria-label="Close"
         >
           <X size={15} />
@@ -83,10 +90,10 @@ function LoginSignupModal({ mode, onClose }) {
           <span className="mb-3 inline-block rounded-bubble border border-cyan-snap/30 bg-cyan-snap/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-cyan-snap">
             {tab === 'login' ? 'Welcome back' : 'Join Codetern'}
           </span>
-          <h3 className="font-display text-2xl font-bold text-ink">
+          <h3 className="font-display text-2xl font-bold text-ink dark:text-paper">
             {tab === 'login' ? 'Resume your journey' : 'Start your internship simulation'}
           </h3>
-          <p className="mt-1.5 text-sm text-ink/55">
+          <p className="mt-1.5 text-sm text-ink/55 dark:text-paper/55">
             {tab === 'login'
               ? 'Your seats, quiz scores and progress are exactly where you left them.'
               : 'One account, five milestones, real projects that make your resume sing.'}
@@ -94,6 +101,13 @@ function LoginSignupModal({ mode, onClose }) {
         </div>
 
         <Docs active={tab} onTab={setTab} />
+
+        {tab === 'signup' && refCode && (
+          <p className="mb-4 flex items-center gap-2.5 rounded-2xl border border-neon/30 bg-neon/10 px-4 py-3 text-xs font-semibold text-ink dark:text-paper">
+            <Gift size={14} className="shrink-0 text-neon" />
+            Referral detected ({refCode}) — invite a friend to book and ₹50 lands in your wallet!
+          </p>
+        )}
 
         <form onSubmit={submit} className="flex flex-col gap-4">
           {tab === 'signup' && (
@@ -127,7 +141,7 @@ function LoginSignupModal({ mode, onClose }) {
             <button
               type="button"
               onClick={() => setShowPw((v) => !v)}
-              className="absolute right-4 top-[49px] text-ink/40 hover:text-ink/70"
+              className="absolute right-4 top-[49px] text-ink/40 hover:text-ink/70 dark:text-paper/40 dark:hover:text-paper/70"
               aria-label="Toggle password visibility"
             >
               {showPw ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -145,8 +159,8 @@ function LoginSignupModal({ mode, onClose }) {
             <ArrowRight size={16} />
           </Button>
 
-          <p className="text-center text-xs text-ink/45">
-            Demo admin — use <button type="button" className="font-semibold text-ink underline underline-offset-2" onClick={() => { setForm({ name: '', email: 'admin@codetern.dev', password: 'admin123' }); setTab('login') }}>admin@codetern.dev / admin123</button>
+          <p className="text-center text-xs text-ink/45 dark:text-paper/45">
+            Demo admin — use <button type="button" className="font-semibold text-ink dark:text-paper underline underline-offset-2" onClick={() => { setForm({ name: '', email: 'admin@codetern.dev', password: 'admin123' }); setTab('login') }}>admin@codetern.dev / admin123</button>
           </p>
         </form>
       </div>
@@ -157,12 +171,12 @@ function LoginSignupModal({ mode, onClose }) {
 function Field({ icon, label, ...props }) {
   return (
     <label className="block">
-      <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-ink/50">{label}</span>
+      <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-ink/50 dark:text-paper/50">{label}</span>
       <div className="relative">
-        <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-ink/35">{icon}</span>
+        <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-ink/35 dark:text-paper/35">{icon}</span>
         <input
           {...props}
-          className="w-full rounded-2xl border border-ink/12 bg-white px-10 py-3 text-sm text-ink outline-none transition placeholder:text-ink/30 focus:border-cyan-snap/60 focus:ring-4 focus:ring-cyan-snap/10"
+          className="w-full rounded-2xl border border-ink/12 bg-white px-10 dark:border-paper/15 dark:bg-ink dark:text-paper py-3 text-sm text-ink dark:text-paper outline-none transition placeholder:text-ink/30 focus:border-cyan-snap/60 focus:ring-4 focus:ring-cyan-snap/10"
         />
       </div>
     </label>

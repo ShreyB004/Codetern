@@ -15,6 +15,9 @@ export function mountReveals(scope) {
   const targets = scope?.querySelectorAll ? Array.from(scope.querySelectorAll('[data-reveal]')) : []
   if (!targets.length) return () => {}
 
+  // Hide initially so the scroll reveal is visible in both themes.
+  gsap.set(targets, { opacity: 0, y: 28 })
+
   const st = targets.map((el, i) =>
     ScrollTrigger.create({
       trigger: el,

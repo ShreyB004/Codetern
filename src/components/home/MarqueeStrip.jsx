@@ -1,0 +1,43 @@
+import { Sparkle } from 'lucide-react'
+
+const WORDS = [
+  'Sprints',
+  'PR reviews',
+  'Baseline quizzes',
+  'AI mock interviews',
+  'Live projects',
+  'Mentor 1:1s',
+  'Verifiable certificates',
+  'Real code reviews',
+  'Seat-gated cohorts',
+  'Portfolio you can prove',
+]
+
+/**
+ * MarqueeStrip — infinite keyword ticker between hero sections.
+ * Pure CSS loop (`.cdt-marquee`), duplicated content for a seamless
+ * translateX(-50%) cycle. Pauses on hover.
+ */
+export function MarqueeStrip() {
+  const row = [...WORDS, ...WORDS]
+  return (
+    <div className="relative overflow-hidden border-y border-ink/8 bg-paper py-4 dark:border-paper/10 dark:bg-ink">
+      <div
+        className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-paper to-transparent dark:from-ink"
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-paper to-transparent dark:from-ink"
+        aria-hidden
+      />
+      <div className="cdt-marquee">
+        {row.map((word, i) => (
+          <span key={i} className="flex shrink-0 items-center gap-3 px-4 text-sm font-semibold uppercase tracking-[0.14em] text-ink/45 dark:text-paper/45">
+            {word}
+            <Sparkle size={12} className="text-cyan-snap" />
+          </span>
+        ))}
+      </div>
+    </div>
+  )
+}

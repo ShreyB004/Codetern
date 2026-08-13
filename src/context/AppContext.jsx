@@ -2,6 +2,8 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 import { PROGRAMMES } from '../data/programmes.js'
 import { buildCandidateSeed, DEFAULT_MEDIA } from '../data/seed.js'
 import { getProgramme } from '../data/programmes.js'
+import { QUIZ_BANKS } from '../data/quizData.js'
+import { WORKSPACE_TASKS, DEFAULT_WORKSPACE } from '../data/workspace.js'
 import { load, save, uid } from '../lib/store.js'
 
 const AppCtx = createContext(null)
@@ -15,22 +17,40 @@ const SEED_USER = {
   createdAt: '2026-01-01',
 }
 
+// journey order (2026): 1 book → 2 profile → 3 workspace → 4 assessment → 5 interview
+const REFERRAL_REWARD = 50
+
 function ensureAdmin(users) {
   return users.some((u) => u.email === SEED_USER.email) ? users : [SEED_USER, ...users]
 }
 
+function makeReferralCode(name = '') {
+  const base = name
+    .trim()
+    .replace(/[^a-zA-Z]/g, '')
+    .slice(0, 4)
+    .toUpperCase() || 'CDT'
+  return `${base}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`
+}
+
 export function AppProvider({ children }) {
-  const [users, setUsers] = useState(() => ensureAdmin(load('users:v1', [])))
-  const [currentUserId, setCurrentUserId] = useState(() => load('current:v1', null))
-  const [candidates, setCandidates] = useState(() => load('candidates:v1', null) || buildCandidateSeed())
+  const [users, setUsers] = useState(() => ensureAdmin(load('users:v2', null) || []))
+  const [currentUserId, setCurrentUserId] = useState(() => load('current:v2', null))
+  const [candidates, setCandidates] = useState(() => load('candidates:v2', null) || buildCandidateSeed())
   const [programmes, setProgrammes] = useState(() => load('programmes:v1', null) || PROGRAMMES)
   const [media, setMedia] = useState(() => load('media:v1', null) || DEFAULT_MEDIA)
+  const [quizBanks, setQuizBanks] = useState(() => load('quizbanks:v1', null) || QUIZ_BANKS)
+  const [workspaceDefaults, setWorkspaceDefaults] = useState(
+    () => load('workspacedefaults:v1', null) || { ...WORKSPACE_TASKS, default: DEFAULT_WORKSPACE },
+  )
 
-  useEffect(() => save('users:v1', users), [users])
-  useEffect(() => save('current:v1', currentUserId), [currentUserId])
-  useEffect(() => save('candidates:v1', candidates), [candidates])
+  useEffect(() => save('users:v2', users), [users])
+  useEffect(() => save('current:v2', currentUserId), [currentUserId])
+  useEffect(() => save('candidates:v2', candidates), [candidates])
   useEffect(() => save('programmes:v1', programmes), [programmes])
   useEffect(() => save('media:v1', media), [media])
+  useEffect(() => save('quizbanks:v1', quizBanks), [quizBanks])
+  useEffect(() => save('workspacedefaults:v1', workspaceDefaults), [workspaceDefaults])
 
   const currentUser = users.find((u) => u.id === currentUserId) || null
   const isAdmin = currentUser?.role === 'admin'
@@ -41,12 +61,14 @@ export function AppProvider({ children }) {
 
   // ── auth ────────────────────────────────────────────────
   const signup = useCallback(
-    (name, email, password) => {
+    (name, email, password, referralCode = null) => {
       const clean = email.trim().toLowerCase()
       if (users.some((u) => u.email === clean)) return { error: 'An account with this email already exists.' }
       const id = uid('u')
       const now = new Date().toISOString().slice(0, 10)
-      const newUser = { id, name, email: clean, password, role: 'student', createdAt: now }
+      const code = makeReferralCode(name)
+      const referred = referralCode ? candidates.find((c) => c.referralCode === referralCode.toUpperCase()) : null
+      const newUser = { id, name, email: clean, password, role: 'student', createdAt: now, referralCode: code }
       const newCandidate = {
         id,
         name,
@@ -65,13 +87,16 @@ export function AppProvider({ children }) {
         booking: null,
         cert: null,
         workspace: null,
+        referralCode: code,
+        referredBy: referred ? referred.id : null,
+        wallet: { balance: 0, transactions: [] },
       }
       setUsers((prev) => [...ensureAdmin(prev), newUser])
       setCandidates((prev) => [...prev, newCandidate])
       setCurrentUserId(id)
-      return { ok: true }
+      return { ok: true, referred: !!referred }
     },
-    [users],
+    [users, candidates],
   )
 
   const login = useCallback(
@@ -89,10 +114,49 @@ export function AppProvider({ children }) {
     setCurrentUserId(null)
   }, [])
 
-  // ── student progress ────────────────────────────────────
+  // ── student progress (new journey order) ────────────────
   const updateCandidate = useCallback((id, patch) => {
     setCandidates((prev) => prev.map((c) => (c.id === id ? { ...c, ...patch } : c)))
   }, [])
+
+  const creditWallet = useCallback((candidateId, amount, reason) => {
+    setCandidates((prev) =>
+      prev.map((c) =>
+        c.id === candidateId
+          ? {
+              ...c,
+              wallet: {
+                balance: (c.wallet?.balance || 0) + amount,
+                transactions: [
+                  { id: uid('t'), amount, reason, at: new Date().toISOString() },
+                  ...(c.wallet?.transactions || []),
+                ],
+              },
+            }
+          : c,
+      ),
+    )
+  }, [])
+
+  const saveBooking = useCallback(
+    (domain, duration, extra = {}) => {
+      if (!candidate) return null
+      const firstBooking = !candidate.booking
+      updateCandidate(candidate.id, {
+        domain,
+        domainTitle: getProgramme(domain)?.title || null,
+        booking: { domain, duration, at: new Date().toISOString(), ...extra },
+        step: Math.max(candidate.step, 1),
+        status: 'active',
+      })
+      // Referral reward: referrer gets ₹50 once a referred friend confirms a seat.
+      if (candidate.referredBy && firstBooking) {
+        creditWallet(candidate.referredBy, REFERRAL_REWARD, `Referral reward — ${candidate.name.split(' ')[0]} booked a seat`)
+      }
+      return { firstBooking }
+    },
+    [candidate, updateCandidate, creditWallet],
+  )
 
   const saveProfile = useCallback(
     (profile) => {
@@ -109,6 +173,15 @@ export function AppProvider({ children }) {
     [candidate, updateCandidate],
   )
 
+  const updateWorkspace = useCallback(
+    (workspace) => {
+      if (!candidate) return
+      const allDone = workspace.tasks?.length > 0 && workspace.tasks.every((t) => t.done)
+      updateCandidate(candidate.id, { workspace, step: allDone ? Math.max(candidate.step, 3) : candidate.step })
+    },
+    [candidate, updateCandidate],
+  )
+
   const saveQuizResult = useCallback(
     (bank, score, passed) => {
       if (!candidate) return
@@ -116,7 +189,7 @@ export function AppProvider({ children }) {
         quiz: { bank, score, passed, at: new Date().toISOString() },
         quizScore: score,
         quizPassed: passed,
-        step: passed ? Math.max(candidate.step, 3) : candidate.step,
+        step: passed ? Math.max(candidate.step, 4) : candidate.step,
       })
     },
     [candidate, updateCandidate],
@@ -128,19 +201,7 @@ export function AppProvider({ children }) {
       updateCandidate(candidate.id, {
         interview,
         interviewScore: interview?.score ?? null,
-        step: Math.max(candidate.step, 4),
-      })
-    },
-    [candidate, updateCandidate],
-  )
-
-  const saveBooking = useCallback(
-    (duration) => {
-      if (!candidate) return
-      updateCandidate(candidate.id, {
-        booking: { domain: candidate.domain, duration, at: new Date().toISOString() },
         step: Math.max(candidate.step, 5),
-        status: 'active',
       })
     },
     [candidate, updateCandidate],
@@ -152,14 +213,6 @@ export function AppProvider({ children }) {
     updateCandidate(candidate.id, { cert: { id: certId, at: new Date().toISOString() } })
     return certId
   }, [candidate, updateCandidate])
-
-  const updateWorkspace = useCallback(
-    (workspace) => {
-      if (!candidate) return
-      updateCandidate(candidate.id, { workspace })
-    },
-    [candidate, updateCandidate],
-  )
 
   // ── admin: programmes ───────────────────────────────────
   const addDomain = useCallback((domain) => {
@@ -178,6 +231,50 @@ export function AppProvider({ children }) {
   const updateCandidateAdmin = useCallback((id, patch) => updateCandidate(id, patch), [updateCandidate])
   const removeCandidate = useCallback((id) => {
     setCandidates((prev) => prev.filter((c) => c.id !== id))
+  }, [])
+
+  const updateWorkspaceFor = useCallback((id, workspace) => {
+    updateCandidate(id, { workspace })
+  }, [updateCandidate])
+
+  // ── admin: quiz banks ───────────────────────────────────
+  const updateQuizBank = useCallback((domain, bank) => {
+    setQuizBanks((prev) => ({ ...prev, [domain]: bank }))
+  }, [])
+
+  const setQuestionEnabled = useCallback((domain, index, enabled) => {
+    setQuizBanks((prev) => {
+      const bank = prev?.[domain]
+      if (!bank) return prev
+      const questions = bank.questions.map((q, i) => (i === index ? { ...q, enabled } : q))
+      return { ...prev, [domain]: { ...bank, questions } }
+    })
+  }, [])
+
+  const upsertQuestion = useCallback((domain, question, index) => {
+    setQuizBanks((prev) => {
+      const bank = prev?.[domain] || { minutes: 5, questions: [] }
+      let questions
+      if (index == null) {
+        questions = [...bank.questions, { ...question, enabled: question.enabled !== false }]
+      } else {
+        questions = bank.questions.map((q, i) => (i === index ? { ...question, enabled: q.enabled !== false } : q))
+      }
+      return { ...prev, [domain]: { minutes: bank.minutes, questions } }
+    })
+  }, [])
+
+  const removeQuestion = useCallback((domain, index) => {
+    setQuizBanks((prev) => {
+      const bank = prev?.[domain]
+      if (!bank) return prev
+      return { ...prev, [domain]: { ...bank, questions: bank.questions.filter((_, i) => i !== index) } }
+    })
+  }, [])
+
+  // ── admin: workspace defaults ───────────────────────────
+  const updateWorkspaceDefault = useCallback((domain, workspace) => {
+    setWorkspaceDefaults((prev) => ({ ...prev, [domain]: workspace }))
   }, [])
 
   // ── admin/cms: media ────────────────────────────────────
@@ -209,6 +306,7 @@ export function AppProvider({ children }) {
       saveBooking,
       claimCert,
       updateWorkspace,
+      creditWallet,
       candidates,
       updateCandidateAdmin,
       removeCandidate,
@@ -220,6 +318,14 @@ export function AppProvider({ children }) {
       addMedia,
       updateMedia,
       removeMedia,
+      quizBanks,
+      updateQuizBank,
+      setQuestionEnabled,
+      upsertQuestion,
+      removeQuestion,
+      workspaceDefaults,
+      updateWorkspaceFor,
+      updateWorkspaceDefault,
     }),
     [
       users,
@@ -235,6 +341,7 @@ export function AppProvider({ children }) {
       saveBooking,
       claimCert,
       updateWorkspace,
+      creditWallet,
       candidates,
       updateCandidateAdmin,
       removeCandidate,
@@ -246,6 +353,14 @@ export function AppProvider({ children }) {
       addMedia,
       updateMedia,
       removeMedia,
+      quizBanks,
+      updateQuizBank,
+      setQuestionEnabled,
+      upsertQuestion,
+      removeQuestion,
+      workspaceDefaults,
+      updateWorkspaceFor,
+      updateWorkspaceDefault,
     ],
   )
 

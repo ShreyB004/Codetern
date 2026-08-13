@@ -46,6 +46,7 @@ export const DEFAULT_MEDIA = [
 ]
 
 // ── Seed candidate roster (admin table)
+// Journey order 2026: 1 book → 2 profile → 3 workspace → 4 assessment → 5 interview
 export function buildCandidateSeed() {
   return [
     {
@@ -62,6 +63,12 @@ export function buildCandidateSeed() {
       status: 'active',
       booking: { domain: 'mern', duration: 3, at: '2026-07-12' },
       cert: { id: 'CDT-2026-1343', at: '2026-08-01' },
+      interview: { score: 82, done: true },
+      referralCode: 'AARAV-7K2M',
+      wallet: { balance: 100, transactions: [
+        { id: 't-c1-1', amount: 50, reason: 'Referral reward — Sana Iqbal booked a seat', at: '2026-07-18T10:00:00.000Z' },
+        { id: 't-c1-2', amount: 50, reason: 'Referral reward — Kabir Shah booked a seat', at: '2026-06-20T10:00:00.000Z' },
+      ] },
     },
     {
       id: 'c2',
@@ -69,12 +76,17 @@ export function buildCandidateSeed() {
       email: 'sana.iqbal@codetern.dev',
       domain: 'frontend',
       domainTitle: 'Front-End Development',
-      step: 3,
+      step: 4,
       quizScore: 92,
       quizPassed: true,
       interviewScore: null,
       appliedAt: '2026-07-18',
       status: 'active',
+      booking: { domain: 'frontend', duration: 2, at: '2026-07-18' },
+      profile: { name: 'Sana Iqbal', email: 'sana.iqbal@codetern.dev', linkedin: 'linkedin.com/in/sana-iqbal', bio: 'Frontend enthusiast building design systems.', domain: 'frontend' },
+      referralCode: 'SANA-3XPQ',
+      referredBy: 'c1',
+      wallet: { balance: 0, transactions: [] },
     },
     {
       id: 'c3',
@@ -82,12 +94,17 @@ export function buildCandidateSeed() {
       email: 'devansh.rao@codetern.dev',
       domain: 'backend',
       domainTitle: 'Back-End Engineering',
-      step: 4,
+      step: 5,
       quizScore: 78,
       quizPassed: true,
       interviewScore: 74,
       appliedAt: '2026-07-02',
       status: 'active',
+      booking: { domain: 'backend', duration: 3, at: '2026-07-02' },
+      profile: { name: 'Devansh Rao', email: 'devansh.rao@codetern.dev', linkedin: 'linkedin.com/in/devansh-rao', bio: 'API design and database internals.', domain: 'backend' },
+      interview: { score: 74, done: true },
+      referralCode: 'DEVAN-9WSH',
+      wallet: { balance: 0, transactions: [] },
     },
     {
       id: 'c4',
@@ -95,12 +112,16 @@ export function buildCandidateSeed() {
       email: 'priya.nair@codetern.dev',
       domain: 'mobile',
       domainTitle: 'Mobile App Development',
-      step: 2,
+      step: 3,
       quizScore: 64,
       quizPassed: false,
       interviewScore: null,
       appliedAt: '2026-07-25',
       status: 'retake',
+      booking: { domain: 'mobile', duration: 3, at: '2026-07-25' },
+      profile: { name: 'Priya Nair', email: 'priya.nair@codetern.dev', linkedin: 'linkedin.com/in/priya-nair', bio: 'Building cross-platform apps with Flutter.', domain: 'mobile' },
+      referralCode: 'PRIYA-4LKD',
+      wallet: { balance: 0, transactions: [] },
     },
     {
       id: 'c5',
@@ -114,19 +135,27 @@ export function buildCandidateSeed() {
       interviewScore: 88,
       appliedAt: '2026-06-20',
       status: 'active',
+      booking: { domain: 'ai', duration: 6, at: '2026-06-20' },
+      cert: { id: 'CDT-2026-1343', at: '2026-07-28' },
+      interview: { score: 88, done: true },
+      referralCode: 'KABIR-2FVT',
+      referredBy: 'c1',
+      wallet: { balance: 0, transactions: [] },
     },
     {
       id: 'c6',
       name: 'Riya Kapoor',
       email: 'riya.kapoor@codetern.dev',
-      domain: 'cyber',
-      domainTitle: 'Cybersecurity',
+      domain: null,
+      domainTitle: null,
       step: 1,
       quizScore: null,
       quizPassed: false,
       interviewScore: null,
       appliedAt: '2026-07-28',
       status: 'pending',
+      referralCode: 'RIYA-6ZNE',
+      wallet: { balance: 0, transactions: [] },
     },
   ]
 }

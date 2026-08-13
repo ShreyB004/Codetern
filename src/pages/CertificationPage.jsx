@@ -20,13 +20,13 @@ function Certificate({ candidate }) {
   }, [])
 
   return (
-    <div className="relative overflow-hidden rounded-[2.25rem] border border-ink/10 bg-gradient-to-br from-white to-mist p-1 shadow-float">
+    <div className="relative overflow-hidden rounded-[2.25rem] border border-ink/10 bg-gradient-to-br from-white to-mist p-1 shadow-float dark:border-paper/15 dark:from-ink-soft dark:to-ink">
       <div className="dot-grid absolute inset-0 opacity-25" />
-      <div className="relative rounded-[2rem] border border-ink/8 bg-white/80 p-8 backdrop-blur-sm sm:p-12">
+      <div className="relative rounded-[2rem] border border-ink/8 bg-white dark:border-paper/10 dark:bg-ink-soft/80 p-8 backdrop-blur-sm sm:p-12">
         <div className="flex flex-wrap items-start justify-between gap-6">
           <div>
             <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-cyan-snap">Codetern · Verified Certificate</p>
-            <h2 className="mt-2 font-display text-2xl font-extrabold text-ink sm:text-3xl">Certificate of Completion</h2>
+            <h2 className="mt-2 font-display text-2xl font-extrabold text-ink dark:text-paper sm:text-3xl">Certificate of Completion</h2>
           </div>
           <div ref={seal} className="relative grid place-items-center">
             <div className="cdt-cert-ring absolute inset-0 rounded-full border-2 border-dashed border-cyan-snap/40" />
@@ -36,11 +36,11 @@ function Certificate({ candidate }) {
           </div>
         </div>
 
-        <p className="mt-8 text-xs font-medium uppercase tracking-[0.2em] text-ink/40">This certifies that</p>
-        <p className="mt-1 font-display text-3xl font-extrabold text-ink sm:text-4xl">{candidate.name}</p>
-        <p className="mt-4 max-w-lg text-sm leading-relaxed text-ink/60">
+        <p className="mt-8 text-xs font-medium uppercase tracking-[0.2em] text-ink/40 dark:text-paper/40">This certifies that</p>
+        <p className="mt-1 font-display text-3xl font-extrabold text-ink dark:text-paper sm:text-4xl">{candidate.name}</p>
+        <p className="mt-4 max-w-lg text-sm leading-relaxed text-ink/60 dark:text-paper/60">
           has successfully completed the{' '}
-          <span className="font-bold text-ink">{p?.title || candidate.domainTitle}</span> internship programme at Codetern,
+          <span className="font-bold text-ink dark:text-paper">{p?.title || candidate.domainTitle}</span> internship programme at Codetern,
           delivering verifiable production work and passing all screening milestones.
         </p>
 
@@ -51,19 +51,19 @@ function Certificate({ candidate }) {
             { label: 'Mock interview', value: candidate.interviewScore ? `${candidate.interviewScore}%` : '—' },
             { label: 'Applied', value: candidate.appliedAt || '—' },
           ].map((s) => (
-            <div key={s.label} className="rounded-2xl border border-ink/8 bg-paper px-4 py-3">
-              <p className="text-[10px] font-bold uppercase tracking-wider text-ink/40">{s.label}</p>
-              <p className="mt-1 font-display text-base font-bold text-ink">{s.value}</p>
+            <div key={s.label} className="rounded-2xl border border-ink/8 bg-paper px-4 py-3 dark:border-paper/10 dark:bg-ink">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-ink/40 dark:text-paper/40">{s.label}</p>
+              <p className="mt-1 font-display text-base font-bold text-ink dark:text-paper">{s.value}</p>
             </div>
           ))}
         </div>
 
-        <div className="mt-8 flex items-center gap-3 border-t border-ink/8 pt-6">
-          <div className="grid h-10 w-10 place-items-center rounded-full bg-gradient-to-br from-cyan-snap to-violet-deep text-ink">
+        <div className="mt-8 flex items-center gap-3 border-t border-ink/8 dark:border-paper/8 pt-6">
+          <div className="grid h-10 w-10 place-items-center rounded-full bg-gradient-to-br from-cyan-snap to-violet-deep text-ink dark:text-paper">
             <Sparkles size={18} />
           </div>
-          <p className="text-sm text-ink/55">
-            Digitally verified by <span className="font-bold text-ink">Codetern</span> — key matched to on-chain record.
+          <p className="text-sm text-ink/55 dark:text-paper/55">
+            Digitally verified by <span className="font-bold text-ink dark:text-paper">Codetern</span> — key matched to on-chain record.
           </p>
           <span className="ml-auto hidden items-center gap-1.5 rounded-bubble bg-mint/10 px-3 py-1 text-[11px] font-bold text-mint sm:inline-flex">
             <ShieldCheck size={13} />
@@ -107,17 +107,17 @@ export default function CertificationPage() {
         </div>
       </section>
 
-      <section ref={scope} className="bg-paper py-20">
+      <section ref={scope} className="bg-paper py-20 dark:bg-ink">
         <div className="mx-auto max-w-3xl px-5 lg:px-8">
           <form onSubmit={lookup} className="relative" data-reveal>
-            <span className="pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 text-ink/35">
+            <span className="pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 text-ink/35 dark:text-paper/35">
               <Search size={18} />
             </span>
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder={`Enter certificate ID — e.g. ${CERT_SAMPLE_ID}`}
-              className="w-full rounded-full border border-ink/15 bg-white px-12 py-4 pr-32 text-sm text-ink shadow-card outline-none transition placeholder:text-ink/30 focus:border-cyan-snap/60 focus:ring-4 focus:ring-cyan-snap/10"
+              className="w-full rounded-full border border-ink/15 bg-white px-12 py-4 pr-32 text-sm text-ink dark:border-paper/20 dark:bg-ink dark:text-paper shadow-card outline-none transition placeholder:text-ink/30 focus:border-cyan-snap/60 focus:ring-4 focus:ring-cyan-snap/10"
             />
             <button
               type="submit"
@@ -128,7 +128,7 @@ export default function CertificationPage() {
           </form>
 
           <div className="mt-4 text-center" data-reveal>
-            <p className="text-sm text-ink/40">
+            <p className="text-sm text-ink/40 dark:text-paper/40">
               Try sample ID{' '}
               <button onClick={() => setQuery(CERT_SAMPLE_ID)} className="font-semibold text-cyan-snap underline underline-offset-2">
                 {CERT_SAMPLE_ID}
@@ -150,9 +150,9 @@ export default function CertificationPage() {
           )}
 
           {!result && query === '' && (
-            <div className="mt-12 rounded-panel border border-dashed border-ink/15 bg-white/60 p-8 text-center" data-reveal>
-              <p className="font-display text-lg font-bold text-ink">Not sure what to enter?</p>
-              <p className="mx-auto mt-2 max-w-md text-sm text-ink/55">
+            <div className="mt-12 rounded-panel border border-dashed border-ink/15 bg-white/60 dark:bg-ink-soft/60 p-8 text-center" data-reveal>
+              <p className="font-display text-lg font-bold text-ink dark:text-paper">Not sure what to enter?</p>
+              <p className="mx-auto mt-2 max-w-md text-sm text-ink/55 dark:text-paper/55">
                 You’ll find the ID at the top-right of the certificate you received, e.g. CDT-2026-0007. Production
                 certificates are also mailed from certificates@codetern.dev.
               </p>

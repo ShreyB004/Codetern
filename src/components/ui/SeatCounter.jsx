@@ -5,8 +5,9 @@ import { Pill } from './Pill.jsx'
 
 /**
  * Live seat counter block — flame + pulsing number for urgency.
+ * `onDark` renders light-on-glass for dark hero surfaces.
  */
-export function SeatCounter({ remaining, total, duration, compact = false }) {
+export function SeatCounter({ remaining, total, duration, compact = false, onDark = false }) {
   const value = useLiveNumber(remaining)
   const urgent = total > 0 && remaining / total <= 0.22
 
@@ -28,12 +29,12 @@ export function SeatCounter({ remaining, total, duration, compact = false }) {
       </span>
       <div className="min-w-[92px]">
         <div className="flex items-baseline gap-1.5">
-          <span className={cn('font-display text-xl font-bold tabular-nums', urgent ? 'text-coral' : 'text-ink')}>
+          <span className={cn('font-display text-xl font-bold tabular-nums', urgent ? 'text-coral' : onDark ? 'text-white' : 'text-ink dark:text-paper')}>
             {value}
           </span>
-          <span className="text-[11px] font-semibold uppercase tracking-wider text-ink/45">left · {duration}mo</span>
+          <span className={cn('text-[11px] font-semibold uppercase tracking-wider', onDark ? 'text-white/45' : 'text-ink/45 dark:text-paper/45')}>left · {duration}mo</span>
         </div>
-        <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-ink/10">
+        <div className={cn('mt-1 h-1.5 w-full overflow-hidden rounded-full', onDark ? 'bg-white/10' : 'bg-ink/10 dark:bg-paper/10')}>
           <div
             className="h-full rounded-full transition-all duration-700"
             style={{ width: `${total ? (remaining / total) * 100 : 0}%`, background: urgent ? '#ff5c7a' : '#38ffb0' }}

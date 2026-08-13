@@ -5,7 +5,7 @@ export function Pill({ children, className, tone = 'ink', dot }) {
     <span
       className={cn(
         'inline-flex items-center gap-2 rounded-bubble border px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.14em]',
-        tone === 'ink' && 'border-ink/10 bg-ink text-paper',
+        tone === 'ink' && 'border-ink/10 dark:border-paper/10 bg-ink text-paper',
         tone === 'cyan' && 'border-cyan-snap/30 bg-cyan-snap/10 text-cyan-snap',
         tone === 'neon' && 'border-neon/40 bg-neon/10 text-neon',
         tone === 'mint' && 'border-mint/30 bg-mint/10 text-mint',

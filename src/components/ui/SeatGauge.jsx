@@ -49,7 +49,7 @@ export function SeatGauge({ remaining, total, size = 96, urgent = false }) {
           r={radius}
           fill="none"
           strokeWidth={7}
-          className="stroke-ink/10"
+          className="stroke-ink/10 dark:stroke-paper/10"
         />
         <circle
           ref={circleRef}
@@ -68,8 +68,8 @@ export function SeatGauge({ remaining, total, size = 96, urgent = false }) {
       </svg>
       <div className="absolute inset-0 grid place-items-center text-center">
         <div>
-          <div className="font-display text-lg font-bold leading-none text-ink">{shown}</div>
-          <div className="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-ink/45">seats</div>
+          <div className="font-display text-lg font-bold leading-none text-ink dark:text-paper">{shown}</div>
+          <div className="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-ink/45 dark:text-paper/45">seats</div>
         </div>
       </div>
     </div>

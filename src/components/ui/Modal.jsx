@@ -35,7 +35,7 @@ export function Modal({ open, onClose, children, className, title, size = 'md' }
       <div className="cdt-modal-backdrop absolute inset-0 bg-ink/60 backdrop-blur-sm" onClick={onClose} />
       <div
         className={cn(
-          'cdt-modal-panel relative w-full overflow-hidden rounded-panel border border-white/10 bg-paper shadow-float',
+          'cdt-modal-panel relative w-full overflow-hidden rounded-panel border border-white/10 bg-paper shadow-float dark:bg-ink-soft dark:shadow-none',
           size === 'sm' && 'max-w-md',
           size === 'md' && 'max-w-xl',
           size === 'lg' && 'max-w-3xl',
@@ -47,11 +47,11 @@ export function Modal({ open, onClose, children, className, title, size = 'md' }
         aria-modal="true"
       >
         {title && (
-          <div className="sticky top-0 z-10 flex items-center justify-between border-b border-ink/8 bg-paper/90 px-6 py-4 backdrop-blur-md">
-            <h3 className="font-display text-lg font-bold text-ink">{title}</h3>
+          <div className="sticky top-0 z-10 flex items-center justify-between border-b border-ink/8 bg-paper/90 dark:border-paper/10 dark:bg-ink-soft/90 px-6 py-4 backdrop-blur-md">
+            <h3 className="font-display text-lg font-bold text-ink dark:text-paper">{title}</h3>
             <button
               onClick={onClose}
-              className="grid h-8 w-8 place-items-center rounded-full border border-ink/10 text-ink/60 transition hover:bg-ink/5 hover:text-ink"
+              className="grid h-8 w-8 place-items-center rounded-full border border-ink/10 text-ink/60 transition hover:bg-ink/5 hover:text-ink dark:border-paper/15 dark:text-paper/60 dark:hover:bg-paper/5 dark:hover:text-paper"
               aria-label="Close"
             >
               <X size={16} />

@@ -9,7 +9,7 @@ const variants = {
   primary: 'bg-ink text-paper hover:bg-ink-soft shadow-card hover:shadow-float relative overflow-hidden shine',
   accent: 'bg-cyan-snap text-ink hover:bg-cyan-snap/90 shadow-card',
   neon: 'bg-neon text-ink hover:bg-neon/90 shadow-card',
-  ghost: 'border border-ink/15 bg-transparent text-ink hover:border-ink/40 hover:bg-ink/5',
+  ghost: 'border border-ink/15 dark:border-paper/15 bg-transparent text-ink hover:border-ink/40 hover:bg-ink/5 dark:bg-paper/5',
   lightGhost: 'border border-white/20 bg-white/5 text-white hover:bg-white/10',
   danger: 'bg-coral/10 text-coral border border-coral/30 hover:bg-coral/15',
   white: 'bg-white text-ink hover:bg-white/90 shadow-card',

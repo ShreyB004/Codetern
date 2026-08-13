@@ -2,7 +2,21 @@ import { Compass, Handshake, Layers, UserCheck, Users } from 'lucide-react'
 import { Page } from '../components/layout/Page.jsx'
 import { SectionHeading } from '../components/ui/SectionHeading.jsx'
 import { useRevealScope } from '../hooks/useReveal.js'
+import { useCountUp } from '../hooks/useCountUp.js'
 import { COMPANY_STATS } from '../data/portfolio.js'
+
+function StatCount({ value, suffix = '', label }) {
+  const { ref, value: v } = useCountUp(value)
+  return (
+    <div ref={ref}>
+      <p className="font-display text-2xl font-extrabold text-neon tabular-nums">
+        {v.toLocaleString('en-IN')}
+        {suffix}
+      </p>
+      <p className="text-[11px] text-white/45">{label}</p>
+    </div>
+  )
+}
 
 const PILLARS = [
   {
@@ -33,15 +47,16 @@ const PILLARS = [
 ]
 
 export default function AboutPage() {
-  const scope = useRevealScope()
+  const pillarsScope = useRevealScope()
+  const mentorScope = useRevealScope()
 
   return (
     <Page className="overflow-hidden">
       {/* hero */}
       <section className="relative overflow-hidden bg-ink py-24 text-white">
         <div className="grid-lines absolute inset-0 opacity-20" />
-        <div className="pointer-events-none absolute -right-24 top-[-20%] h-80 w-80 rounded-full bg-cyan-snap/20 blur-[110px]" />
-        <div className="pointer-events-none absolute -left-20 bottom-[-30%] h-80 w-80 rounded-full bg-violet-deep/25 blur-[110px]" />
+        <div className="cdt-blob pointer-events-none absolute -right-24 top-[-20%] h-80 w-80 rounded-full bg-cyan-snap/20 blur-[110px]" />
+        <div className="cdt-blob pointer-events-none absolute -left-20 bottom-[-30%] h-80 w-80 rounded-full bg-violet-deep/25 blur-[110px]" style={{ animationDelay: '-7s' }} />
         <div className="relative mx-auto max-w-4xl px-5 text-center lg:px-8">
           <span data-enter className="mb-5 inline-block rounded-bubble border border-neon/40 bg-neon/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-neon">
             About Codetern
@@ -58,7 +73,7 @@ export default function AboutPage() {
       </section>
 
       {/* pillars */}
-      <section ref={scope} className="bg-paper py-24">
+      <section ref={pillarsScope} className="bg-paper py-24 dark:bg-ink">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <SectionHeading
             eyebrow="Why we exist"
@@ -73,14 +88,14 @@ export default function AboutPage() {
                 <div
                   key={p.title}
                   data-reveal
-                  className="group rounded-panel border border-ink/8 bg-white p-7 shadow-card transition-all duration-500 hover:-translate-y-1.5 hover:shadow-float"
+                  className="group rounded-panel border border-ink/8 bg-white dark:border-paper/10 dark:bg-ink-soft p-7 shadow-card transition-all duration-500 hover:-translate-y-1.5 hover:shadow-float"
                   style={{ transitionDelay: `${(i % 3) * 60}ms` }}
                 >
                   <span className="mb-5 grid h-12 w-12 place-items-center rounded-2xl bg-cyan-snap/10 text-cyan-snap transition group-hover:bg-ink group-hover:text-neon">
                     <Icon size={22} />
                   </span>
-                  <h3 className="font-display text-lg font-bold text-ink">{p.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-ink/55">{p.desc}</p>
+                  <h3 className="font-display text-lg font-bold text-ink dark:text-paper">{p.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-ink/55 dark:text-paper/55">{p.desc}</p>
                 </div>
               )
             })}
@@ -92,13 +107,7 @@ export default function AboutPage() {
               <h3 className="font-display text-lg font-bold">Proof over promises</h3>
               <div className="grid grid-cols-2 gap-4">
                 {COMPANY_STATS.map((s) => (
-                  <div key={s.label}>
-                    <p className="font-display text-2xl font-extrabold text-neon tabular-nums">
-                      {s.value.toLocaleString('en-IN')}
-                      {s.suffix || ''}
-                    </p>
-                    <p className="text-[11px] text-white/45">{s.label}</p>
-                  </div>
+                  <StatCount key={s.label} value={s.value} suffix={s.suffix || ''} label={s.label} />
                 ))}
               </div>
             </div>
@@ -107,7 +116,7 @@ export default function AboutPage() {
       </section>
 
       {/* mentor network */}
-      <section ref={scope} className="relative overflow-hidden bg-ink py-24 text-white">
+      <section ref={mentorScope} className="relative overflow-hidden bg-ink py-24 text-white">
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 lg:grid-cols-2 lg:px-8">
           <div data-reveal>
             <span className="mb-4 inline-block rounded-bubble border border-cyan-snap/30 bg-cyan-snap/10 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-cyan-snap">
@@ -145,7 +154,7 @@ export default function AboutPage() {
               ].map(([role, handle, cls], i) => (
                 <div key={role} className={`rounded-panel border p-4 ${cls}`} data-reveal style={{ transitionDelay: `${i * 50}ms` }}>
                   <div className="flex items-center gap-3">
-                    <span className="grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br from-cyan-snap to-violet-deep text-xs font-bold text-ink">
+                    <span className="grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br from-cyan-snap to-violet-deep text-xs font-bold text-ink dark:text-paper">
                       {role.split(' ')[0][0]}
                     </span>
                     <p className="text-sm font-semibold text-white">{handle}</p>

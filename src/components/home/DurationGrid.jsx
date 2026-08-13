@@ -54,7 +54,7 @@ export function DurationGrid() {
   const featured = 3
 
   return (
-    <section ref={scope} className="relative overflow-hidden bg-paper py-24">
+    <section ref={scope} className="relative overflow-hidden bg-paper py-24 dark:bg-ink">
       <div className="dot-grid pointer-events-none absolute inset-0 opacity-40" />
       <div className="pointer-events-none absolute right-[-6%] top-10 h-72 w-72 rounded-full bg-cyan-snap/10 blur-[100px]" />
 
@@ -64,7 +64,7 @@ export function DurationGrid() {
             <span className="mb-4 inline-block rounded-bubble border border-cyan-snap/30 bg-cyan-snap/10 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-cyan-snap">
               Programme durations
             </span>
-            <h2 className="max-w-2xl font-display text-3xl font-bold leading-tight tracking-tight text-ink sm:text-5xl">
+            <h2 className="max-w-2xl font-display text-3xl font-bold leading-tight tracking-tight text-ink dark:text-paper sm:text-5xl">
               Pick your pace — <span className="text-gradient-snap">1, 2, 3 or 6 months</span> of real work.
             </h2>
           </div>
@@ -82,9 +82,9 @@ export function DurationGrid() {
                 <TiltCard max={7}>
                   <div
                     className={cn(
-                      'relative flex h-full flex-col overflow-hidden rounded-panel border border-ink/8 p-6 shadow-card transition-shadow duration-500 hover:shadow-float',
+                      'relative flex h-full flex-col overflow-hidden rounded-panel border border-ink/8 p-6 shadow-card transition-shadow duration-500 hover:shadow-float dark:border-paper/10',
                       featured === d.months && 'bg-ink text-white',
-                      featured !== d.months && 'bg-white',
+                      featured !== d.months && 'bg-white dark:bg-ink-soft',
                     )}
                     style={{ boxShadow: `0 18px 50px -22px ${d.glow}` }}
                   >
@@ -95,7 +95,7 @@ export function DurationGrid() {
                       className={cn(
                         'mb-5 inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br',
                         d.accent,
-                        featured === d.months ? 'text-ink' : 'text-ink',
+                        featured === d.months ? 'text-ink dark:text-paper' : 'text-ink dark:text-paper',
                       )}
                     >
                       <Icon size={20} strokeWidth={2.2} />
@@ -103,24 +103,24 @@ export function DurationGrid() {
                     <p className={cn('text-[11px] font-bold uppercase tracking-[0.18em]', featured === d.months ? 'text-neon' : 'text-cyan-snap')}>
                       {d.kicker}
                     </p>
-                    <h3 className={cn('mt-2 font-display text-2xl font-bold', featured === d.months ? 'text-white' : 'text-ink')}>
+                    <h3 className={cn('mt-2 font-display text-2xl font-bold', featured === d.months ? 'text-white' : 'text-ink dark:text-paper')}>
                       {d.title}
                     </h3>
-                    <p className={cn('mt-2.5 flex-1 text-sm leading-relaxed', featured === d.months ? 'text-white/60' : 'text-ink/55')}>
+                    <p className={cn('mt-2.5 flex-1 text-sm leading-relaxed', featured === d.months ? 'text-white/60' : 'text-ink/55 dark:text-paper/55')}>
                       {d.desc}
                     </p>
                     <div className="mt-5">
                       <span
                         className={cn(
                           'inline-block rounded-bubble px-3 py-1 text-[11px] font-semibold',
-                          featured === d.months ? 'bg-white/10 text-white/80' : 'bg-ink/5 text-ink/60',
+                          featured === d.months ? 'bg-white/10 text-white/80' : 'bg-ink/5 dark:bg-paper/5 text-ink/60 dark:text-paper/60',
                         )}
                       >
                         {d.tag}
                       </span>
                     </div>
                     {featured === d.months && (
-                      <div className="absolute right-4 top-4 rounded-bubble bg-neon px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-ink">
+                      <div className="absolute right-4 top-4 rounded-bubble bg-neon px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-ink dark:text-paper">
                         Most chosen
                       </div>
                     )}

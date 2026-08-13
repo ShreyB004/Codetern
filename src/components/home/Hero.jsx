@@ -20,8 +20,8 @@ export function Hero() {
     <section ref={scope} className="relative overflow-hidden bg-ink text-white">
       {/* backdrop */}
       <div className="grid-lines absolute inset-0 opacity-25" />
-      <div className="pointer-events-none absolute -top-40 right-[-10%] h-[540px] w-[540px] rounded-full bg-cyan-snap/20 blur-[120px]" />
-      <div className="pointer-events-none absolute bottom-[-20%] left-[-8%] h-[420px] w-[420px] rounded-full bg-violet-deep/25 blur-[120px]" />
+      <div className="cdt-blob pointer-events-none absolute -top-40 right-[-10%] h-[540px] w-[540px] rounded-full bg-cyan-snap/20 blur-[120px]" />
+      <div className="cdt-blob pointer-events-none absolute bottom-[-20%] left-[-8%] h-[420px] w-[420px] rounded-full bg-violet-deep/25 blur-[120px]" style={{ animationDelay: '-8s' }} />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-ink to-transparent" />
 
       <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-5 pb-24 pt-16 lg:grid-cols-[1.1fr_1fr] lg:px-8 lg:pt-24">
@@ -105,7 +105,7 @@ export function Hero() {
             <div className="w-52 rounded-2xl border border-white/10 bg-white/[0.05] p-4 shadow-float backdrop-blur-md">
               <p className="text-[11px] font-bold uppercase tracking-widest text-white/40">MERN · 3mo</p>
               <div className="mt-2 flex items-center justify-between">
-                <SeatCounter remaining={7} total={24} duration={3} compact />
+                <SeatCounter remaining={7} total={24} duration={3} compact onDark />
               </div>
             </div>
           </FloatingCard>

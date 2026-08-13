@@ -28,7 +28,7 @@ export function Testimonials() {
                   <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-white/75">“{t.quote}”</blockquote>
                   <figcaption className="mt-6 flex items-center gap-3 border-t border-white/10 pt-5">
                     <span
-                      className="grid h-11 w-11 place-items-center rounded-full text-xs font-bold text-ink"
+                      className="grid h-11 w-11 place-items-center rounded-full text-xs font-bold text-ink dark:text-paper"
                       style={{ background: t.gradient }}
                     >
                       {t.avatar}

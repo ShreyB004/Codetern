@@ -16,13 +16,13 @@ export function SectionHeading({ eyebrow, title, description, align = 'center', 
       <h2
         className={cn(
           'font-display text-balance text-3xl font-bold leading-[1.08] tracking-tight sm:text-4xl lg:text-5xl',
-          dark ? 'text-white' : 'text-ink',
+          dark ? 'text-white' : 'text-ink dark:text-paper',
         )}
       >
         {title}
       </h2>
       {description && (
-        <p className={cn('mt-4 text-base leading-relaxed sm:text-lg', dark ? 'text-white/60' : 'text-ink/55')} data-reveal>
+        <p className={cn('mt-4 text-base leading-relaxed sm:text-lg', dark ? 'text-white/60' : 'text-ink/55 dark:text-paper/55')} data-reveal>
           {description}
         </p>
       )}

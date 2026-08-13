@@ -10,11 +10,11 @@ const STATUSES = ['all', 'pending', 'active', 'retake', 'graduated']
 const PAGE_SIZE = 6
 
 const STEPS = {
-  1: 'Profile',
-  2: 'Quiz',
-  3: 'Interview',
-  4: 'Booking',
-  5: 'Workspace',
+  1: 'Booking',
+  2: 'Profile',
+  3: 'Workspace',
+  4: 'Assessment',
+  5: 'Interview',
 }
 
 export function CandidateRoster() {
@@ -53,31 +53,31 @@ export function CandidateRoster() {
       {/* filters */}
       <div className="mb-6 flex flex-col gap-3 lg:flex-row lg:items-center">
         <div className="relative flex-1">
-          <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-ink/30">
+          <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-ink/30 dark:text-paper/30">
             <Search size={16} />
           </span>
           <input
             value={q}
             onChange={(e) => { setQ(e.target.value); setPage(0) }}
             placeholder="Search by name or email…"
-            className="w-full rounded-xl border border-ink/12 bg-white py-2.5 pl-10 pr-4 text-sm outline-none focus:border-cyan-snap/60"
+            className="w-full rounded-xl border border-ink/12 bg-white dark:border-paper/15 dark:bg-ink dark:text-paper py-2.5 pl-10 pr-4 text-sm outline-none focus:border-cyan-snap/60"
           />
         </div>
-        <select value={domain} onChange={(e) => { setDomain(e.target.value); setPage(0) }} className="rounded-xl border border-ink/12 bg-white px-4 py-2.5 text-sm outline-none">
+        <select value={domain} onChange={(e) => { setDomain(e.target.value); setPage(0) }} className="rounded-xl border border-ink/12 bg-white dark:border-paper/15 dark:bg-ink dark:text-paper px-4 py-2.5 text-sm outline-none">
           <option value="all">All domains</option>
           {programmes.map((p) => <option key={p.id} value={p.id}>{p.title}</option>)}
         </select>
-        <select value={status} onChange={(e) => { setStatus(e.target.value); setPage(0) }} className="rounded-xl border border-ink/12 bg-white px-4 py-2.5 text-sm outline-none">
+        <select value={status} onChange={(e) => { setStatus(e.target.value); setPage(0) }} className="rounded-xl border border-ink/12 bg-white dark:border-paper/15 dark:bg-ink dark:text-paper px-4 py-2.5 text-sm outline-none">
           {STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
         </select>
       </div>
 
       {/* table */}
-      <div className="overflow-hidden rounded-panel border border-ink/8 bg-white shadow-card">
+      <div className="overflow-hidden rounded-panel border border-ink/8 bg-white dark:border-paper/10 dark:bg-ink-soft shadow-card dark:border-paper/10 dark:bg-ink-soft dark:shadow-none">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[860px] text-left text-sm">
             <thead>
-              <tr className="border-b border-ink/8 bg-paper/60 text-[11px] font-bold uppercase tracking-wider text-ink/45">
+              <tr className="border-b border-ink/8 bg-paper/60 dark:bg-ink/60 text-[11px] font-bold uppercase tracking-wider text-ink/45 dark:text-paper/45">
                 <th className="px-5 py-3.5">Candidate</th>
                 <th className="px-5 py-3.5">Domain</th>
                 <th className="px-5 py-3.5">Step</th>
@@ -93,10 +93,10 @@ export function CandidateRoster() {
                 const p = getProgramme(c.domain)
                 const color = p ? DOMAIN_COLORS[p.color] : null
                 return (
-                  <tr key={c.id} className="border-b border-ink/5 transition-colors hover:bg-paper/50">
+                  <tr key={c.id} className="border-b border-ink/5 dark:border-paper/5 transition-colors hover:bg-paper/50 dark:hover:bg-ink-soft/40">
                     <td className="px-5 py-3.5">
-                      <p className="font-semibold text-ink">{c.name}</p>
-                      <p className="text-xs text-ink/45">{c.email}</p>
+                      <p className="font-semibold text-ink dark:text-paper">{c.name}</p>
+                      <p className="text-xs text-ink/45 dark:text-paper/45">{c.email}</p>
                     </td>
                     <td className="px-5 py-3.5">
                       {p ? (
@@ -104,13 +104,13 @@ export function CandidateRoster() {
                           {p.title}
                         </span>
                       ) : (
-                        <span className="text-ink/35">—</span>
+                        <span className="text-ink/35 dark:text-paper/35">—</span>
                       )}
                     </td>
                     <td className="px-5 py-3.5">
                       <div className="flex items-center gap-2">
-                        <span className="font-bold text-ink">{STEPS[c.step]}</span>
-                        <span className="text-[10px] text-ink/35">· {c.step}/5</span>
+                        <span className="font-bold text-ink dark:text-paper">{STEPS[c.step]}</span>
+                        <span className="text-[10px] text-ink/35 dark:text-paper/35">· {c.step}/5</span>
                       </div>
                     </td>
                     <td className="px-5 py-3.5">
@@ -119,22 +119,22 @@ export function CandidateRoster() {
                           {c.quizScore}%
                         </span>
                       ) : (
-                        <span className="text-ink/30">—</span>
+                        <span className="text-ink/30 dark:text-paper/30">—</span>
                       )}
                     </td>
                     <td className="px-5 py-3.5">
                       {c.interviewScore != null ? (
                         <span className="font-bold tabular-nums text-violet-deep">{c.interviewScore}%</span>
                       ) : (
-                        <span className="text-ink/30">—</span>
+                        <span className="text-ink/30 dark:text-paper/30">—</span>
                       )}
                     </td>
-                    <td className="px-5 py-3.5 text-ink/55">{formatDate(c.appliedAt)}</td>
+                    <td className="px-5 py-3.5 text-ink/55 dark:text-paper/55">{formatDate(c.appliedAt)}</td>
                     <td className="px-5 py-3.5">
                       <span className={cn(
                         'rounded-bubble px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider',
                         c.status === 'active' && 'bg-mint/10 text-mint',
-                        c.status === 'pending' && 'bg-ink/5 text-ink/50',
+                        c.status === 'pending' && 'bg-ink/5 dark:bg-paper/5 text-ink/50 dark:text-paper/50',
                         c.status === 'retake' && 'bg-coral/10 text-coral',
                         c.step >= 5 && 'bg-neon/15 text-neon',
                       )}>
@@ -146,7 +146,7 @@ export function CandidateRoster() {
                         <button
                           onClick={() => stepUp(c.id)}
                           disabled={c.step >= 5}
-                          className="rounded-lg border border-ink/10 px-2.5 py-1.5 text-[11px] font-semibold text-ink/60 transition hover:bg-ink/5 disabled:opacity-40"
+                          className="rounded-lg border border-ink/10 dark:border-paper/10 px-2.5 py-1.5 text-[11px] font-semibold text-ink/60 dark:text-paper/60 transition hover:bg-ink/5 dark:bg-paper/5 disabled:opacity-40"
                         >
                           Advance step
                         </button>
@@ -167,28 +167,28 @@ export function CandidateRoster() {
         </div>
 
         {rows.length === 0 && (
-          <div className="px-6 py-16 text-center text-sm text-ink/45">No candidates match your filters.</div>
+          <div className="px-6 py-16 text-center text-sm text-ink/45 dark:text-paper/45">No candidates match your filters.</div>
         )}
 
         {/* pagination */}
-        <div className="flex items-center justify-between border-t border-ink/8 px-5 py-3.5">
-          <p className="text-xs text-ink/45">
+        <div className="flex items-center justify-between border-t border-ink/8 dark:border-paper/8 px-5 py-3.5">
+          <p className="text-xs text-ink/45 dark:text-paper/45">
             Showing {rows.length} of {filtered.length} candidates
           </p>
           <div className="flex items-center gap-2">
             <button
               onClick={() => setPage((p) => Math.max(0, p - 1))}
               disabled={safePage === 0}
-              className="grid h-8 w-8 place-items-center rounded-lg border border-ink/10 disabled:opacity-40"
+              className="grid h-8 w-8 place-items-center rounded-lg border border-ink/10 dark:border-paper/10 disabled:opacity-40"
               aria-label="Previous page"
             >
               <ChevronLeft size={14} />
             </button>
-            <span className="text-xs font-semibold text-ink/60">{safePage + 1} / {pages}</span>
+            <span className="text-xs font-semibold text-ink/60 dark:text-paper/60">{safePage + 1} / {pages}</span>
             <button
               onClick={() => setPage((p) => Math.min(pages - 1, p + 1))}
               disabled={safePage >= pages - 1}
-              className="grid h-8 w-8 place-items-center rounded-lg border border-ink/10 disabled:opacity-40"
+              className="grid h-8 w-8 place-items-center rounded-lg border border-ink/10 dark:border-paper/10 disabled:opacity-40"
               aria-label="Next page"
             >
               <ChevronRight size={14} />
