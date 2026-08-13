@@ -7,7 +7,9 @@ export function SectionHeading({ eyebrow, title, description, align = 'center', 
         <span
           className={cn(
             'mb-4 inline-flex items-center gap-2 rounded-bubble px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em]',
-            dark ? 'border-neon/40 bg-neon/10 text-neon' : 'border-cyan-snap/30 bg-cyan-snap/10 text-cyan-snap',
+            dark
+              ? 'border-neon/40 bg-neon/10 text-neon'
+              : 'border-cyan-deep/30 bg-cyan-deep/10 text-cyan-deep dark:border-cyan-snap/30 dark:bg-cyan-snap/10 dark:text-cyan-snap',
           )}
         >
           {eyebrow}
@@ -22,7 +24,7 @@ export function SectionHeading({ eyebrow, title, description, align = 'center', 
         {title}
       </h2>
       {description && (
-        <p className={cn('mt-4 text-base leading-relaxed sm:text-lg', dark ? 'text-white/60' : 'text-ink/55 dark:text-paper/55')} data-reveal>
+        <p className={cn('mt-4 text-base leading-relaxed sm:text-lg', dark ? 'text-white/65' : 'text-ink/60 dark:text-paper/60')} data-reveal>
           {description}
         </p>
       )}

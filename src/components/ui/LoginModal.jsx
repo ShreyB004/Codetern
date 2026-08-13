@@ -76,7 +76,7 @@ function LoginSignupModal({ mode, onClose }) {
   }
 
   return (
-    <Modal open onClose={onClose} size="md">
+    <Modal open onClose={onClose} size="md" labelledBy="cdt-login-title">
       <div className="relative p-6 sm:p-8">
         <button
           onClick={onClose}
@@ -87,10 +87,10 @@ function LoginSignupModal({ mode, onClose }) {
         </button>
 
         <div className="mb-6">
-          <span className="mb-3 inline-block rounded-bubble border border-cyan-snap/30 bg-cyan-snap/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-cyan-snap">
+          <span className="mb-3 inline-block rounded-bubble border border-cyan-deep/30 bg-cyan-deep/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-cyan-deep dark:border-cyan-snap/30 dark:bg-cyan-snap/10 dark:text-cyan-snap">
             {tab === 'login' ? 'Welcome back' : 'Join Codetern'}
           </span>
-          <h3 className="font-display text-2xl font-bold text-ink dark:text-paper">
+          <h3 id="cdt-login-title" className="font-display text-2xl font-bold text-ink dark:text-paper">
             {tab === 'login' ? 'Resume your journey' : 'Start your internship simulation'}
           </h3>
           <p className="mt-1.5 text-sm text-ink/55 dark:text-paper/55">
@@ -103,8 +103,8 @@ function LoginSignupModal({ mode, onClose }) {
         <Docs active={tab} onTab={setTab} />
 
         {tab === 'signup' && refCode && (
-          <p className="mb-4 flex items-center gap-2.5 rounded-2xl border border-neon/30 bg-neon/10 px-4 py-3 text-xs font-semibold text-ink dark:text-paper">
-            <Gift size={14} className="shrink-0 text-neon" />
+          <p className="mb-4 flex items-center gap-2.5 rounded-2xl border border-neon-deep/30 bg-neon-deep/10 px-4 py-3 text-xs font-semibold text-ink dark:border-neon/30 dark:bg-neon/10 dark:text-paper">
+            <Gift size={14} className="shrink-0 text-neon-deep dark:text-neon" />
             Referral detected ({refCode}) — invite a friend to book and ₹50 lands in your wallet!
           </p>
         )}
@@ -149,7 +149,7 @@ function LoginSignupModal({ mode, onClose }) {
           </div>
 
           {error && (
-            <p className="rounded-xl border border-coral/30 bg-coral/8 px-3.5 py-2.5 text-sm font-medium text-coral">
+            <p className="rounded-xl border border-coral-deep/30 bg-coral-deep/8 px-3.5 py-2.5 text-sm font-medium text-coral-deep dark:border-coral/30 dark:bg-coral/8 dark:text-coral" role="alert">
               {error}
             </p>
           )}

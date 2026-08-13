@@ -115,7 +115,7 @@ export function CandidateRoster() {
                     </td>
                     <td className="px-5 py-3.5">
                       {c.quizScore != null ? (
-                        <span className={cn('font-bold tabular-nums', c.quizPassed ? 'text-mint' : 'text-coral')}>
+                        <span className={cn('font-bold tabular-nums', c.quizPassed ? 'text-mint-deep dark:text-mint' : 'text-coral-deep dark:text-coral')}>
                           {c.quizScore}%
                         </span>
                       ) : (
@@ -133,10 +133,10 @@ export function CandidateRoster() {
                     <td className="px-5 py-3.5">
                       <span className={cn(
                         'rounded-bubble px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider',
-                        c.status === 'active' && 'bg-mint/10 text-mint',
+                        c.status === 'active' && 'bg-mint-deep/10 text-mint-deep dark:bg-mint/10 dark:text-mint',
                         c.status === 'pending' && 'bg-ink/5 dark:bg-paper/5 text-ink/50 dark:text-paper/50',
-                        c.status === 'retake' && 'bg-coral/10 text-coral',
-                        c.step >= 5 && 'bg-neon/15 text-neon',
+                        c.status === 'retake' && 'bg-coral-deep/10 text-coral-deep dark:bg-coral/10 dark:text-coral',
+                        c.step >= 5 && 'bg-neon-deep/15 text-neon-deep dark:bg-neon/15 dark:text-neon',
                       )}>
                         {c.step >= 5 ? 'graduated' : c.status}
                       </span>
@@ -152,7 +152,7 @@ export function CandidateRoster() {
                         </button>
                         <button
                           onClick={() => { removeCandidate(c.id); push(`${c.name} removed`, 'error') }}
-                          className="grid h-8 w-8 place-items-center rounded-lg border border-coral/20 text-coral transition hover:bg-coral/10"
+                          className="grid h-8 w-8 place-items-center rounded-lg border border-coral-deep/20 text-coral-deep transition hover:bg-coral-deep/10 dark:border-coral/20 dark:text-coral dark:hover:bg-coral/10"
                           aria-label="Delete candidate"
                         >
                           <Trash2 size={13} />

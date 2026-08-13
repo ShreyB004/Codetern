@@ -55,18 +55,18 @@ export function ResumeStep({ onComplete }) {
   return (
     <StepShell step={2} onBack={() => {}}>
       <div className="mb-8 flex flex-wrap items-center gap-5 rounded-2xl border border-ink/10 bg-paper/60 p-5 dark:border-paper/10 dark:bg-ink">
-        <span className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-cyan-snap to-violet-deep text-lg font-black text-ink">
+        <span className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl text-lg font-black text-white" style={{ background: 'linear-gradient(rgba(11,14,26,0.45), rgba(11,14,26,0.45)), linear-gradient(135deg, var(--color-cyan-snap), var(--color-violet-deep))' }}>
           {initials}
         </span>
         <div className="min-w-0 flex-1">
           <div className="flex items-center justify-between gap-3">
             <p className="text-sm font-bold text-ink dark:text-paper">Profile completeness</p>
-            <p className="font-display text-sm font-extrabold text-cyan-snap">{completePct}</p>
+            <p className="font-display text-sm font-extrabold text-cyan-deep dark:text-cyan-snap">{completePct}</p>
           </div>
           <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-ink/8 dark:bg-paper/10">
             <div className="h-full rounded-full bg-gradient-to-r from-cyan-snap via-mint to-neon transition-all duration-700" style={{ width: completePct }} />
           </div>
-          <p className="mt-1.5 text-xs text-ink/45 dark:text-paper/45">
+          <p className="mt-1.5 text-xs text-ink/60 dark:text-paper/45">
             {pct >= 100 ? 'Profile complete — employers can verify you instantly.' : 'Name, email & domain are required; the rest boosts your candidacy.'}
           </p>
         </div>
@@ -99,19 +99,19 @@ export function ResumeStep({ onComplete }) {
             onDrop={(e) => { e.preventDefault(); setDrag(false); onFile(e.dataTransfer.files) }}
             className={cn(
               'flex flex-1 flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed px-5 py-8 text-center transition-colors',
-              drag ? 'border-cyan-snap/70 bg-cyan-snap/8' : 'border-ink/15 bg-paper/60 dark:border-paper/15 dark:bg-ink',
+              drag ? 'border-cyan-deep/70 bg-cyan-deep/8 dark:border-cyan-snap/70 dark:bg-cyan-snap/8' : 'border-ink/15 bg-paper/60 dark:border-paper/15 dark:bg-ink',
             )}
           >
             {form.resumeName ? (
               <>
-                <span className="grid h-11 w-11 place-items-center rounded-2xl bg-mint/15 text-mint">
+                <span className="grid h-11 w-11 place-items-center rounded-2xl bg-mint-deep/15 text-mint-deep dark:bg-mint/15 dark:text-mint">
                   <FileText size={20} />
                 </span>
                 <div className="min-w-0">
                   <p className="truncate text-sm font-bold text-ink dark:text-paper">{form.resumeName}</p>
-                  <p className="text-xs text-mint">Attached · ready to submit</p>
+                  <p className="text-xs text-mint-deep dark:text-mint">Attached · ready to submit</p>
                 </div>
-                <button type="button" onClick={() => setForm((f) => ({ ...f, resumeName: '' }))} className="flex items-center gap-1.5 rounded-full border border-coral/25 px-4 py-1.5 text-xs font-semibold text-coral transition hover:bg-coral/10">
+                <button type="button" onClick={() => setForm((f) => ({ ...f, resumeName: '' }))} className="flex items-center gap-1.5 rounded-full border border-coral-deep/25 px-4 py-1.5 text-xs font-semibold text-coral-deep transition hover:bg-coral-deep/10 dark:border-coral/25 dark:text-coral dark:hover:bg-coral/10">
                   <Trash2 size={12} /> Remove
                 </button>
               </>
@@ -132,13 +132,13 @@ export function ResumeStep({ onComplete }) {
         </div>
 
         <div className="flex flex-col gap-3 lg:col-span-2 lg:flex-row lg:items-center lg:justify-between lg:border-t lg:border-ink/8 lg:pt-5 dark:lg:border-paper/10">
-          <p className="flex items-center gap-2 text-xs text-ink/45 dark:text-paper/45">
-            <BadgeCheck size={14} className="text-mint" />
+          <p className="flex items-center gap-2 text-xs text-ink/60 dark:text-paper/45">
+            <BadgeCheck size={14} className="text-mint-deep dark:text-mint" />
             A complete profile is our minimum bar — employers verify these fields.
           </p>
           <div className="flex items-center gap-3">
             {form.linkedin && (
-              <span className="flex items-center gap-1.5 text-xs font-semibold text-cyan-snap">
+              <span className="flex items-center gap-1.5 text-xs font-semibold text-cyan-deep dark:text-cyan-snap">
                 <Linkedin size={14} /> Profile linked
               </span>
             )}

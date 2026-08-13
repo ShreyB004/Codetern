@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import { Image as ImageIcon, Pencil, Plus, Trash2, Upload } from 'lucide-react'
 import { useApp } from '../../context/AppContext.jsx'
 import { useToast } from '../../context/ToastContext.jsx'
+import { Modal } from '../ui/Modal.jsx'
 import { cn } from '../../lib/utils.js'
 
 const SLOTS = ['home-hero', 'home-realwork', 'cert-hero', 'about-hero', 'custom']
@@ -88,7 +89,7 @@ export function MediaManager() {
               <div className="min-w-0">
                 <p className="truncate text-sm font-semibold text-ink dark:text-paper">{m.name}</p>
                 <p className="text-[11px] text-ink/45 dark:text-paper/45">
-                  slot: <span className="font-semibold text-cyan-snap">{m.slot}</span> · {m.width}×{m.height}
+                  slot: <span className="font-semibold text-cyan-deep dark:text-cyan-snap">{m.slot}</span> · {m.width}×{m.height}
                 </p>
               </div>
               <span className="shrink-0 rounded-bubble bg-ink/5 dark:bg-paper/5 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-ink/50 dark:text-paper/50">
@@ -101,7 +102,7 @@ export function MediaManager() {
         {/* add tile */}
         <button
           onClick={() => setEditing('__new')}
-          className="grid min-h-[180px] place-items-center rounded-panel border border-dashed border-ink/20 dark:border-paper/20 text-ink/40 dark:text-paper/40 transition hover:border-cyan-snap/50 hover:text-cyan-snap"
+          className="grid min-h-[180px] place-items-center rounded-panel border border-dashed border-ink/20 dark:border-paper/20 text-ink/60 dark:text-paper/40 transition hover:border-cyan-deep/50 hover:text-cyan-deep dark:hover:border-cyan-snap/50 dark:hover:text-cyan-snap"
         >
           <span className="flex flex-col items-center gap-2">
             <Plus size={26} />
@@ -131,10 +132,8 @@ function EditModal({ asset, onClose, onSave }) {
   const [slot, setSlot] = useState(asset?.slot || SLOTS[0])
 
   return (
-    <div className="fixed inset-0 z-[110] grid place-items-center p-4">
-      <div className="absolute inset-0 bg-ink/60 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative w-full max-w-md rounded-panel bg-white p-6 shadow-float dark:bg-ink-soft dark:shadow-none">
-        <h3 className="font-display text-lg font-bold text-ink dark:text-paper">{asset ? 'Edit asset' : 'New asset slot'}</h3>
+    <Modal open onClose={onClose} size="sm" labelledBy="mm-edit-title" className="p-6">
+      <h3 id="mm-edit-title" className="font-display text-lg font-bold text-ink dark:text-paper">{asset ? 'Edit asset' : 'New asset slot'}</h3>
         <div className="mt-5 flex flex-col gap-4">
           <label className="block">
             <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-ink/50 dark:text-paper/50">Asset name</span>
@@ -153,7 +152,6 @@ function EditModal({ asset, onClose, onSave }) {
             Save
           </button>
         </div>
-      </div>
-    </div>
+    </Modal>
   )
 }

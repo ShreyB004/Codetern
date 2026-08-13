@@ -3,7 +3,6 @@ import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { ArrowRight, ChevronDown, LayoutDashboard, Menu, ShieldCheck, Sparkles, X, Zap } from 'lucide-react'
 import { cn } from '../../lib/utils.js'
 import { useAuth } from '../../context/AppContext.jsx'
-import { useTheme } from '../../context/ThemeContext.jsx'
 import { Button } from '../ui/Button.jsx'
 import { ThemeToggle } from '../ui/ThemeToggle.jsx'
 import { useLoginModal } from '../ui/LoginModal.jsx'
@@ -28,7 +27,7 @@ function NavUnderline({ active = false }) {
       aria-hidden
       className={cn(
         'absolute -bottom-1 left-0 h-[2px] w-full origin-left rounded-full bg-gradient-to-r from-cyan-snap via-mint to-violet-deep transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]',
-        active ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100',
+        active ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100 group-focus-visible:scale-x-100',
       )}
     />
   )
@@ -50,11 +49,12 @@ function DomainsDropdown({ open, onClose }) {
 
   return (
     <div
+      id="domains-dropdown"
       className={cn(
         'absolute left-1/2 top-full z-50 w-[560px] -translate-x-1/2 pt-3 transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)]',
         open ? 'pointer-events-auto translate-y-0 opacity-100' : 'pointer-events-none -translate-y-2 opacity-0',
       )}
-      role="menu"
+      inert={open ? undefined : ''}
     >
       <div className="overflow-hidden rounded-panel border border-ink/10 bg-white/95 shadow-float backdrop-blur-xl dark:border-paper/10 dark:bg-ink-soft/95">
         <div className="grid grid-cols-2 gap-1 p-3">
@@ -66,20 +66,25 @@ function DomainsDropdown({ open, onClose }) {
               <button
                 key={id}
                 onClick={() => go(`/domains?d=${id}`)}
-                role="menuitem"
                 className={cn(
-                  'group flex items-center gap-3 rounded-2xl px-3.5 py-3 text-left transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-0.5',
+                  'group flex items-center gap-3 rounded-2xl px-3.5 py-3 text-left transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-0.5 focus-ring',
                   'hover:bg-ink/5 dark:hover:bg-paper/5',
                   open ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0',
                 )}
                 style={{ transitionDelay: open ? `${120 + i * 55}ms` : '0ms' }}
               >
-                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl transition-transform duration-300 group-hover:scale-110" style={{ background: color.bg, color: color.fg }}>
+                <span
+                  className={cn(
+                    'grid h-10 w-10 shrink-0 place-items-center rounded-xl transition-transform duration-300 group-hover:scale-110',
+                    'text-ink/80 dark:text-paper',
+                  )}
+                  style={{ background: color.bg }}
+                >
                   <DomainIcon name={p.icon} size={18} />
                 </span>
                 <span className="min-w-0">
                   <span className="block truncate text-sm font-semibold text-ink dark:text-paper">{p.title}</span>
-                  <span className="block truncate text-[11px] text-ink/45 dark:text-paper/45">{p.sub}</span>
+                  <span className="block truncate text-[11px] text-ink/60 dark:text-paper/60">{p.sub}</span>
                 </span>
               </button>
             )
@@ -89,15 +94,14 @@ function DomainsDropdown({ open, onClose }) {
         <div className="flex items-center justify-between gap-3 border-t border-ink/8 bg-ink/2 px-5 py-3 dark:border-paper/8 dark:bg-paper/5">
           <button
             onClick={() => go('/domains')}
-            role="menuitem"
-            className="group inline-flex items-center gap-1.5 text-sm font-semibold text-cyan-snap transition hover:gap-2.5"
+            className="group inline-flex items-center gap-1.5 rounded-full text-sm font-semibold text-cyan-deep focus-ring transition-colors hover:text-cyan-deep/80 dark:text-cyan-snap dark:hover:text-cyan-snap/80"
           >
-            All 14 tracks <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
+            All 14 tracks
+            <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
           </button>
           <button
             onClick={goChallenge}
-            role="menuitem"
-            className="inline-flex items-center gap-1.5 rounded-full bg-neon px-4 py-1.5 text-xs font-bold text-ink transition hover:bg-neon/90 dark:text-paper"
+            className="inline-flex items-center gap-1.5 rounded-full bg-neon px-4 py-1.5 text-xs font-bold text-ink transition hover:bg-neon/90 focus-ring-dark"
           >
             <Sparkles size={12} /> Start 5-step challenge
           </button>
@@ -116,7 +120,6 @@ export function Navbar() {
   const root = useRef(null)
   const lastY = useRef(0)
   const { isAuthenticated, isAdmin } = useAuth()
-  const { isDark } = useTheme()
   const navigate = useNavigate()
   const openLogin = useLoginModal()
   const { pathname } = useLocation()
@@ -198,10 +201,10 @@ export function Navbar() {
 
   const go = () => (isAuthenticated ? navigate('/dashboard') : openLogin('signup'))
 
-  // At the very top the nav floats over a dark hero, so it uses light text;
-  // once the glass pill appears (scrolled / drawer open / dark theme) it
-  // switches to theme-aware ink/paper text.
-  const solid = scrolled || open || isDark
+  // The pill is always frosted glass with theme-aware ink/paper text — the
+  // contrast never depends on what scrolls underneath. `scrolled` only lifts
+  // the pill (shadow + slightly stronger fill) once the page has moved.
+  const solid = scrolled || open
 
   return (
     <header
@@ -219,25 +222,19 @@ export function Navbar() {
       />
 
       <div className="mx-auto max-w-[1400px] px-3 sm:px-5">
-        {/* floating pill that morphs on scroll */}
+        {/* floating glass pill */}
         <div
           className={cn(
             'relative z-50 mt-3 flex h-14 items-center justify-between gap-4 rounded-full border px-4 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] sm:px-5 lg:mt-5 lg:h-16 lg:gap-6',
-            solid
-              ? 'border-ink/10 bg-white/80 shadow-card backdrop-blur-xl dark:border-paper/10 dark:bg-ink-soft/80'
-              : 'border-white/10 bg-white/5 backdrop-blur-md',
+            'border-ink/10 bg-white/75 backdrop-blur-xl dark:border-paper/10 dark:bg-ink-soft/75',
+            solid ? 'shadow-float bg-white/85 dark:bg-ink-soft/85' : 'shadow-card',
           )}
         >
-          <Link to="/" data-nav-enter className="group flex items-center gap-2.5">
-            <span
-              className={cn(
-                'relative grid h-9 w-9 place-items-center rounded-xl shadow-card transition-all duration-300 group-hover:rotate-12 group-hover:scale-105',
-                solid ? 'bg-ink text-cyan-snap dark:bg-ink-soft dark:text-neon' : 'bg-white/15 text-cyan-snap',
-              )}
-            >
+          <Link to="/" data-nav-enter className="group flex items-center gap-2.5 rounded-full focus-ring">
+            <span className="relative grid h-9 w-9 place-items-center rounded-xl bg-ink text-cyan-snap shadow-card transition-all duration-300 group-hover:rotate-12 group-hover:scale-105 dark:bg-ink-soft dark:text-neon">
               <Zap size={18} strokeWidth={2.4} />
             </span>
-            <span className={cn('font-display text-xl font-bold tracking-tight', solid ? 'text-ink dark:text-paper' : 'text-white')}>
+            <span className="font-display text-xl font-bold tracking-tight text-ink dark:text-paper">
               Code<span className="text-cyan-snap">tern</span>
             </span>
           </Link>
@@ -246,24 +243,18 @@ export function Navbar() {
           <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary">
             {LINKS.map((l) =>
               l.dropdown ? (
-                <div
-                  key={l.to}
-                  className="group relative"
-                  onMouseEnter={() => setDropdown(true)}
-                  onMouseLeave={() => setDropdown(false)}
-                >
+                <div key={l.to} className="group relative" onMouseEnter={() => setDropdown(true)} onMouseLeave={() => setDropdown(false)}>
                   <NavLink
                     to={l.to}
                     data-nav-enter
                     onClick={() => setDropdown((v) => !v)}
                     aria-haspopup="menu"
                     aria-expanded={dropdown}
-                    className={() =>
+                    aria-controls="domains-dropdown"
+                    className={({ isActive }) =>
                       cn(
-                        'group/link relative flex items-center gap-1 rounded-full px-4 py-2 text-sm font-medium transition-colors duration-300',
-                        solid
-                          ? 'text-ink/60 hover:text-ink dark:text-paper/60 dark:hover:text-paper'
-                          : 'text-white/75 hover:text-white',
+                        'group/link relative flex items-center gap-1 rounded-full px-4 py-2 text-sm font-medium transition-colors duration-300 focus-ring',
+                        isActive ? 'text-ink dark:text-paper' : 'text-ink/70 hover:text-ink dark:text-paper/70 dark:hover:text-paper',
                       )
                     }
                   >
@@ -282,12 +273,10 @@ export function Navbar() {
                   key={l.to}
                   to={l.to}
                   data-nav-enter
-                  className={() =>
+                  className={({ isActive }) =>
                     cn(
-                      'group relative rounded-full px-4 py-2 text-sm font-medium transition-colors duration-300',
-                      solid
-                        ? 'text-ink/60 hover:text-ink dark:text-paper/60 dark:hover:text-paper'
-                        : 'text-white/75 hover:text-white',
+                      'group relative rounded-full px-4 py-2 text-sm font-medium transition-colors duration-300 focus-ring',
+                      isActive ? 'text-ink dark:text-paper' : 'text-ink/70 hover:text-ink dark:text-paper/70 dark:hover:text-paper',
                     )
                   }
                 >
@@ -306,24 +295,12 @@ export function Navbar() {
           <div className="hidden items-center gap-2.5 lg:flex" data-nav-enter>
             <ThemeToggle />
             {isAuthenticated ? (
-              <Button
-                size="sm"
-                variant="ghost"
-                magnetic={false}
-                className={cn(!solid && 'border-white/25 text-white hover:bg-white/10 hover:border-white/40 dark:text-white')}
-                onClick={() => navigate(isAdmin ? '/admin' : '/dashboard')}
-              >
+              <Button size="sm" variant="ghost" magnetic={false} onClick={() => navigate(isAdmin ? '/admin' : '/dashboard')}>
                 {isAdmin ? <ShieldCheck size={15} /> : <LayoutDashboard size={15} />}
                 {isAdmin ? 'Admin' : 'Dashboard'}
               </Button>
             ) : (
-              <Button
-                size="sm"
-                variant="ghost"
-                magnetic={false}
-                className={cn(!solid && 'border-white/25 text-white hover:bg-white/10 hover:border-white/40 dark:text-white dark:bg-paper/5')}
-                onClick={() => openLogin('login')}
-              >
+              <Button size="sm" variant="ghost" magnetic={false} onClick={() => openLogin('login')}>
                 Sign in
               </Button>
             )}
@@ -336,14 +313,14 @@ export function Navbar() {
           <button
             data-nav-enter
             className={cn(
-              'relative grid h-10 w-10 place-items-center rounded-full border transition-colors duration-300 lg:hidden',
-              solid
-                ? 'border-ink/10 text-ink dark:border-paper/15 dark:text-paper'
-                : 'border-white/25 text-white',
+              'relative grid h-11 w-11 place-items-center rounded-full border transition-colors duration-300 focus-ring lg:hidden',
+              'border-ink/10 text-ink dark:border-paper/15 dark:text-paper',
+              solid ? 'bg-ink/5 dark:bg-paper/10' : '',
             )}
             onClick={() => setOpen((v) => !v)}
             aria-label={open ? 'Close menu' : 'Open menu'}
             aria-expanded={open}
+            aria-controls="mobile-drawer"
           >
             <span
               className={cn(
@@ -363,10 +340,12 @@ export function Navbar() {
 
       {/* mobile drawer */}
       <div
+        id="mobile-drawer"
         className={cn(
           'fixed inset-x-0 top-0 z-40 overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] lg:hidden',
           'border-b border-ink/8 bg-paper/95 backdrop-blur-xl dark:border-paper/10 dark:bg-ink/95',
         )}
+        inert={open ? undefined : ''}
         style={{
           paddingTop: open ? '5.5rem' : '0rem',
           height: open ? '100vh' : '0px',
@@ -386,21 +365,21 @@ export function Navbar() {
                 }}
                 className={({ isActive }) =>
                   cn(
-                    'group flex items-center justify-between rounded-2xl px-4 py-3.5 text-base font-semibold transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]',
+                    'group flex items-center justify-between rounded-2xl px-4 py-3.5 text-base font-semibold transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] focus-ring',
                     open ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0',
                     isActive
                       ? 'bg-ink/8 text-ink dark:bg-paper/10 dark:text-paper'
-                      : 'text-ink/70 hover:bg-ink/5 hover:text-ink dark:text-paper/70 dark:hover:bg-paper/5 dark:hover:text-paper',
+                      : 'text-ink/80 hover:bg-ink/5 hover:text-ink dark:text-paper/80 dark:hover:bg-paper/5 dark:hover:text-paper',
                   )
                 }
               >
                 <span className="flex items-center gap-3">
-                  <span className="grid h-7 w-7 place-items-center rounded-lg bg-cyan-snap/10 text-cyan-snap">
+                  <span className="grid h-7 w-7 place-items-center rounded-lg bg-cyan-snap/10 text-cyan-deep dark:bg-cyan-snap/10 dark:text-cyan-snap">
                     <Sparkles size={13} />
                   </span>
                   {l.label}
                 </span>
-                <ArrowRight size={16} className="text-ink/30 transition-transform duration-300 group-hover:translate-x-1 dark:text-paper/30" />
+                <ArrowRight size={16} className="text-ink/50 transition-transform duration-300 group-hover:translate-x-1 dark:text-paper/50" />
               </NavLink>
             ))}
           </nav>

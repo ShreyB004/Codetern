@@ -121,7 +121,7 @@ export function Journey3D() {
   return (
     <section className="relative overflow-hidden bg-ink py-24 text-white">
       <div className="grid-lines absolute inset-0 opacity-15" />
-      <StarfieldBackground count={90} speed={0.7} className="opacity-60" />
+      <StarfieldBackground count={90} speed={0.7} className="opacity-45" />
       <div className="cdt-blob pointer-events-none absolute left-[-10%] top-1/3 h-96 w-96 rounded-full bg-violet-deep/20 blur-[130px]" />
       <div className="cdt-blob pointer-events-none absolute right-[-10%] top-1/4 h-96 w-96 rounded-full bg-cyan-snap/15 blur-[130px]" style={{ animationDelay: '-8s' }} />
 
@@ -143,7 +143,7 @@ export function Journey3D() {
           <div className="mt-8 flex flex-wrap gap-3">
             {MILESTONES.map((m) => (
               <span key={m.step} className="flex items-center gap-1.5 rounded-bubble border border-white/12 bg-white/5 px-3.5 py-1.5 text-xs font-semibold text-white/75">
-                <span className="grid h-4 w-4 place-items-center rounded-full text-[9px] font-black text-ink dark:text-paper" style={{ background: m.color }}>
+                <span className="grid h-4 w-4 place-items-center rounded-full text-[9px] font-black text-ink" style={{ background: m.color }}>
                   {m.step[1]}
                 </span>
                 {m.title}
@@ -152,7 +152,7 @@ export function Journey3D() {
           </div>
           <button
             onClick={go}
-            className="group mt-9 inline-flex items-center gap-2 rounded-full bg-neon px-7 py-3.5 text-sm font-bold text-ink dark:text-paper shadow-float transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_24px_60px_-20px_rgba(180,255,57,0.5)]"
+            className="group mt-9 inline-flex items-center gap-2 rounded-full bg-neon px-7 py-3.5 text-sm font-bold text-ink shadow-float transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_24px_60px_-20px_rgba(180,255,57,0.5)] focus-ring-dark"
           >
             Start my journey
             <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />

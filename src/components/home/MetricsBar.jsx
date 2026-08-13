@@ -10,7 +10,7 @@ function Stat({ value, suffix = '', label }) {
         {v.toLocaleString('en-IN')}
         {suffix}
       </p>
-      <p className="mt-1 text-sm font-medium text-ink/50 dark:text-paper/50">{label}</p>
+      <p className="mt-1 text-sm font-medium text-ink/60 dark:text-paper/60">{label}</p>
     </div>
   )
 }

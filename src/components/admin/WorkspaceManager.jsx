@@ -1,8 +1,9 @@
 import { useMemo, useState } from 'react'
-import { BookOpen, CheckCircle2, ChevronDown, Save, Search, Settings2, X } from 'lucide-react'
+import { BookOpen, CheckCircle2, ChevronDown, Save, Search, Settings2, Trash2, X } from 'lucide-react'
 import { useApp } from '../../context/AppContext.jsx'
 import { useToast } from '../../context/ToastContext.jsx'
 import { getProgramme, DOMAIN_COLORS } from '../../data/programmes.js'
+import { Modal } from '../ui/Modal.jsx'
 import { cn } from '../../lib/utils.js'
 
 export function WorkspaceManager() {
@@ -62,13 +63,13 @@ export function WorkspaceManager() {
         </select>
         <button
           onClick={() => bulkDone(true)}
-          className="flex items-center gap-2 rounded-xl bg-mint/15 px-4 py-2.5 text-sm font-semibold text-mint transition hover:bg-mint/25"
+          className="flex items-center gap-2 rounded-xl bg-mint-deep/15 px-4 py-2.5 text-sm font-semibold text-mint-deep transition hover:bg-mint-deep/25 dark:bg-mint/15 dark:text-mint dark:hover:bg-mint/25"
         >
           <CheckCircle2 size={15} /> Complete ({selected.length})
         </button>
         <button
           onClick={() => bulkDone(false)}
-          className="flex items-center gap-2 rounded-xl bg-coral/10 px-4 py-2.5 text-sm font-semibold text-coral transition hover:bg-coral/20"
+          className="flex items-center gap-2 rounded-xl bg-coral-deep/10 px-4 py-2.5 text-sm font-semibold text-coral-deep transition hover:bg-coral-deep/20 dark:bg-coral/10 dark:text-coral dark:hover:bg-coral/20"
         >
           <X size={15} /> Reset ({selected.length})
         </button>
@@ -198,35 +199,35 @@ function WorkspaceEditor({ workspace, onChange }) {
                     className="cdt-input w-full rounded-lg px-3 py-1.5 text-xs outline-none focus:border-cyan-snap/60"
                   />
                 </div>
-                <button onClick={() => removeTask(i)} className="mt-1 shrink-0 text-coral/60 transition hover:text-coral" aria-label="Delete task">
-                  <X size={15} />
+                <button onClick={() => removeTask(i)} className="mt-1 shrink-0 text-coral-deep/60 transition hover:text-coral-deep dark:text-coral/60 dark:hover:text-coral" aria-label="Delete task">
+                  <Trash2 size={13} />
                 </button>
               </div>
             ))}
           </div>
-          <button onClick={addTask} className="mt-3 rounded-full border border-dashed border-ink/25 px-4 py-2 text-xs font-semibold text-ink/50 transition hover:border-cyan-snap/50 hover:text-cyan-snap dark:border-paper/25 dark:text-paper/50">
+          <button onClick={addTask} className="mt-3 rounded-full border border-dashed border-ink/25 px-4 py-2 text-xs font-semibold text-ink/60 transition hover:border-cyan-deep/50 hover:text-cyan-deep dark:border-paper/25 dark:text-paper/50 dark:hover:border-cyan-snap/50 dark:hover:text-cyan-snap">
             + Add task
           </button>
         </div>
 
         <div>
-          <p className="mb-3 text-[11px] font-bold uppercase tracking-widest text-ink/40 dark:text-paper/40">Resources</p>
+          <p className="mb-3 text-[11px] font-bold uppercase tracking-widest text-ink/60 dark:text-paper/40">Resources</p>
           <div className="grid gap-2">
             {ws.resources.map((r, i) => (
               <div key={i} className="flex items-center gap-2 rounded-xl border border-ink/10 bg-white p-2.5 dark:border-paper/10 dark:bg-ink-soft">
-                <BookOpen size={14} className="shrink-0 text-violet-deep" />
+                <BookOpen size={14} className="shrink-0 text-violet-ink dark:text-violet-deep" />
                 <input
                   value={r}
                   onChange={(e) => patchResource(i, e.target.value)}
                   className="cdt-input min-w-0 flex-1 rounded-lg px-3 py-1.5 text-xs outline-none focus:border-cyan-snap/60"
                 />
-                <button onClick={() => removeResource(i)} className="shrink-0 text-coral/60 transition hover:text-coral" aria-label="Delete resource">
+                <button onClick={() => removeResource(i)} className="shrink-0 text-coral-deep/60 transition hover:text-coral-deep dark:text-coral/60 dark:hover:text-coral" aria-label="Delete resource">
                   <X size={14} />
                 </button>
               </div>
             ))}
           </div>
-          <button onClick={addResource} className="mt-3 rounded-full border border-dashed border-ink/25 px-4 py-2 text-xs font-semibold text-ink/50 transition hover:border-cyan-snap/50 hover:text-cyan-snap dark:border-paper/25 dark:text-paper/50">
+          <button onClick={addResource} className="mt-3 rounded-full border border-dashed border-ink/25 px-4 py-2 text-xs font-semibold text-ink/60 transition hover:border-cyan-deep/50 hover:text-cyan-deep dark:border-paper/25 dark:text-paper/50 dark:hover:border-cyan-snap/50 dark:hover:text-cyan-snap">
             + Add resource
           </button>
         </div>
@@ -262,20 +263,18 @@ function DefaultEditor({ domain, onClose }) {
   }
 
   return (
-    <div className="fixed inset-0 z-[110] grid place-items-center p-4">
-      <div className="absolute inset-0 bg-ink/60 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative max-h-[92vh] w-full max-w-3xl overflow-y-auto rounded-panel bg-white p-7 shadow-float dark:bg-ink-soft">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <h3 className="flex items-center gap-2 font-display text-lg font-bold text-ink dark:text-paper">
-              <Settings2 size={18} className="text-cyan-snap" /> Domain default workspace
-            </h3>
-            <p className="mt-1 text-sm text-ink/50 dark:text-paper/50">Applies to candidates who haven't customized their own yet.</p>
-          </div>
-          <button onClick={onClose} className="grid h-8 w-8 place-items-center rounded-full border border-ink/10 text-ink/60 dark:border-paper/15 dark:text-paper/60" aria-label="Close">
-            <X size={15} />
-          </button>
+    <Modal open onClose={onClose} size="lg" labelledBy="wsm-editor-title" className="p-7">
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h3 id="wsm-editor-title" className="flex items-center gap-2 font-display text-lg font-bold text-ink dark:text-paper">
+            <Settings2 size={18} className="text-cyan-deep dark:text-cyan-snap" /> Domain default workspace
+          </h3>
+          <p className="mt-1 text-sm text-ink/60 dark:text-paper/50">Applies to candidates who haven't customized their own yet.</p>
         </div>
+        <button onClick={onClose} className="grid h-8 w-8 place-items-center rounded-full border border-ink/10 text-ink/60 dark:border-paper/15 dark:text-paper/60" aria-label="Close">
+          <X size={15} />
+        </button>
+      </div>
 
         <select value={target} onChange={(e) => switchTarget(e.target.value)} className="cdt-input mt-5 w-full rounded-xl px-4 py-2.5 text-sm outline-none">
           {programmes.map((p) => <option key={p.id} value={p.id}>{p.title}</option>)}
@@ -283,7 +282,7 @@ function DefaultEditor({ domain, onClose }) {
 
         <div className="mt-5 grid gap-6 lg:grid-cols-[1.5fr_1fr]">
           <div>
-            <p className="mb-3 text-[11px] font-bold uppercase tracking-widest text-ink/40 dark:text-paper/40">Tasks</p>
+<p className="mb-3 text-[11px] font-bold uppercase tracking-widest text-ink/60 dark:text-paper/40">Tasks</p>
             <div className="grid gap-2.5">
               {draft.tasks.map((t, i) => (
                 <div key={i} className="flex items-start gap-3 rounded-xl border border-ink/10 bg-white p-3 dark:border-paper/10 dark:bg-ink-soft">
@@ -317,18 +316,18 @@ function DefaultEditor({ domain, onClose }) {
             </div>
             <button
               onClick={() => setDraft((d) => ({ ...d, tasks: [...d.tasks, { title: 'New task', done: false, tips: 'Add guidance' }] }))}
-              className="mt-3 rounded-full border border-dashed border-ink/25 px-4 py-2 text-xs font-semibold text-ink/50 transition hover:border-cyan-snap/50 hover:text-cyan-snap dark:border-paper/25 dark:text-paper/50"
+              className="mt-3 rounded-full border border-dashed border-ink/25 px-4 py-2 text-xs font-semibold text-ink/60 transition hover:border-cyan-deep/50 hover:text-cyan-deep dark:border-paper/25 dark:text-paper/50 dark:hover:border-cyan-snap/50 dark:hover:text-cyan-snap"
             >
               + Add task
             </button>
           </div>
 
           <div>
-            <p className="mb-3 text-[11px] font-bold uppercase tracking-widest text-ink/40 dark:text-paper/40">Resources</p>
+            <p className="mb-3 text-[11px] font-bold uppercase tracking-widest text-ink/60 dark:text-paper/40">Resources</p>
             <div className="grid gap-2">
               {draft.resources.map((r, i) => (
                 <div key={i} className="flex items-center gap-2 rounded-xl border border-ink/10 bg-white p-2.5 dark:border-paper/10 dark:bg-ink-soft">
-                  <BookOpen size={14} className="shrink-0 text-violet-deep" />
+                  <BookOpen size={14} className="shrink-0 text-violet-ink dark:text-violet-deep" />
                   <input
                     value={r}
                     onChange={(e) => patchResource(i, e.target.value)}
@@ -339,7 +338,7 @@ function DefaultEditor({ domain, onClose }) {
             </div>
             <button
               onClick={() => setDraft((d) => ({ ...d, resources: [...d.resources, 'New resource link'] }))}
-              className="mt-3 rounded-full border border-dashed border-ink/25 px-4 py-2 text-xs font-semibold text-ink/50 transition hover:border-cyan-snap/50 hover:text-cyan-snap dark:border-paper/25 dark:text-paper/50"
+              className="mt-3 rounded-full border border-dashed border-ink/25 px-4 py-2 text-xs font-semibold text-ink/60 transition hover:border-cyan-deep/50 hover:text-cyan-deep dark:border-paper/25 dark:text-paper/50 dark:hover:border-cyan-snap/50 dark:hover:text-cyan-snap"
             >
               + Add resource
             </button>
@@ -354,7 +353,6 @@ function DefaultEditor({ domain, onClose }) {
             <Save size={15} /> Save defaults
           </button>
         </div>
-      </div>
-    </div>
+    </Modal>
   )
 }

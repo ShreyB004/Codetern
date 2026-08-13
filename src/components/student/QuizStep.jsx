@@ -44,7 +44,7 @@ export function QuizStep({ onComplete }) {
   if (!bank) {
     return (
       <StepShell step={4}>
-        <p className="rounded-2xl border border-coral/30 bg-coral/8 px-4 py-3 text-sm text-coral">
+        <p className="rounded-2xl border border-coral-deep/30 bg-coral-deep/8 px-4 py-3 text-sm text-coral-deep dark:border-coral/30 dark:bg-coral/8 dark:text-coral">
           No assessment questions for this domain yet — pick another track in step 2, or ask the admin to add a question bank.
         </p>
       </StepShell>
@@ -106,7 +106,7 @@ export function QuizStep({ onComplete }) {
           </p>
           <div className="mt-7 flex flex-wrap justify-center gap-2.5">
             {['MCQ', 'GSAP countdown', 'Instant feedback'].map((t) => (
-              <span key={t} className="rounded-bubble bg-cyan-snap/10 px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider text-cyan-snap">
+              <span key={t} className="rounded-bubble bg-cyan-deep/10 px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider text-cyan-deep dark:bg-cyan-snap/10 dark:text-cyan-snap">
                 {t}
               </span>
             ))}
@@ -126,10 +126,10 @@ export function QuizStep({ onComplete }) {
     return (
       <StepShell step={4}>
         <div className="flex flex-col items-center py-4 text-center">
-          <span className={cn('grid h-20 w-20 place-items-center rounded-full', passed ? 'bg-mint/15 text-mint' : 'bg-coral/15 text-coral')}>
+          <span className={cn('grid h-20 w-20 place-items-center rounded-full', passed ? 'bg-mint-deep/15 text-mint-deep dark:bg-mint/15 dark:text-mint' : 'bg-coral-deep/15 text-coral-deep dark:bg-coral/15 dark:text-coral')}>
             {passed ? <Trophy size={36} /> : <AlertTriangle size={36} />}
           </span>
-          <h3 className={cn('mt-5 font-display text-3xl font-bold dark:text-paper', passed ? 'text-ink' : 'text-coral')}>
+          <h3 className={cn('mt-5 font-display text-3xl font-bold dark:text-paper', passed ? 'text-ink' : 'text-coral-deep dark:text-coral')}>
             {passed ? 'You passed!' : 'So close — retake it'}
           </h3>
           <p className="mt-2 text-sm text-ink/55 dark:text-paper/55">
@@ -165,7 +165,7 @@ export function QuizStep({ onComplete }) {
     return (
       <StepShell step={4}>
         <div className="flex flex-col items-center py-4 text-center">
-          <span className="grid h-16 w-16 place-items-center rounded-full bg-mint/15 text-mint">
+          <span className="grid h-16 w-16 place-items-center rounded-full bg-mint-deep/15 text-mint-deep dark:bg-mint/15 dark:text-mint">
             <Trophy size={30} />
           </span>
           <h3 className="mt-4 font-display text-2xl font-bold text-ink dark:text-paper">Quiz complete — {candidate.quiz.score}%</h3>
@@ -222,9 +222,9 @@ export function QuizStep({ onComplete }) {
                 disabled={selected !== null}
                 className={cn(
                   'flex items-center justify-between gap-3 rounded-2xl border px-5 py-3.5 text-left text-sm font-medium transition-all duration-300',
-                  isCorrect && 'border-mint/60 bg-mint/10 text-ink',
-                  isWrong && 'border-coral/60 bg-coral/10 text-coral',
-                  selected === null && 'border-ink/12 bg-white text-ink/80 hover:border-cyan-snap/50 hover:bg-cyan-snap/5 dark:border-paper/15 dark:bg-ink-soft dark:text-paper/80',
+                  isCorrect && 'border-mint-deep/60 bg-mint-deep/10 text-ink dark:border-mint/60 dark:bg-mint/10',
+                  isWrong && 'border-coral-deep/60 bg-coral-deep/10 text-coral-deep dark:border-coral/60 dark:bg-coral/10 dark:text-coral',
+                  selected === null && 'border-ink/12 bg-white text-ink/80 hover:border-cyan-deep/50 hover:bg-cyan-deep/5 dark:border-paper/15 dark:bg-ink-soft dark:text-paper/80 dark:hover:border-cyan-snap/50 dark:hover:bg-cyan-snap/5',
                   selected !== null && !isCorrect && !isWrong && 'border-ink/8 bg-white text-ink/40 dark:border-paper/10 dark:bg-ink-soft dark:text-paper/40',
                 )}
               >
@@ -234,8 +234,8 @@ export function QuizStep({ onComplete }) {
                   </span>
                   {opt}
                 </span>
-                {isCorrect && <span className="text-xs font-bold text-mint">✓</span>}
-                {isWrong && <span className="text-xs font-bold text-coral">✗</span>}
+                {isCorrect && <span className="text-xs font-bold text-mint-deep dark:text-mint">✓</span>}
+                {isWrong && <span className="text-xs font-bold text-coral-deep dark:text-coral">✗</span>}
               </button>
             )
           })}
@@ -246,7 +246,7 @@ export function QuizStep({ onComplete }) {
             <p
               className={cn(
                 'text-sm font-semibold',
-                selected === q.answer ? 'text-mint' : 'text-coral',
+                selected === q.answer ? 'text-mint-deep dark:text-mint' : 'text-coral-deep dark:text-coral',
               )}
             >
               {selected === q.answer ? 'Correct — one step closer.' : `Not quite. ${q.why || 'Check the fundamentals and move on.'}`}

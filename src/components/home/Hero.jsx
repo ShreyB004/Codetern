@@ -82,7 +82,7 @@ export function Hero() {
               </span>
               <div>
                 <p className="text-sm font-bold">AI Screening Engine</p>
-                <p className="text-xs text-white/45">quiz → mock interview → seat</p>
+                <p className="text-xs text-white/55">quiz → mock interview → seat</p>
               </div>
             </div>
             <div className="mt-5 space-y-2.5">
@@ -94,7 +94,7 @@ export function Hero() {
                 <div key={k} className="flex items-center justify-between rounded-xl border border-white/8 bg-white/[0.04] px-3.5 py-2.5">
                   <span className="text-xs text-white/65">{k}</span>
                   <span className="text-xs font-bold text-neon">{v}</span>
-                  <span className="ml-1 text-[10px] text-white/25">{i + 1}/3</span>
+                  <span className="ml-1 text-[10px] text-white/55">{i + 1}/3</span>
                 </div>
               ))}
             </div>
@@ -103,7 +103,7 @@ export function Hero() {
           {/* floating small cards */}
           <FloatingCard className="left-0 top-16" amplitude={14} duration={4}>
             <div className="w-52 rounded-2xl border border-white/10 bg-white/[0.05] p-4 shadow-float backdrop-blur-md">
-              <p className="text-[11px] font-bold uppercase tracking-widest text-white/40">MERN · 3mo</p>
+              <p className="text-[11px] font-bold uppercase tracking-widest text-white/55">MERN · 3mo</p>
               <div className="mt-2 flex items-center justify-between">
                 <SeatCounter remaining={7} total={24} duration={3} compact onDark />
               </div>
@@ -114,7 +114,7 @@ export function Hero() {
             <div className="w-48 rounded-2xl border border-neon/30 bg-ink-soft p-4 shadow-float">
               <p className="text-[11px] font-bold uppercase tracking-widest text-neon">Seat countdown</p>
               <p className="mt-2 font-display text-3xl font-extrabold text-white tabular-nums">12</p>
-              <p className="text-[11px] text-white/40">AI & LLM · 6mo</p>
+              <p className="text-[11px] text-white/55">AI & LLM · 6mo</p>
             </div>
           </FloatingCard>
 
@@ -125,7 +125,7 @@ export function Hero() {
               </span>
               <div>
                 <p className="text-xs font-bold text-white">Cert verified</p>
-                <p className="text-[10px] text-white/40">by 58 companies</p>
+                <p className="text-[10px] text-white/55">by 58 companies</p>
               </div>
             </div>
           </FloatingCard>

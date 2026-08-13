@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Award, BrainCircuit, CalendarCheck, LayoutDashboard, LogOut, Rocket, Video, Wallet, Zap } from 'lucide-react'
 import { JourneyRail, STEPS } from '../components/student/JourneyTracker.jsx'
 import { ResumeStep } from '../components/student/ResumeStep.jsx'
@@ -36,17 +36,17 @@ export default function DashboardPage() {
       {/* top bar */}
       <header className="sticky top-0 z-40 border-b border-ink/8 bg-paper/80 backdrop-blur-md dark:border-white/10 dark:bg-ink/80">
         <div className="mx-auto flex h-16 max-w-[1400px] items-center justify-between gap-3 px-5 lg:px-8">
-          <div className="flex items-center gap-2.5" onClick={() => navigate('/')}>
+          <Link to="/" aria-label="Codetern home" className="focus-ring flex items-center gap-2.5 rounded-xl">
             <span className="grid h-9 w-9 place-items-center rounded-xl bg-ink text-cyan-snap dark:bg-paper dark:text-ink">
               <Zap size={18} strokeWidth={2.4} />
             </span>
             <div>
-              <p className="font-display text-base font-bold leading-none text-ink dark:text-paper">Code<span className="text-cyan-snap">tern</span></p>
-              <p className="mt-0.5 text-[10px] font-bold uppercase tracking-[0.2em] text-cyan-snap">Internship dashboard</p>
+              <p className="font-display text-base font-bold leading-none text-ink dark:text-paper">Code<span className="text-cyan-deep dark:text-cyan-snap">tern</span></p>
+              <p className="mt-0.5 text-[10px] font-bold uppercase tracking-[0.2em] text-cyan-deep dark:text-cyan-snap">Internship dashboard</p>
             </div>
-          </div>
+          </Link>
           <div className="flex items-center gap-2">
-            <span className="hidden items-center gap-1.5 rounded-bubble border border-violet-deep/30 bg-violet-deep/10 px-3.5 py-1.5 text-xs font-bold text-violet-deep sm:flex">
+            <span className="hidden items-center gap-1.5 rounded-bubble border border-violet-ink/30 bg-violet-ink/10 px-3.5 py-1.5 text-xs font-bold text-violet-ink sm:flex dark:border-violet-deep/30 dark:bg-violet-deep/10 dark:text-violet-deep">
               <Wallet size={13} /> ₹{wallet} wallet
             </span>
             <ThemeToggle />
@@ -85,13 +85,13 @@ export default function DashboardPage() {
           {/* header */}
           <div className="flex flex-wrap items-center justify-between gap-4" data-enter>
             <div>
-              <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-cyan-snap">Candidate analytics</p>
+              <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-cyan-deep dark:text-cyan-snap">Candidate analytics</p>
               <h1 className="mt-1 font-display text-3xl font-bold tracking-tight text-ink dark:text-paper sm:text-4xl">
                 Welcome back, {firstName}
               </h1>
             </div>
             {programme && (
-              <span className="flex items-center gap-2 rounded-bubble px-4 py-2 text-xs font-bold" style={{ background: color.bg, color: color.fg }}>
+              <span className="flex items-center gap-2 rounded-bubble px-4 py-2 text-xs font-bold" style={{ background: color.bg, color: 'var(--color-ink)' }}>
                 <Rocket size={13} /> {programme.title}
               </span>
             )}
@@ -107,7 +107,7 @@ export default function DashboardPage() {
           {/* referral */}
           <div>
             <div className="mb-4 flex items-center gap-2" data-enter>
-              <span className="grid h-8 w-8 place-items-center rounded-xl bg-violet-deep/10 text-violet-deep">
+              <span className="grid h-8 w-8 place-items-center rounded-xl bg-violet-ink/10 text-violet-ink dark:bg-violet-deep/10 dark:text-violet-deep">
                 <Wallet size={15} />
               </span>
               <h2 className="font-display text-xl font-bold text-ink dark:text-paper">Refer & earn cash</h2>
@@ -143,10 +143,10 @@ function AnalyticsGrid() {
   }, [candidate])
 
   const kpis = [
-    { label: 'Journey progress', value: journeyPct, suffix: '%', icon: CalendarCheck, tint: 'text-cyan-snap bg-cyan-snap/10' },
-    { label: 'Assessment score', value: quizPct, suffix: quizPct !== null ? '%' : '', icon: BrainCircuit, tint: 'text-neon bg-neon/10', empty: quizPct === null },
-    { label: 'Workspace tasks', value: taskPct, suffix: taskPct !== null ? '%' : '', icon: Rocket, tint: 'text-mint bg-mint/10', empty: taskPct === null },
-    { label: 'Interview score', value: interviewPct, suffix: interviewPct !== null ? '%' : '', icon: Video, tint: 'text-violet-deep bg-violet-deep/10', empty: interviewPct === null },
+    { label: 'Journey progress', value: journeyPct, suffix: '%', icon: CalendarCheck, tint: 'text-cyan-deep bg-cyan-deep/10 dark:text-cyan-snap dark:bg-cyan-snap/10' },
+    { label: 'Assessment score', value: quizPct, suffix: quizPct !== null ? '%' : '', icon: BrainCircuit, tint: 'text-neon-deep bg-neon-deep/10 dark:text-neon dark:bg-neon/10', empty: quizPct === null },
+    { label: 'Workspace tasks', value: taskPct, suffix: taskPct !== null ? '%' : '', icon: Rocket, tint: 'text-mint-deep bg-mint-deep/10 dark:text-mint dark:bg-mint/10', empty: taskPct === null },
+    { label: 'Interview score', value: interviewPct, suffix: interviewPct !== null ? '%' : '', icon: Video, tint: 'text-violet-ink bg-violet-ink/10 dark:text-violet-deep dark:bg-violet-deep/10', empty: interviewPct === null },
   ]
 
   return (
@@ -183,7 +183,7 @@ function AnalyticsGrid() {
         <div className="rounded-2xl border border-ink/8 bg-white p-5 shadow-card dark:border-paper/10 dark:bg-ink-soft dark:shadow-none">
           <div className="mb-4 flex items-center justify-between">
             <p className="text-sm font-bold text-ink dark:text-paper">Weekly activity</p>
-            <span className="rounded-bubble bg-cyan-snap/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-cyan-snap">Effort score</span>
+            <span className="rounded-bubble bg-cyan-deep/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-cyan-deep dark:bg-cyan-snap/10 dark:text-cyan-snap">Effort score</span>
           </div>
           <div className="flex h-24 items-end justify-between gap-2">
             {week.map((w, i) => (
@@ -197,7 +197,7 @@ function AnalyticsGrid() {
                     style={{ height: `${w.base}%` }}
                   />
                 </div>
-                <span className="text-[10px] font-bold uppercase text-ink/40 dark:text-paper/40">{w.d}</span>
+                <span className="text-[10px] font-bold uppercase text-ink/60 dark:text-paper/40">{w.d}</span>
               </div>
             ))}
           </div>
@@ -237,7 +237,7 @@ function ProgressRing({ value, size = 150, stroke = 12 }) {
       <div className="absolute inset-0 grid place-items-center">
         <div className="text-center">
           <p className="font-display text-3xl font-extrabold text-ink dark:text-paper">{value}%</p>
-          <Award size={18} className="mx-auto mt-1 text-cyan-snap" />
+          <Award size={18} className="mx-auto mt-1 text-cyan-deep dark:text-cyan-snap" />
         </div>
       </div>
     </div>

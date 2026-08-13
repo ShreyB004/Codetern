@@ -25,19 +25,19 @@ export function Testimonials() {
           {TESTIMONIALS.map((t, i) => (
             <div key={t.name} data-reveal style={{ transitionDelay: `${i * 70}ms` }}>
               <TiltCard max={6}>
-                <figure className="relative flex h-full flex-col rounded-panel border border-white/10 bg-white/[0.04] p-6 shadow-card backdrop-blur-sm">
+                <figure className="relative flex h-full flex-col rounded-panel border border-white/10 bg-white/[0.07] p-6 shadow-card backdrop-blur-md">
                   <Quote size={26} className="text-neon/70" />
                   <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-white/75">“{t.quote}”</blockquote>
                   <figcaption className="mt-6 flex items-center gap-3 border-t border-white/10 pt-5">
                     <span
-                      className="grid h-11 w-11 place-items-center rounded-full text-xs font-bold text-ink dark:text-paper"
-                      style={{ background: t.gradient }}
+                      className="grid h-11 w-11 place-items-center rounded-full text-xs font-bold text-white"
+                      style={{ background: `linear-gradient(rgba(11,14,26,0.45), rgba(11,14,26,0.45)), ${t.gradient}` }}
                     >
                       {t.avatar}
                     </span>
                     <div>
                       <p className="text-sm font-bold">{t.name}</p>
-                      <p className="text-xs text-white/45">{t.role}</p>
+                      <p className="text-xs text-white/55">{t.role}</p>
                     </div>
                   </figcaption>
                 </figure>

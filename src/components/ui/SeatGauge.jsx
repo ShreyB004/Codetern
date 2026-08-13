@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { gsap } from '../../lib/gsap.js'
+import { cn } from '../../lib/utils.js'
 
 /**
  * Radial seat gauge. remaining/total drives a sweep animation (GSAP).
@@ -38,10 +39,10 @@ export function SeatGauge({ remaining, total, size = 96, urgent = false }) {
     }
   }, [total, remaining, circumference])
 
-  const stroke = urgent ? '#ff5c7a' : pct > 0.34 ? '#22d3ee' : '#b4ff39'
+  const tone = urgent ? 'cdt-gauge-coral' : pct > 0.34 ? 'cdt-gauge-cyan' : 'cdt-gauge-mint'
 
   return (
-    <div className="relative inline-grid place-items-center" style={{ width: size, height: size }}>
+    <div className={cn('relative inline-grid place-items-center', tone)} style={{ width: size, height: size }}>
       <svg width={size} height={size} className="-rotate-90">
         <circle
           cx={cx}
@@ -59,8 +60,8 @@ export function SeatGauge({ remaining, total, size = 96, urgent = false }) {
           fill="none"
           strokeWidth={7}
           strokeLinecap="round"
+          className="cdt-gauge-stroke"
           style={{
-            stroke,
             strokeDasharray: '0 0',
             transition: 'stroke 0.4s',
           }}
@@ -69,7 +70,7 @@ export function SeatGauge({ remaining, total, size = 96, urgent = false }) {
       <div className="absolute inset-0 grid place-items-center text-center">
         <div>
           <div className="font-display text-lg font-bold leading-none text-ink dark:text-paper">{shown}</div>
-          <div className="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-ink/45 dark:text-paper/45">seats</div>
+          <div className="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-ink/60 dark:text-paper/45">seats</div>
         </div>
       </div>
     </div>

@@ -6,7 +6,7 @@ import { enterTl } from '../../lib/gsap.js'
  * Page transition wrapper — runs a GSAP enter timeline on mount,
  * and scrolls to top on route change (without layout shift).
  */
-export function Page({ children, dark = false, className = '' }) {
+export function Page({ children, className = '' }) {
   const root = useRef(null)
   const { pathname } = useLocation()
 
@@ -17,7 +17,7 @@ export function Page({ children, dark = false, className = '' }) {
   }, [pathname])
 
   return (
-    <main ref={root} className={`relative min-h-screen ${dark ? 'bg-ink text-white' : 'bg-paper dark:bg-ink dark:text-paper'} ${className}`}>
+    <main ref={root} className={`relative min-h-screen bg-paper dark:bg-ink dark:text-paper ${className}`}>
       {children}
     </main>
   )

@@ -56,21 +56,21 @@ export function JourneyTracker({ active, onJump }) {
                 <span
                   className={cn(
                     'relative grid h-14 w-14 place-items-center rounded-2xl transition-all duration-500',
-                    done ? 'bg-mint/15 text-mint' : isActive ? 'bg-ink text-neon dark:bg-paper dark:text-ink' : 'bg-cyan-snap/10 text-cyan-snap',
+                    done ? 'bg-mint-deep/15 text-mint-deep dark:bg-mint/15 dark:text-mint' : isActive ? 'bg-ink text-neon dark:bg-paper dark:text-ink' : 'bg-cyan-deep/10 text-cyan-deep dark:bg-cyan-snap/10 dark:text-cyan-snap',
                   )}
                 >
                   <Icon size={22} />
                   {done && (
-                    <span className="absolute -right-1.5 -top-1.5 grid h-5 w-5 place-items-center rounded-full bg-mint text-xs font-black text-ink">✓</span>
+                    <span className="absolute -right-1.5 -top-1.5 grid h-5 w-5 place-items-center rounded-full bg-mint-deep text-xs font-black text-white dark:bg-mint dark:text-ink">✓</span>
                   )}
                 </span>
               )}
               <span className="flex flex-col">
-                <span className={cn('text-[10px] font-bold uppercase tracking-widest', done ? 'text-mint' : isActive ? 'text-cyan-snap' : 'text-ink/40 dark:text-paper/40')}>
+                <span className={cn('text-[10px] font-bold uppercase tracking-widest', done ? 'text-mint-deep dark:text-mint' : isActive ? 'text-cyan-deep dark:text-cyan-snap' : 'text-ink/60 dark:text-paper/40')}>
                   Step {number}
                 </span>
-                <span className={cn('mt-0.5 text-sm font-bold leading-tight', locked ? 'text-ink/40 dark:text-paper/40' : 'text-ink dark:text-paper')}>{s.title}</span>
-                <span className="mt-0.5 hidden text-[11px] text-ink/40 lg:block dark:text-paper/40">{s.subtitle}</span>
+                <span className={cn('mt-0.5 text-sm font-bold leading-tight', locked ? 'text-ink/60 dark:text-paper/40' : 'text-ink dark:text-paper')}>{s.title}</span>
+                <span className="mt-0.5 hidden text-[11px] text-ink/60 lg:block dark:text-paper/40">{s.subtitle}</span>
               </span>
             </button>
           )
@@ -102,12 +102,12 @@ export function JourneyRail({ active, onJump, className }) {
             className={cn(
               'group relative flex items-center gap-3.5 rounded-2xl border px-4 py-3.5 text-left transition-all duration-300',
               isActive
-                ? 'border-cyan-snap/50 bg-cyan-snap/8 ring-4 ring-cyan-snap/10'
+                ? 'border-cyan-deep/50 bg-cyan-deep/8 ring-4 ring-cyan-deep/10 dark:border-cyan-snap/50 dark:bg-cyan-snap/8 dark:ring-cyan-snap/10'
                 : done
-                  ? 'border-mint/30 bg-mint/5 hover:-translate-y-0.5'
+                  ? 'border-mint-deep/30 bg-mint-deep/5 hover:-translate-y-0.5 dark:border-mint/30 dark:bg-mint/5'
                   : locked
                     ? 'cursor-not-allowed border-ink/8 opacity-55 dark:border-paper/10'
-                    : 'border-ink/10 hover:-translate-y-0.5 hover:border-cyan-snap/30 dark:border-paper/10',
+                    : 'border-ink/10 hover:-translate-y-0.5 hover:border-cyan-deep/30 dark:border-paper/10 dark:hover:border-cyan-snap/30',
               !done && !locked && !isActive && 'bg-white dark:bg-ink-soft',
               (isActive || (done && !isActive)) && 'bg-white dark:bg-ink-soft',
             )}
@@ -121,7 +121,7 @@ export function JourneyRail({ active, onJump, className }) {
               {locked ? <KeyRound size={17} /> : done ? <Check size={17} strokeWidth={3} /> : <Icon size={17} />}
             </span>
             <span className="min-w-0">
-              <span className={cn('block text-[10px] font-bold uppercase tracking-widest', isActive ? 'text-cyan-snap' : done ? 'text-mint' : 'text-ink/40 dark:text-paper/40')}>
+              <span className={cn('block text-[10px] font-bold uppercase tracking-widest', isActive ? 'text-cyan-deep dark:text-cyan-snap' : done ? 'text-mint-deep dark:text-mint' : 'text-ink/60 dark:text-paper/40')}>
                 Step {number}
               </span>
               <span className={cn('block truncate text-sm font-bold', isActive || done ? 'text-ink dark:text-paper' : 'text-ink/60 dark:text-paper/60')}>
@@ -146,9 +146,9 @@ export function StepShell({ step, onBack, children }) {
             <Icon size={22} />
           </span>
           <div>
-            <p className="text-[11px] font-bold uppercase tracking-widest text-cyan-snap">Step {meta.key} / 5</p>
+            <p className="text-[11px] font-bold uppercase tracking-widest text-cyan-deep dark:text-cyan-snap">Step {meta.key} / 5</p>
             <h2 className="font-display text-2xl font-bold text-ink dark:text-paper">{meta.title}</h2>
-            <p className="text-sm text-ink/50 dark:text-paper/50">{meta.subtitle}</p>
+            <p className="text-sm text-ink/60 dark:text-paper/50">{meta.subtitle}</p>
           </div>
         </div>
         {onBack && (

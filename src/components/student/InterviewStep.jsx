@@ -66,22 +66,22 @@ export function InterviewStep({ onComplete }) {
     <StepShell step={5}>
       {done ? (
         <div className="flex flex-col items-center py-4 text-center">
-          <span className="grid h-20 w-20 place-items-center rounded-full bg-mint/15 text-mint">
+          <span className="grid h-20 w-20 place-items-center rounded-full bg-mint-deep/15 text-mint-deep dark:bg-mint/15 dark:text-mint">
             <Sparkles size={34} />
           </span>
           <h3 className="mt-5 font-display text-3xl font-bold text-ink dark:text-paper">Milestone unlocked</h3>
-          <p className="mt-2 max-w-md text-sm text-ink/55 dark:text-paper/55">
+          <p className="mt-2 max-w-md text-sm text-ink/60 dark:text-paper/55">
             Your AI scorecard: <span className="font-display text-xl font-extrabold text-ink dark:text-paper">{candidate?.interview?.score || 84}%</span>.{' '}
             {INTERVIEW_FEEDBACK.next}
           </p>
           <div className="mt-5 grid w-full max-w-md gap-3 text-left">
             {Object.entries(INTERVIEW_FEEDBACK).filter(([k]) => k !== 'next').map(([k, v]) => (
               <div key={k} className="flex gap-3 rounded-2xl border border-ink/8 bg-paper px-4 py-3 dark:border-paper/10 dark:bg-ink">
-                <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-mint/15 text-xs font-bold text-mint">
+                <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-mint-deep/15 text-xs font-bold text-mint-deep dark:bg-mint/15 dark:text-mint">
                   <Check size={13} />
                 </span>
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-wider text-ink/45 dark:text-paper/45">{k}</p>
+                  <p className="text-xs font-bold uppercase tracking-wider text-ink/60 dark:text-paper/45">{k}</p>
                   <p className="text-sm text-ink/70 dark:text-paper/70">{v}</p>
                 </div>
               </div>
@@ -178,21 +178,21 @@ export function InterviewStep({ onComplete }) {
                 </span>
                 <div>
                   <p className="text-sm font-bold text-ink dark:text-paper">How this milestone works</p>
-                  <p className="text-xs text-ink/45 dark:text-paper/45">100% simulated · no real uploads</p>
+                  <p className="text-xs text-ink/60 dark:text-paper/45">100% simulated · no real uploads</p>
                 </div>
               </div>
               <ul className="mt-4 space-y-2.5 text-sm text-ink/60 dark:text-paper/60">
                 {['Answer on camera as the prompts auto-advance', 'Our engine scores clarity, structure & poise', 'Finishing unlocks your final scorecard & certificate route'].map((t, i) => (
                   <li key={t} className="flex gap-2.5">
-                    <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-mint/15 text-[10px] font-bold text-mint">{i + 1}</span>
+                    <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-mint-deep/15 text-[10px] font-bold text-mint-deep dark:bg-mint/15 dark:text-mint">{i + 1}</span>
                     {t}
                   </li>
                 ))}
               </ul>
             </div>
             <div className="flex-1 rounded-panel border border-dashed border-ink/15 bg-paper/60 p-5 dark:border-paper/15 dark:bg-ink">
-              <p className="text-xs font-bold uppercase tracking-widest text-ink/40 dark:text-paper/40">Prep notes</p>
-              <p className="mt-2 text-sm leading-relaxed text-ink/55 dark:text-paper/55">
+              <p className="text-xs font-bold uppercase tracking-widest text-ink/60 dark:text-paper/40">Prep notes</p>
+              <p className="mt-2 text-sm leading-relaxed text-ink/60 dark:text-paper/55">
                 Treat it like a real call — the “recording” is a beauty pass captured locally in your browser session.
                 Nerves are normal; articulating your trade-offs is the skill being measured.
               </p>

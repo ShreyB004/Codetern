@@ -67,8 +67,8 @@ export default function AdminPage() {
 
           <div className="flex flex-col gap-2 border-t border-white/10 p-4">
             <div className="flex items-center justify-between px-2 py-1">
-              <span className="text-[11px] font-bold uppercase tracking-widest text-white/40">Appearance</span>
-              <ThemeToggle />
+              <span className="text-[11px] font-bold uppercase tracking-widest text-white/60">Appearance</span>
+              <ThemeToggle onDark />
             </div>
             <button
               onClick={() => navigate('/')}

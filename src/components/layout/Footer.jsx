@@ -2,6 +2,13 @@ import { Link } from 'react-router-dom'
 import { Github, Instagram, Linkedin, Twitter, Zap } from 'lucide-react'
 import { StarfieldBackground } from '../ui/backgrounds/StarfieldBackground.jsx'
 
+const SOCIALS = [
+  { label: 'Codetern on X (Twitter)', href: 'https://x.com/codetern', Icon: Twitter },
+  { label: 'Codetern on Instagram', href: 'https://instagram.com/codetern', Icon: Instagram },
+  { label: 'Codetern on LinkedIn', href: 'https://linkedin.com/company/codetern', Icon: Linkedin },
+  { label: 'Codetern on GitHub', href: 'https://github.com/codetern', Icon: Github },
+]
+
 const COLUMNS = [
   {
     title: 'Programmes',
@@ -41,18 +48,19 @@ export function Footer() {
                 Code<span className="text-cyan-snap">tern</span>
               </span>
             </Link>
-            <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/55">
+            <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/60">
               An elite internship simulator. Get real work done before your first job — through quizzes, AI mock
               interviews and studio-grade projects across 14 domains.
             </p>
             <div className="mt-6 flex gap-2.5">
-              {[Twitter, Instagram, Linkedin, Github].map((Icon, i) => (
+              {SOCIALS.map(({ label, href, Icon }) => (
                 <a
-                  key={i}
-                  href="#"
-                  onClick={(e) => e.preventDefault()}
-                  className="grid h-9 w-9 place-items-center rounded-xl border border-white/15 text-white/60 transition hover:border-neon/50 hover:text-neon"
-                  aria-label="Social link"
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className="focus-ring grid h-11 w-11 place-items-center rounded-xl border border-white/15 text-white/70 transition hover:border-neon/50 hover:text-neon"
                 >
                   <Icon size={16} />
                 </a>
@@ -62,11 +70,11 @@ export function Footer() {
 
           {COLUMNS.map((col) => (
             <div key={col.title}>
-              <h4 className="text-xs font-bold uppercase tracking-[0.18em] text-white/40">{col.title}</h4>
+              <h4 className="text-xs font-bold uppercase tracking-[0.18em] text-white/60">{col.title}</h4>
               <ul className="mt-4 flex flex-col gap-2.5">
                 {col.links.map((l) => (
                   <li key={l.label}>
-                    <Link to={l.to} className="text-sm text-white/70 transition hover:text-neon">
+                    <Link to={l.to} className="focus-ring rounded text-sm text-white/70 transition hover:text-neon">
                       {l.label}
                     </Link>
                   </li>
@@ -77,8 +85,8 @@ export function Footer() {
         </div>
 
         <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-6 sm:flex-row">
-          <p className="text-xs text-white/40">© {new Date().getFullYear()} Codetern. Crafted for career acceleration.</p>
-          <p className="text-xs text-white/40">
+          <p className="text-xs text-white/60">© {new Date().getFullYear()} Codetern. Crafted for career acceleration.</p>
+          <p className="text-xs text-white/60">
             Built with React · GSAP · Tailwind <span className="text-neon">— get real work done.</span>
           </p>
         </div>

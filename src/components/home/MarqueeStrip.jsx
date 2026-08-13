@@ -32,9 +32,9 @@ export function MarqueeStrip() {
       />
       <div className="cdt-marquee">
         {row.map((word, i) => (
-          <span key={i} className="flex shrink-0 items-center gap-3 px-4 text-sm font-semibold uppercase tracking-[0.14em] text-ink/45 dark:text-paper/45">
+          <span key={i} className="flex shrink-0 items-center gap-3 px-4 text-sm font-semibold uppercase tracking-[0.14em] text-ink/60 dark:text-paper/60">
             {word}
-            <Sparkle size={12} className="text-cyan-snap" />
+            <Sparkle size={12} className="text-ink/50 dark:text-cyan-snap" />
           </span>
         ))}
       </div>

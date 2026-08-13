@@ -109,9 +109,9 @@ export function BookingStep({ onComplete }) {
       {domain && (
         <div className="mt-8" data-enter>
           <p className="mb-1 flex items-center gap-2 text-sm font-semibold text-ink dark:text-paper">
-            <CalendarCheck size={15} className="text-cyan-snap" /> Pick your batch duration
+            <CalendarCheck size={15} className="text-cyan-deep dark:text-cyan-snap" /> Pick your batch duration
           </p>
-          <p className="mb-3 text-xs text-ink/45 dark:text-paper/45">Live availability syncs with the public landing page in real time.</p>
+          <p className="mb-3 text-xs text-ink/60 dark:text-paper/45">Live availability syncs with the public landing page in real time.</p>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {getProgramme(domain).durations.map((d) => {
               const remaining = getRemaining(domain, d)
@@ -126,12 +126,12 @@ export function BookingStep({ onComplete }) {
                   className={cn(
                     'relative flex flex-col overflow-hidden rounded-2xl border p-5 text-left transition-all duration-300',
                     soldOut && 'cursor-not-allowed border-ink/8 opacity-50 dark:border-paper/10',
-                    active && 'border-cyan-snap/60 bg-cyan-snap/8 ring-4 ring-cyan-snap/10',
-                    !active && !soldOut && 'border-ink/10 bg-white hover:-translate-y-1 hover:border-cyan-snap/40 hover:shadow-float dark:border-paper/10 dark:bg-ink-soft',
+                    active && 'border-cyan-deep/60 bg-cyan-deep/8 ring-4 ring-cyan-deep/10 dark:border-cyan-snap/60 dark:bg-cyan-snap/8 dark:ring-cyan-snap/10',
+                    !active && !soldOut && 'border-ink/10 bg-white hover:-translate-y-1 hover:border-cyan-deep/40 hover:shadow-float dark:border-paper/10 dark:bg-ink-soft dark:hover:border-cyan-snap/40',
                   )}
                 >
                   {soldOut && (
-                    <span className="absolute right-3 top-3 rounded-bubble bg-coral/10 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-coral">
+                    <span className="absolute right-3 top-3 rounded-bubble bg-coral-deep/10 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-coral-deep dark:bg-coral/10 dark:text-coral">
                       Filled
                     </span>
                   )}
@@ -142,7 +142,7 @@ export function BookingStep({ onComplete }) {
                     <SeatCounter remaining={remaining} total={total} duration={d} compact />
                   </div>
                   {!soldOut && (
-                    <span className={cn('mt-auto pt-4 text-xs font-semibold', active ? 'text-cyan-snap' : 'text-ink/40 dark:text-paper/40')}>
+                    <span className={cn('mt-auto pt-4 text-xs font-semibold', active ? 'text-cyan-deep dark:text-cyan-snap' : 'text-ink/60 dark:text-paper/40')}>
                       {active ? '✓ Selected' : 'Select this batch'}
                     </span>
                   )}
@@ -183,8 +183,8 @@ export function BookingStep({ onComplete }) {
       <div className="mt-8 flex flex-col gap-3 border-t border-ink/8 pt-6 sm:flex-row sm:items-center sm:justify-between dark:border-paper/10">
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
           {PERKS.map((t) => (
-            <span key={t} className="flex items-center gap-1.5 text-xs font-medium text-ink/45 dark:text-paper/45">
-              <ShieldCheck size={13} className="text-mint" /> {t}
+            <span key={t} className="flex items-center gap-1.5 text-xs font-medium text-ink/60 dark:text-paper/45">
+              <ShieldCheck size={13} className="text-mint-deep dark:text-mint" /> {t}
             </span>
           ))}
         </div>
@@ -195,15 +195,15 @@ export function BookingStep({ onComplete }) {
       </div>
 
       {domain && (
-        <div className="mt-6 flex items-center gap-3 rounded-2xl border border-cyan-snap/25 bg-cyan-snap/8 px-5 py-4">
-          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl" style={(() => { const c = DOMAIN_COLORS[getProgramme(domain).color]; return { background: c.bg, color: c.fg } })()}>
+        <div className="mt-6 flex items-center gap-3 rounded-2xl border border-cyan-deep/25 bg-cyan-deep/8 px-5 py-4 dark:border-cyan-snap/25 dark:bg-cyan-snap/8">
+          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl" style={(() => { const c = DOMAIN_COLORS[getProgramme(domain).color]; return { background: c.bg, color: 'var(--color-ink)' } })()}>
             <DomainIcon name={getProgramme(domain).icon} size={18} />
           </span>
           <div>
             <p className="text-sm font-semibold text-ink dark:text-paper">
-              Track: <span className="text-cyan-snap">{getProgramme(domain).title}</span>
+              Track: <span className="text-cyan-deep dark:text-cyan-snap">{getProgramme(domain).title}</span>
             </p>
-            <p className="mt-0.5 text-xs text-ink/50 dark:text-paper/50">You can refine your domain in the profile step — seat stays reserved for 48h.</p>
+            <p className="mt-0.5 text-xs text-ink/60 dark:text-paper/50">You can refine your domain in the profile step — seat stays reserved for 48h.</p>
           </div>
         </div>
       )}

@@ -15,7 +15,7 @@ function StatCount({ value, suffix = '', label }) {
         {v.toLocaleString('en-IN')}
         {suffix}
       </p>
-      <p className="text-[11px] text-white/45">{label}</p>
+      <p className="text-[11px] text-white/55">{label}</p>
     </div>
   )
 }
@@ -92,11 +92,11 @@ export default function AboutPage() {
                   className="group rounded-panel border border-ink/8 bg-white dark:border-paper/10 dark:bg-ink-soft p-7 shadow-card transition-all duration-500 hover:-translate-y-1.5 hover:shadow-float"
                   style={{ transitionDelay: `${(i % 3) * 60}ms` }}
                 >
-                  <span className="mb-5 grid h-12 w-12 place-items-center rounded-2xl bg-cyan-snap/10 text-cyan-snap transition group-hover:bg-ink group-hover:text-neon">
+                  <span className="mb-5 grid h-12 w-12 place-items-center rounded-2xl bg-cyan-deep/10 text-cyan-deep transition group-hover:bg-ink group-hover:text-neon dark:bg-cyan-snap/10 dark:text-cyan-snap dark:group-hover:text-neon">
                     <Icon size={22} />
                   </span>
                   <h3 className="font-display text-lg font-bold text-ink dark:text-paper">{p.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-ink/55 dark:text-paper/55">{p.desc}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-ink/60 dark:text-paper/55">{p.desc}</p>
                 </div>
               )
             })}
@@ -156,12 +156,18 @@ export default function AboutPage() {
               ].map(([role, handle, cls], i) => (
                 <div key={role} className={`rounded-panel border p-4 ${cls}`} data-reveal style={{ transitionDelay: `${i * 50}ms` }}>
                   <div className="flex items-center gap-3">
-                    <span className="grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br from-cyan-snap to-violet-deep text-xs font-bold text-ink dark:text-paper">
+                    <span
+                      className="grid h-9 w-9 place-items-center rounded-full text-xs font-bold text-white"
+                      style={{
+                        background:
+                          'linear-gradient(rgba(11,14,26,0.45), rgba(11,14,26,0.45)), linear-gradient(135deg, var(--color-cyan-snap), var(--color-violet-deep))',
+                      }}
+                    >
                       {role.split(' ')[0][0]}
                     </span>
                     <p className="text-sm font-semibold text-white">{handle}</p>
                   </div>
-                  <p className="mt-2 text-xs text-white/40">{role}</p>
+                  <p className="mt-2 text-xs text-white/55">{role}</p>
                 </div>
               ))}
             </div>

@@ -1,19 +1,43 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { X } from 'lucide-react'
 import { cn } from '../../lib/utils.js'
 import { gsap } from '../../lib/gsap.js'
 
-export function Modal({ open, onClose, children, className, title, size = 'md' }) {
+export function Modal({ open, onClose, children, className, title, labelledBy, size = 'md' }) {
+  const panelRef = useRef(null)
+  const closeBtnRef = useRef(null)
+  const titleId = title ? 'cdt-modal-title' : undefined
+
   useEffect(() => {
     if (!open) return
     const prev = document.body.style.overflow
     document.body.style.overflow = 'hidden'
-    const onKey = (e) => e.key === 'Escape' && onClose?.()
+    const previouslyFocused = document.activeElement
+    closeBtnRef.current?.focus()
+    const onKey = (e) => {
+      if (e.key === 'Escape') onClose?.()
+      if (e.key !== 'Tab') return
+      const focusables = panelRef.current?.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+      )
+      if (!focusables?.length) return
+      const list = Array.from(focusables).filter((el) => !el.disabled && el.offsetParent !== null)
+      const first = list[0]
+      const last = list[list.length - 1]
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault()
+        last.focus()
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault()
+        first.focus()
+      }
+    }
     window.addEventListener('keydown', onKey)
     return () => {
       document.body.style.overflow = prev
       window.removeEventListener('keydown', onKey)
+      previouslyFocused?.focus?.()
     }
   }, [open, onClose])
 
@@ -34,6 +58,7 @@ export function Modal({ open, onClose, children, className, title, size = 'md' }
     <div className="fixed inset-0 z-[100] flex items-end justify-center p-3 sm:items-center sm:p-6">
       <div className="cdt-modal-backdrop absolute inset-0 bg-ink/60 backdrop-blur-sm" onClick={onClose} />
       <div
+        ref={panelRef}
         className={cn(
           'cdt-modal-panel relative w-full overflow-hidden rounded-panel border border-white/10 bg-paper shadow-float dark:bg-ink-soft dark:shadow-none',
           size === 'sm' && 'max-w-md',
@@ -45,11 +70,13 @@ export function Modal({ open, onClose, children, className, title, size = 'md' }
         )}
         role="dialog"
         aria-modal="true"
+        aria-labelledby={labelledBy || titleId}
       >
         {title && (
           <div className="sticky top-0 z-10 flex items-center justify-between border-b border-ink/8 bg-paper/90 dark:border-paper/10 dark:bg-ink-soft/90 px-6 py-4 backdrop-blur-md">
-            <h3 className="font-display text-lg font-bold text-ink dark:text-paper">{title}</h3>
+            <h3 id={titleId} className="font-display text-lg font-bold text-ink dark:text-paper">{title}</h3>
             <button
+              ref={closeBtnRef}
               onClick={onClose}
               className="grid h-8 w-8 place-items-center rounded-full border border-ink/10 text-ink/60 transition hover:bg-ink/5 hover:text-ink dark:border-paper/15 dark:text-paper/60 dark:hover:bg-paper/5 dark:hover:text-paper"
               aria-label="Close"

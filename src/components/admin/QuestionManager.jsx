@@ -3,6 +3,7 @@ import { CheckCircle2, Eye, EyeOff, Pencil, Plus, Save, Trash2, X } from 'lucide
 import { useApp } from '../../context/AppContext.jsx'
 import { useToast } from '../../context/ToastContext.jsx'
 import { getProgramme, DOMAIN_COLORS } from '../../data/programmes.js'
+import { Modal } from '../ui/Modal.jsx'
 import { cn } from '../../lib/utils.js'
 
 export function QuestionManager() {
@@ -69,7 +70,7 @@ export function QuestionManager() {
                 onClick={() => setQuestionEnabled(domain, i, !(q.enabled !== false))}
                 className={cn(
                   'mt-0.5 flex shrink-0 items-center gap-1.5 rounded-bubble border px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider transition',
-                  q.enabled === false ? 'border-ink/15 text-ink/40 dark:border-paper/20 dark:text-paper/40' : 'border-mint/40 bg-mint/10 text-mint',
+                  q.enabled === false ? 'border-ink/15 text-ink/40 dark:border-paper/20 dark:text-paper/40' : 'border-mint-deep/40 bg-mint-deep/10 text-mint-deep dark:border-mint/40 dark:bg-mint/10 dark:text-mint',
                 )}
                 title={q.enabled === false ? 'Click to enable' : 'Click to disable'}
               >
@@ -86,7 +87,7 @@ export function QuestionManager() {
                       key={oi}
                       className={cn(
                         'rounded-bubble px-2.5 py-0.5 text-[11px] font-medium',
-                        oi === q.answer ? 'bg-mint/15 font-bold text-mint' : 'bg-ink/5 text-ink/55 dark:bg-paper/5 dark:text-paper/55',
+                        oi === q.answer ? 'bg-mint-deep/15 font-bold text-mint-deep dark:bg-mint/15 dark:text-mint' : 'bg-ink/5 text-ink/60 dark:bg-paper/5 dark:text-paper/55',
                       )}
                     >
                       {String.fromCharCode(65 + oi)}. {opt}
@@ -99,7 +100,7 @@ export function QuestionManager() {
                 <button onClick={() => setEditing({ index: i, question: { ...q } })} className="grid h-8 w-8 place-items-center rounded-lg border border-ink/10 text-ink/60 transition hover:bg-ink/5 dark:border-paper/15 dark:text-paper/60 dark:hover:bg-paper/5" aria-label="Edit question">
                   <Pencil size={14} />
                 </button>
-                <button onClick={() => { removeQuestion(domain, i); push('Question removed', 'info') }} className="grid h-8 w-8 place-items-center rounded-lg border border-coral/20 text-coral transition hover:bg-coral/10" aria-label="Delete question">
+                <button onClick={() => { removeQuestion(domain, i); push('Question removed', 'info') }} className="grid h-8 w-8 place-items-center rounded-lg border border-coral-deep/20 text-coral-deep transition hover:bg-coral-deep/10 dark:border-coral/20 dark:text-coral dark:hover:bg-coral/10" aria-label="Delete question">
                   <Trash2 size={14} />
                 </button>
               </div>
@@ -142,10 +143,8 @@ function QuestionForm({ question, isNew, onClose, onSave }) {
   }
 
   return (
-    <div className="fixed inset-0 z-[110] grid place-items-center p-4">
-      <div className="absolute inset-0 bg-ink/60 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative max-h-[92vh] w-full max-w-xl overflow-y-auto rounded-panel bg-white p-7 shadow-float dark:bg-ink-soft">
-        <h3 className="font-display text-lg font-bold text-ink dark:text-paper">{isNew ? 'Add a question' : 'Edit question'}</h3>
+    <Modal open onClose={onClose} size="md" labelledBy="qm-questionform-title" className="p-7">
+      <h3 id="qm-questionform-title" className="font-display text-lg font-bold text-ink dark:text-paper">{isNew ? 'Add a question' : 'Edit question'}</h3>
 
         <div className="mt-5 flex flex-col gap-4">
           <label className="block">
@@ -177,7 +176,7 @@ function QuestionForm({ question, isNew, onClose, onSave }) {
                 </div>
               ))}
             </div>
-            <button onClick={addOption} className="mt-2 rounded-full border border-dashed border-ink/25 px-4 py-1.5 text-xs font-semibold text-ink/50 transition hover:border-cyan-snap/50 hover:text-cyan-snap dark:border-paper/25 dark:text-paper/50">
+            <button onClick={addOption} className="mt-2 rounded-full border border-dashed border-ink/25 px-4 py-1.5 text-xs font-semibold text-ink/60 transition hover:border-cyan-deep/50 hover:text-cyan-deep dark:border-paper/25 dark:text-paper/50 dark:hover:border-cyan-snap/50 dark:hover:text-cyan-snap">
               + Add option
             </button>
           </div>
@@ -206,7 +205,6 @@ function QuestionForm({ question, isNew, onClose, onSave }) {
             <Save size={15} /> {isNew ? 'Add question' : 'Save changes'}
           </button>
         </div>
-      </div>
-    </div>
+    </Modal>
   )
 }

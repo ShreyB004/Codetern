@@ -4,6 +4,7 @@ import { useApp } from '../../context/AppContext.jsx'
 import { useToast } from '../../context/ToastContext.jsx'
 import { DOMAIN_COLORS, DURATIONS } from '../../data/programmes.js'
 import { DomainIcon } from '../ui/Icon.jsx'
+import { Modal } from '../ui/Modal.jsx'
 import { cn } from '../../lib/utils.js'
 
 const BASE_FORM = {
@@ -73,7 +74,7 @@ export function DomainManager() {
                     {p.stack.slice(0, 5).map((s) => (
                       <span key={s} className="rounded-bubble bg-ink/5 dark:bg-paper/5 px-2 py-0.5 text-[10px] font-semibold text-ink/60 dark:text-paper/60">{s}</span>
                     ))}
-                    <span className="ml-1 flex items-center gap-1 text-[11px] font-bold text-cyan-snap">
+                    <span className="ml-1 flex items-center gap-1 text-[11px] font-bold text-cyan-deep dark:text-cyan-snap">
                       {p.durations.map((d) => `${d}mo`).join(' · ')}
                     </span>
                   </div>
@@ -82,7 +83,7 @@ export function DomainManager() {
                   <button onClick={() => startEdit(p)} className="grid h-8 w-8 place-items-center rounded-lg border border-ink/10 text-ink/60 transition hover:bg-ink/5 dark:border-paper/15 dark:text-paper/60 dark:hover:bg-paper/5" aria-label="Edit domain">
                     <Edit3 size={14} />
                   </button>
-                  <button onClick={() => { removeDomain(p.id); push(`${p.title} removed`, 'error') }} className="grid h-8 w-8 place-items-center rounded-lg border border-coral/20 text-coral transition hover:bg-coral/10" aria-label="Delete domain">
+                  <button onClick={() => { removeDomain(p.id); push(`${p.title} removed`, 'error') }} className="grid h-8 w-8 place-items-center rounded-lg border border-coral-deep/20 text-coral-deep transition hover:bg-coral-deep/10 dark:border-coral/20 dark:text-coral dark:hover:bg-coral/10" aria-label="Delete domain">
                     <Trash2 size={14} />
                   </button>
                 </div>
@@ -107,12 +108,10 @@ export function DomainManager() {
 
 function DomainForm({ form, creating, set, onCancel, onSave }) {
   return (
-    <div className="fixed inset-0 z-[110] grid place-items-center p-4">
-      <div className="absolute inset-0 bg-ink/60 backdrop-blur-sm" onClick={onCancel} />
-      <div className="relative max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-panel bg-white p-7 shadow-float dark:bg-ink-soft dark:shadow-none">
-        <h3 className="font-display text-lg font-bold text-ink dark:text-paper">
-          {creating ? 'Create a new domain' : `Edit — ${form.title}`}
-        </h3>
+    <Modal open onClose={onCancel} size="md" labelledBy="dm-domainform-title" className="p-7">
+      <h3 id="dm-domainform-title" className="font-display text-lg font-bold text-ink dark:text-paper">
+        {creating ? 'Create a new domain' : `Edit — ${form.title}`}
+      </h3>
 
         <div className="mt-5 grid gap-4 sm:grid-cols-2">
           <Field label="ID (url-safe)" value={form.id} onChange={(v) => set({ id: v.toLowerCase().trim() })} placeholder="e.g. blockchain" disabled={!creating} />
@@ -128,7 +127,7 @@ function DomainForm({ form, creating, set, onCancel, onSave }) {
             <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-ink/50 dark:text-paper/50">Icon</span>
             <div className="flex flex-wrap gap-2">
               {['Code2', 'Globe', 'Server', 'Smartphone', 'Database', 'Cpu', 'ShieldCheck', 'Container', 'PenTool'].map((iconName) => (
-                <button key={iconName} type="button" onClick={() => set({ icon: iconName })} className={cn('grid h-9 w-9 place-items-center rounded-xl border', form.icon === iconName ? 'border-cyan-snap bg-cyan-snap/10 text-cyan-snap' : 'border-ink/10 dark:border-paper/10 text-ink/50 dark:text-paper/50')}>
+                <button key={iconName} type="button" onClick={() => set({ icon: iconName })} className={cn('grid h-9 w-9 place-items-center rounded-xl border', form.icon === iconName ? 'border-cyan-deep bg-cyan-deep/10 text-cyan-deep dark:border-cyan-snap dark:bg-cyan-snap/10 dark:text-cyan-snap' : 'border-ink/10 dark:border-paper/10 text-ink/50 dark:text-paper/50')}>
                   <DomainIcon name={iconName} size={16} />
                 </button>
               ))}
@@ -167,8 +166,7 @@ function DomainForm({ form, creating, set, onCancel, onSave }) {
             <Save size={15} /> {creating ? 'Create domain' : 'Save changes'}
           </button>
         </div>
-      </div>
-    </div>
+    </Modal>
   )
 }
 

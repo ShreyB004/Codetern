@@ -1,5 +1,6 @@
 import { ArrowUpRight, Star } from 'lucide-react'
 import { Page } from '../components/layout/Page.jsx'
+import { SectionHeading } from '../components/ui/SectionHeading.jsx'
 import { useRevealScope } from '../hooks/useReveal.js'
 import { PORTFOLIO_PROJECTS } from '../data/portfolio.js'
 import { DOMAIN_COLORS } from '../data/programmes.js'
@@ -31,6 +32,12 @@ export default function PortfolioPage() {
 
       <section ref={scope} className="bg-paper py-20 dark:bg-ink">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
+          <SectionHeading
+            eyebrow="Outcomes"
+            title="Real sprints, real releases."
+            align="left"
+            className="mb-12"
+          />
           <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
             {PORTFOLIO_PROJECTS.map((project, i) => {
               const color = DOMAIN_COLORS[project.domain]
@@ -44,7 +51,7 @@ export default function PortfolioPage() {
                         <div className="absolute inset-0 p-5">
                           <div className="flex h-full flex-col rounded-xl border border-white/20 bg-ink/30 backdrop-blur-sm">
                             <div className="flex items-center gap-1.5 border-b border-white/15 px-3 py-2">
-                              <span className="h-2 w-2 rounded-full bg-white/60 dark:bg-ink-soft/60" />
+                              <span className="h-2 w-2 rounded-full bg-white/60 dark:bg-white/40" />
                               <span className="h-2 w-2 rounded-full bg-white/35" />
                               <span className="h-2 w-2 rounded-full bg-white/20" />
                               <span className="ml-2 text-[10px] font-medium text-white/60">{project.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.app</span>
@@ -62,7 +69,7 @@ export default function PortfolioPage() {
                         >
                           {project.domain}
                         </span>
-                        <span className="absolute right-4 top-4 grid h-8 w-8 place-items-center rounded-full bg-white/90 text-ink dark:text-paper shadow-card opacity-0 transition group-hover:opacity-100">
+                        <span className="absolute right-4 top-4 grid h-8 w-8 place-items-center rounded-full bg-white/90 text-ink shadow-card opacity-0 transition group-hover:opacity-100">
                           <ArrowUpRight size={15} />
                         </span>
                       </div>
@@ -70,24 +77,24 @@ export default function PortfolioPage() {
                       <div className="flex flex-1 flex-col p-5">
                         <div className="flex items-start justify-between gap-2">
                           <h3 className="font-display text-lg font-bold leading-snug text-ink dark:text-paper">{project.title}</h3>
-                          <span className="flex shrink-0 items-center gap-1 text-[11px] font-semibold text-ink/40 dark:text-paper/40">
-                            <Star size={11} className="fill-neon text-neon" />
+                          <span className="flex shrink-0 items-center gap-1 text-[11px] font-semibold text-ink/60 dark:text-paper/60">
+                            <Star size={11} className="fill-violet-ink text-violet-ink dark:fill-neon dark:text-neon" />
                             {project.year}
                           </span>
                         </div>
-                        <p className="mt-2 flex-1 text-sm leading-relaxed text-ink/55 dark:text-paper/55">{project.description}</p>
+                        <p className="mt-2 flex-1 text-sm leading-relaxed text-ink/60 dark:text-paper/55">{project.description}</p>
                         <div className="mt-3 flex flex-wrap gap-1.5">
                           {project.stack.map((s) => (
-                            <span key={s} className="rounded-bubble bg-ink/5 dark:bg-paper/5 px-2.5 py-0.5 text-[10px] font-semibold text-ink/55 dark:text-paper/55">
+                            <span key={s} className="rounded-bubble bg-ink/5 dark:bg-paper/5 px-2.5 py-0.5 text-[10px] font-semibold text-ink/60 dark:text-paper/55">
                               {s}
                             </span>
                           ))}
                         </div>
                         <div className="mt-4 flex items-center justify-between border-t border-ink/8 dark:border-paper/8 pt-3">
-                          <p className="text-xs font-medium text-ink/45 dark:text-paper/45">by {project.intern}</p>
+                          <p className="text-xs font-medium text-ink/60 dark:text-paper/45">by {project.intern}</p>
                           <div className="flex gap-2">
                             {project.metrics.map((m) => (
-                              <span key={m} className={cn('rounded-bubble px-2 py-0.5 text-[10px] font-bold', 'bg-mint/10 text-mint')}>
+                              <span key={m} className={cn('rounded-bubble px-2 py-0.5 text-[10px] font-bold', 'bg-mint-deep/10 text-mint-deep dark:bg-mint/10 dark:text-mint')}>
                                 {m}
                               </span>
                             ))}

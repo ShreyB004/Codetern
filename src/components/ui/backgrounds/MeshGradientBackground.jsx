@@ -1,7 +1,14 @@
 import { cn } from '../../../lib/utils.js'
 
-const BLOSS = [
-  ['34, 211, 238', '22%', '-10%', '42%'],
+const BLOSS_DARK = [
+  ['34, 211, 238', '22%', '-10%', '46%'],
+  ['124, 92, 255', '60%', '5%', '42%'],
+  ['56, 255, 176', '-5%', '45%', '38%'],
+  ['255, 92, 122', '72%', '55%', '34%'],
+]
+
+const BLOSS_LIGHT = [
+  ['34, 211, 238', '22%', '-10%', '44%'],
   ['124, 92, 255', '60%', '5%', '38%'],
   ['56, 255, 176', '-5%', '45%', '36%'],
   ['255, 92, 122', '70%', '55%', '34%'],
@@ -12,10 +19,11 @@ const BLOSS = [
  * style mesh gradient). Pure CSS, theme-adaptive via the `dark` variant.
  */
 export function MeshGradientBackground({ children, className, dark = false, opacity = 0.55 }) {
+  const blossoms = dark ? BLOSS_DARK : BLOSS_LIGHT
   return (
     <div className={cn('pointer-events-none absolute inset-0 overflow-hidden', className)} aria-hidden>
       <div className="absolute inset-0">
-        {BLOSS.map(([rgb, left, top, size], i) => (
+        {blossoms.map(([rgb, left, top, size], i) => (
           <div
             key={i}
             className={cn('cdt-mesh-blob absolute rounded-full', dark ? 'cdt-mesh-dark' : 'cdt-mesh-light')}
@@ -24,7 +32,7 @@ export function MeshGradientBackground({ children, className, dark = false, opac
               top,
               width: size,
               height: size,
-              background: `radial-gradient(circle at 30% 30%, rgb(${rgb} / ${0.55 * opacity}), transparent 70%)`,
+              background: `radial-gradient(circle at 30% 30%, rgb(${rgb} / ${(dark ? 0.34 : 0.55) * opacity}), transparent 70%)`,
               filter: 'blur(70px)',
             }}
           />

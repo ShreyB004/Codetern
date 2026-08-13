@@ -61,7 +61,7 @@ export function DurationGrid() {
       <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
         <div className="mb-14 flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-end">
           <div data-reveal>
-            <span className="mb-4 inline-block rounded-bubble border border-cyan-snap/30 bg-cyan-snap/10 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-cyan-snap">
+            <span className="mb-4 inline-block rounded-bubble border border-cyan-deep/30 bg-cyan-deep/10 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-cyan-deep dark:border-cyan-snap/30 dark:bg-cyan-snap/10 dark:text-cyan-snap">
               Programme durations
             </span>
             <h2 className="max-w-2xl font-display text-3xl font-bold leading-tight tracking-tight text-ink dark:text-paper sm:text-5xl">
@@ -95,18 +95,18 @@ export function DurationGrid() {
                       className={cn(
                         'mb-5 inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br',
                         d.accent,
-                        featured === d.months ? 'text-ink dark:text-paper' : 'text-ink dark:text-paper',
+                        'text-ink',
                       )}
                     >
                       <Icon size={20} strokeWidth={2.2} />
                     </div>
-                    <p className={cn('text-[11px] font-bold uppercase tracking-[0.18em]', featured === d.months ? 'text-neon' : 'text-cyan-snap')}>
+                    <p className={cn('text-[11px] font-bold uppercase tracking-[0.18em]', featured === d.months ? 'text-neon' : 'text-cyan-deep dark:text-cyan-snap')}>
                       {d.kicker}
                     </p>
                     <h3 className={cn('mt-2 font-display text-2xl font-bold', featured === d.months ? 'text-white' : 'text-ink dark:text-paper')}>
                       {d.title}
                     </h3>
-                    <p className={cn('mt-2.5 flex-1 text-sm leading-relaxed', featured === d.months ? 'text-white/60' : 'text-ink/55 dark:text-paper/55')}>
+                    <p className={cn('mt-2.5 flex-1 text-sm leading-relaxed', featured === d.months ? 'text-white/60' : 'text-ink/60 dark:text-paper/60')}>
                       {d.desc}
                     </p>
                     <div className="mt-5">

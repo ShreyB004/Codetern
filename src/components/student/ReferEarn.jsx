@@ -44,7 +44,7 @@ export function ReferEarn() {
               </p>
             </div>
           </div>
-          <span className="rounded-bubble border border-neon/30 bg-neon/10 px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider text-neon">
+          <span className="rounded-bubble border border-neon-deep/30 bg-neon-deep/10 px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider text-neon-deep dark:border-neon/30 dark:bg-neon/10 dark:text-neon">
             <Wallet size={12} className="mr-1 inline" /> ₹{balance} in wallet
           </span>
         </div>
@@ -72,7 +72,7 @@ export function ReferEarn() {
               href={`https://wa.me/?text=${encodeURIComponent(`Join me at Codetern — an internship simulator with real projects! ${link}`)}`}
               target="_blank"
               rel="noreferrer"
-              className="grid w-12 place-items-center rounded-2xl border border-ink/10 text-ink/60 transition hover:border-mint/50 hover:text-mint dark:border-paper/15 dark:text-paper/60"
+              className="grid w-12 place-items-center rounded-2xl border border-ink/10 text-ink/60 transition hover:border-mint-deep/50 hover:text-mint-deep dark:border-paper/15 dark:text-paper/60 dark:hover:border-mint/50 dark:hover:text-mint"
               aria-label="Share on WhatsApp"
             >
               <MessageCircle size={17} />
@@ -81,7 +81,7 @@ export function ReferEarn() {
               href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(link)}`}
               target="_blank"
               rel="noreferrer"
-              className="grid w-12 place-items-center rounded-2xl border border-ink/10 text-ink/60 transition hover:border-cyan-snap/50 hover:text-cyan-snap dark:border-paper/15 dark:text-paper/60"
+              className="grid w-12 place-items-center rounded-2xl border border-ink/10 text-ink/60 transition hover:border-cyan-deep/50 hover:text-cyan-deep dark:border-paper/15 dark:text-paper/60 dark:hover:border-cyan-snap/50 dark:hover:text-cyan-snap"
               aria-label="Share on LinkedIn"
             >
               <Share2 size={17} />
@@ -89,26 +89,26 @@ export function ReferEarn() {
           </div>
         </div>
 
-        <div className="mt-5 grid gap-3 rounded-2xl bg-gradient-to-br from-violet-deep/10 to-cyan-snap/10 p-4 sm:grid-cols-3">
+        <div className="mt-5 grid gap-3 rounded-2xl bg-gradient-to-br from-violet-deep/10 to-cyan-deep/10 p-4 sm:grid-cols-3 dark:to-cyan-snap/10">
           <div className="flex items-center gap-3">
             <span className="grid h-9 w-9 place-items-center rounded-xl bg-violet-deep/15 text-violet-deep"><Users size={15} /></span>
             <div>
               <p className="font-display text-lg font-extrabold text-ink dark:text-paper">{referrals.length}</p>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-ink/45 dark:text-paper/45">Friends referred</p>
+              <p className="text-[10px] font-bold uppercase tracking-wider text-ink/60 dark:text-paper/45">Friends referred</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <span className="grid h-9 w-9 place-items-center rounded-xl bg-mint/15 text-mint"><Wallet size={15} /></span>
+            <span className="grid h-9 w-9 place-items-center rounded-xl bg-mint-deep/15 text-mint-deep dark:bg-mint/15 dark:text-mint"><Wallet size={15} /></span>
             <div>
               <p className="font-display text-lg font-extrabold text-ink dark:text-paper">{confirmed.length}</p>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-ink/45 dark:text-paper/45">Seats confirmed</p>
+              <p className="text-[10px] font-bold uppercase tracking-wider text-ink/60 dark:text-paper/45">Seats confirmed</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <span className="grid h-9 w-9 place-items-center rounded-xl bg-neon/15 text-neon"><Gift size={15} /></span>
+            <span className="grid h-9 w-9 place-items-center rounded-xl bg-neon-deep/15 text-neon-deep dark:bg-neon/15 dark:text-neon"><Gift size={15} /></span>
             <div>
               <p className="font-display text-lg font-extrabold text-ink dark:text-paper">₹{confirmed.length * 50}</p>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-ink/45 dark:text-paper/45">Earned so far</p>
+              <p className="text-[10px] font-bold uppercase tracking-wider text-ink/60 dark:text-paper/45">Earned so far</p>
             </div>
           </div>
         </div>
@@ -126,7 +126,7 @@ export function ReferEarn() {
                     <p className="truncate text-xs font-semibold text-ink dark:text-paper">{t.reason}</p>
                     <p className="text-[10px] text-ink/40 dark:text-paper/40">{new Date(t.at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}</p>
                   </div>
-                  <span className="shrink-0 font-display text-sm font-bold text-mint">+₹{t.amount}</span>
+                  <span className="shrink-0 font-display text-sm font-bold text-mint-deep dark:text-mint">+₹{t.amount}</span>
                 </li>
               ))}
             </ul>

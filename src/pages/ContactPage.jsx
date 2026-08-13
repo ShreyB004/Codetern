@@ -14,10 +14,10 @@ const FIELDS = [
 ]
 
 const CHANNELS = [
-  { icon: Mail, title: 'Email us', value: 'hello@codetern.dev', hint: 'Replies within 24h', tone: 'text-cyan-snap bg-cyan-snap/10' },
-  { icon: MessageCircle, title: 'Mentor office hours', value: 'Mon–Fri · 6–9 PM IST', hint: 'Live 1:1 calls', tone: 'text-mint bg-mint/10' },
-  { icon: Phone, title: 'Calls', value: 'Book via dashboard', hint: 'Seat-holders only', tone: 'text-violet-deep bg-violet-deep/10' },
-  { icon: MapPin, title: 'Bangalore HQ', value: 'Innovation Campus, Koramangala', hint: 'Visits by invite', tone: 'text-coral bg-coral/10' },
+  { icon: Mail, title: 'Email us', value: 'hello@codetern.dev', hint: 'Replies within 24h', tone: 'text-cyan-deep bg-cyan-deep/10 dark:text-cyan-snap dark:bg-cyan-snap/10' },
+  { icon: MessageCircle, title: 'Mentor office hours', value: 'Mon–Fri · 6–9 PM IST', hint: 'Live 1:1 calls', tone: 'text-mint-deep bg-mint-deep/10 dark:text-mint dark:bg-mint/10' },
+  { icon: Phone, title: 'Calls', value: 'Book via dashboard', hint: 'Seat-holders only', tone: 'text-violet-ink bg-violet-ink/10 dark:text-violet-deep dark:bg-violet-deep/10' },
+  { icon: MapPin, title: 'Bangalore HQ', value: 'Innovation Campus, Koramangala', hint: 'Visits by invite', tone: 'text-coral-deep bg-coral-deep/10 dark:text-coral dark:bg-coral/10' },
 ]
 
 const FAQS = [
@@ -45,11 +45,11 @@ function FloatInput({ label, placeholder, value, onChange, type = 'text', textar
 
   const focusIn = () => {
     ref.current?.classList.add('border-cyan-snap/60', 'ring-4', 'ring-cyan-snap/10')
-    labelRef.current?.classList.add('!text-cyan-snap')
+    labelRef.current?.classList.add('!text-cyan-deep', 'dark:!text-cyan-snap')
   }
   const focusOut = () => {
     ref.current?.classList.remove('border-cyan-snap/60', 'ring-4', 'ring-cyan-snap/10')
-    if (!value) labelRef.current?.classList.remove('!text-cyan-snap')
+    if (!value) labelRef.current?.classList.remove('!text-cyan-deep', 'dark:!text-cyan-snap')
   }
 
   return (
@@ -57,7 +57,7 @@ function FloatInput({ label, placeholder, value, onChange, type = 'text', textar
       <span
         ref={labelRef}
         className={cn(
-          'pointer-events-none absolute left-4 text-sm text-ink/40 transition-all duration-300 dark:text-paper/40',
+          'pointer-events-none absolute left-4 text-sm text-ink/50 transition-all duration-300 dark:text-paper/50',
           value ? '-top-2.5 bg-paper px-2 text-xs font-semibold text-ink/60 dark:bg-ink-soft dark:text-paper/60' : 'top-3.5',
         )}
       >
@@ -72,7 +72,7 @@ function FloatInput({ label, placeholder, value, onChange, type = 'text', textar
           onBlur={focusOut}
           rows={5}
           placeholder={placeholder}
-          className="w-full resize-none rounded-2xl border border-ink/12 bg-white px-4 pb-3 pt-6 text-sm text-ink outline-none transition placeholder:text-ink/25 focus:outline-none dark:border-paper/15 dark:bg-ink-soft dark:text-paper dark:placeholder:text-paper/25"
+          className="w-full resize-none rounded-2xl border border-ink/12 bg-white px-4 pb-3 pt-6 text-sm text-ink outline-none transition placeholder:text-ink/45 focus:outline-none dark:border-paper/15 dark:bg-ink-soft dark:text-paper dark:placeholder:text-paper/45"
         />
       ) : (
         <input
@@ -83,7 +83,7 @@ function FloatInput({ label, placeholder, value, onChange, type = 'text', textar
           onFocus={focusIn}
           onBlur={focusOut}
           placeholder={placeholder}
-          className="w-full rounded-2xl border border-ink/12 bg-white px-4 pb-3 pt-6 text-sm text-ink outline-none transition placeholder:text-ink/25 focus:outline-none dark:border-paper/15 dark:bg-ink-soft dark:text-paper dark:placeholder:text-paper/25"
+          className="w-full rounded-2xl border border-ink/12 bg-white px-4 pb-3 pt-6 text-sm text-ink outline-none transition placeholder:text-ink/45 focus:outline-none dark:border-paper/15 dark:bg-ink-soft dark:text-paper dark:placeholder:text-paper/45"
         />
       )}
     </label>
@@ -136,21 +136,21 @@ export default function ContactPage() {
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center justify-between gap-2">
                     <p className="font-display text-sm font-bold text-ink dark:text-paper">{title}</p>
-                    <span className="rounded-bubble bg-ink/5 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-ink/40 dark:bg-paper/5 dark:text-paper/40">{hint}</span>
+                    <span className="rounded-bubble bg-ink/5 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-ink/60 dark:bg-paper/5 dark:text-paper/60">{hint}</span>
                   </div>
-                  <p className="mt-0.5 text-sm text-ink/55 dark:text-paper/55">{value}</p>
+                  <p className="mt-0.5 text-sm text-ink/60 dark:text-paper/55">{value}</p>
                 </div>
               </div>
             ))}
 
             {/* office hours */}
-            <div className="flex items-start gap-4 rounded-panel border border-neon/25 bg-neon/8 p-5">
-              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-neon/15 text-neon">
+            <div className="flex items-start gap-4 rounded-panel border border-neon-deep/25 bg-neon-deep/8 p-5 dark:border-neon/25 dark:bg-neon/8">
+              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-neon-deep/15 text-neon-deep dark:bg-neon/15 dark:text-neon">
                 <Clock size={20} />
               </span>
               <div>
                 <p className="font-display text-sm font-bold text-ink dark:text-paper">Avg. first reply</p>
-                <p className="mt-0.5 text-sm text-ink/55 dark:text-paper/55">Under 6 hours on weekdays — fastest for seat-holders who booked via the dashboard.</p>
+                <p className="mt-0.5 text-sm text-ink/60 dark:text-paper/55">Under 6 hours on weekdays — fastest for seat-holders who booked via the dashboard.</p>
               </div>
             </div>
           </div>
@@ -158,10 +158,10 @@ export default function ContactPage() {
           {/* form */}
           <div data-reveal>
             {sent ? (
-              <div className="flex h-full min-h-[380px] flex-col items-center justify-center rounded-panel border border-mint/40 bg-mint/8 p-10 text-center dark:border-mint/25" data-enter-scale>
-                <CheckCircle2 size={44} className="text-mint" />
+              <div className="flex h-full min-h-[380px] flex-col items-center justify-center rounded-panel border border-mint-deep/40 bg-mint-deep/8 p-10 text-center dark:border-mint/25 dark:bg-mint/8" data-enter-scale>
+                <CheckCircle2 size={44} className="text-mint-deep dark:text-mint" />
                 <h3 className="mt-4 font-display text-2xl font-bold text-ink dark:text-paper">Message received</h3>
-                <p className="mt-2 max-w-sm text-sm text-ink/55 dark:text-paper/55">
+                <p className="mt-2 max-w-sm text-sm text-ink/60 dark:text-paper/55">
                   Thanks {form.name.split(' ')[0]} — we’ve queued your message for the next mentor office-hours batch.
                 </p>
                 <Button variant="ghost" className="mt-6" onClick={() => { setSent(false); setForm({ name: '', email: '', subject: '', message: '' }) }}>
@@ -171,7 +171,7 @@ export default function ContactPage() {
             ) : (
               <form onSubmit={submit} className="rounded-panel border border-ink/8 bg-white p-6 shadow-card sm:p-8 dark:border-paper/10 dark:bg-ink-soft dark:shadow-none" data-enter>
                 <h3 className="font-display text-xl font-bold text-ink dark:text-paper">Send a message</h3>
-                <p className="mt-1 text-sm text-ink/50 dark:text-paper/50">Floating labels, zero friction.</p>
+                <p className="mt-1 text-sm text-ink/60 dark:text-paper/50">Floating labels, zero friction.</p>
                 <div className="mt-6 grid gap-5">
                   {FIELDS.map((f) => (
                     <FloatInput key={f.key} label={f.label} placeholder={f.placeholder} type={f.type} value={form[f.key]} onChange={set(f.key)} />
@@ -192,7 +192,7 @@ export default function ContactPage() {
       <section className="bg-paper pb-24 dark:bg-ink">
         <div className="mx-auto max-w-3xl px-5 lg:px-8">
           <div className="mb-8 text-center" data-reveal>
-            <span className="mb-4 inline-block rounded-bubble border border-cyan-snap/30 bg-cyan-snap/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan-snap">
+            <span className="mb-4 inline-block rounded-bubble border border-cyan-deep/30 bg-cyan-deep/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan-deep dark:border-cyan-snap/30 dark:bg-cyan-snap/10 dark:text-cyan-snap">
               Quick answers
             </span>
             <h2 className="font-display text-3xl font-extrabold tracking-tight text-ink dark:text-paper">Frequently asked</h2>
@@ -204,16 +204,24 @@ export default function ContactPage() {
                 data-reveal
                 className={cn(
                   'overflow-hidden rounded-2xl border bg-white transition-all duration-300 dark:bg-ink-soft',
-                  faq === i ? 'border-cyan-snap/40 shadow-float' : 'border-ink/8 dark:border-paper/10',
+                  faq === i ? 'border-cyan-deep/40 dark:border-cyan-snap/40 shadow-float' : 'border-ink/8 dark:border-paper/10',
                 )}
               >
-                <button onClick={() => setFaq(faq === i ? -1 : i)} className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left">
+                <button
+                  onClick={() => setFaq(faq === i ? -1 : i)}
+                  aria-expanded={faq === i}
+                  aria-controls={`faq-${i}`}
+                  className="focus-ring flex min-h-11 w-full items-center justify-between gap-4 px-5 py-4 text-left"
+                >
                   <span className="text-sm font-bold text-ink dark:text-paper">{f.q}</span>
-                  <ChevronDown size={16} className={cn('shrink-0 text-ink/40 transition-transform duration-300 dark:text-paper/40', faq === i && 'rotate-180 text-cyan-snap')} />
+                  <ChevronDown size={16} className={cn('shrink-0 text-ink/60 transition-transform duration-300 dark:text-paper/60', faq === i && 'rotate-180 text-cyan-deep dark:text-cyan-snap')} />
                 </button>
-                <div className={cn('grid transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)]', faq === i ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0')}>
+                <div
+                  id={`faq-${i}`}
+                  className={cn('grid transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)]', faq === i ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0')}
+                >
                   <div className="overflow-hidden">
-                    <p className="px-5 pb-5 text-sm leading-relaxed text-ink/55 dark:text-paper/55">{f.a}</p>
+                    <p className="px-5 pb-5 text-sm leading-relaxed text-ink/60 dark:text-paper/55">{f.a}</p>
                   </div>
                 </div>
               </div>

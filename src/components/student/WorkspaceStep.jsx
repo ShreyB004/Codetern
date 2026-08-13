@@ -61,29 +61,29 @@ export function WorkspaceStep() {
         <div className="rounded-2xl border border-ink/10 bg-white p-5 dark:border-paper/10 dark:bg-ink-soft">
           <div className="flex items-center justify-between text-sm font-semibold text-ink dark:text-paper">
             <span>{doneCount} / {workspace.tasks.length} tasks</span>
-            <span className="font-display font-extrabold text-cyan-snap">{pct}%</span>
+            <span className="font-display font-extrabold text-cyan-deep dark:text-cyan-snap">{pct}%</span>
           </div>
           <div className="mt-2.5 h-2.5 w-full overflow-hidden rounded-full bg-ink/8 dark:bg-paper/10">
             <div className="h-full rounded-full bg-gradient-to-r from-cyan-snap to-neon transition-all duration-700" style={{ width: `${pct}%` }} />
           </div>
-          <p className="mt-2 text-[11px] font-semibold uppercase tracking-wider text-ink/40 dark:text-paper/40">{allDone ? 'Ready to claim' : 'Keep shipping'}</p>
+          <p className="mt-2 text-[11px] font-semibold uppercase tracking-wider text-ink/60 dark:text-paper/60">{allDone ? 'Ready to claim' : 'Keep shipping'}</p>
         </div>
         <div className="flex items-center gap-4 rounded-2xl border border-ink/10 bg-white p-5 dark:border-paper/10 dark:bg-ink-soft">
-          <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-coral/10 text-coral">
+          <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-coral-deep/10 text-coral-deep dark:bg-coral/10 dark:text-coral">
             <Flame size={20} />
           </span>
           <div>
             <p className="font-display text-xl font-extrabold text-ink dark:text-paper">{(pct / 10).toFixed(0)} day streak</p>
-            <p className="text-[11px] font-semibold uppercase tracking-wider text-ink/40 dark:text-paper/40">Consistency score</p>
+            <p className="text-[11px] font-semibold uppercase tracking-wider text-ink/60 dark:text-paper/60">Consistency score</p>
           </div>
         </div>
         <div className="flex items-center gap-4 rounded-2xl border border-ink/10 bg-white p-5 dark:border-paper/10 dark:bg-ink-soft">
-          <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-violet-deep/10 text-violet-deep">
+          <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-violet-ink/10 text-violet-ink dark:bg-violet-deep/10 dark:text-violet-deep">
             <Trophy size={20} />
           </span>
           <div>
             <p className="font-display text-xl font-extrabold text-ink dark:text-paper">{milestonesDone.length}/5</p>
-            <p className="text-[11px] font-semibold uppercase tracking-wider text-ink/40 dark:text-paper/40">Milestones hit</p>
+            <p className="text-[11px] font-semibold uppercase tracking-wider text-ink/60 dark:text-paper/60">Milestones hit</p>
           </div>
         </div>
       </div>
@@ -92,16 +92,16 @@ export function WorkspaceStep() {
         {/* tasks */}
         <div>
           <h3 className="mb-3 flex items-center gap-2 font-display text-lg font-bold text-ink dark:text-paper">
-            <ListChecks size={18} className="text-cyan-snap" /> Live project checklist
+            <ListChecks size={18} className="text-cyan-deep dark:text-cyan-snap" /> Live project checklist
           </h3>
-          <p className="mb-4 text-xs text-ink/45 dark:text-paper/45">Your mentor (admin) curates these tasks and can mark them complete on your behalf.</p>
+          <p className="mb-4 text-xs text-ink/60 dark:text-paper/45">Your mentor (admin) curates these tasks and can mark them complete on your behalf.</p>
           <div className="grid gap-3">
             {workspace.tasks.map((t, i) => (
               <div
                 key={i}
                 className={cn(
                   'group rounded-2xl border p-4 transition-all duration-300',
-                  t.done ? 'border-mint/30 bg-mint/5' : 'border-ink/10 bg-white hover:border-cyan-snap/40 dark:border-paper/10 dark:bg-ink-soft',
+                  t.done ? 'border-mint-deep/30 bg-mint-deep/5 dark:border-mint/30 dark:bg-mint/5' : 'border-ink/10 bg-white hover:border-cyan-deep/40 dark:border-paper/10 dark:bg-ink-soft dark:hover:border-cyan-snap/40',
                 )}
               >
                 <div className="flex items-start gap-3">
@@ -127,8 +127,8 @@ export function WorkspaceStep() {
           </div>
 
           {allDone && (
-            <div className="mt-4 flex items-center gap-3 rounded-2xl border border-mint/30 bg-mint/10 px-4 py-3">
-              <CheckCircle2 size={18} className="shrink-0 text-mint" />
+            <div className="mt-4 flex items-center gap-3 rounded-2xl border border-mint-deep/30 bg-mint-deep/10 px-4 py-3 dark:border-mint/30 dark:bg-mint/10">
+              <CheckCircle2 size={18} className="shrink-0 text-mint-deep dark:text-mint" />
               <p className="text-sm font-semibold text-ink dark:text-paper">
                 Checklist complete — your certificate is ready to claim below.
               </p>
@@ -140,18 +140,18 @@ export function WorkspaceStep() {
         <div className="flex flex-col gap-6">
           <div className="rounded-panel border border-ink/8 bg-white p-5 shadow-card dark:border-paper/10 dark:bg-ink-soft dark:shadow-none">
             <h3 className="mb-3 flex items-center gap-2 font-display text-lg font-bold text-ink dark:text-paper">
-              <Trophy size={18} className="text-neon" /> Journey milestones
+              <Trophy size={18} className="text-neon-deep dark:text-neon" /> Journey milestones
             </h3>
             <ul className="grid gap-2">
               {MILESTONES.map((m, i) => {
                 const Icon = m.icon
                 return (
                   <li key={m.label} className="flex items-center gap-3 rounded-xl bg-paper px-3.5 py-2.5 dark:bg-ink">
-                    <span className={cn('grid h-7 w-7 shrink-0 place-items-center rounded-lg', m.done ? 'bg-mint/15 text-mint' : 'bg-ink/5 text-ink/35 dark:bg-paper/5 dark:text-paper/30')}>
+                    <span className={cn('grid h-7 w-7 shrink-0 place-items-center rounded-lg', m.done ? 'bg-mint-deep/15 text-mint-deep dark:bg-mint/15 dark:text-mint' : 'bg-ink/5 text-ink/35 dark:bg-paper/5 dark:text-paper/30')}>
                       <Icon size={14} />
                     </span>
-                    <span className={cn('flex-1 text-sm font-semibold', m.done ? 'text-ink dark:text-paper' : 'text-ink/45 dark:text-paper/45')}>{m.label}</span>
-                    <span className={cn('text-[10px] font-black uppercase tracking-wider', m.done ? 'text-mint' : 'text-ink/30 dark:text-paper/30')}>
+                    <span className={cn('flex-1 text-sm font-semibold', m.done ? 'text-ink dark:text-paper' : 'text-ink/60 dark:text-paper/45')}>{m.label}</span>
+                    <span className={cn('text-[10px] font-black uppercase tracking-wider', m.done ? 'text-mint-deep dark:text-mint' : 'text-ink/50 dark:text-paper/30')}>
                       {m.done ? '✓ done' : 'step 0'}
                     </span>
                   </li>
@@ -162,7 +162,7 @@ export function WorkspaceStep() {
 
           <div className="rounded-panel border border-ink/8 bg-white p-5 shadow-card dark:border-paper/10 dark:bg-ink-soft dark:shadow-none">
             <h3 className="mb-3 flex items-center gap-2 font-display text-lg font-bold text-ink dark:text-paper">
-              <BookOpen size={18} className="text-violet-deep" /> Curated resources
+              <BookOpen size={18} className="text-violet-ink dark:text-violet-deep" /> Curated resources
             </h3>
             <ul className="grid gap-2">
               {workspace.resources.map((r, i) => (
@@ -189,7 +189,7 @@ export function WorkspaceStep() {
               <div className="mt-4 rounded-2xl border border-mint/30 bg-mint/10 px-4 py-3">
                 <p className="text-[11px] font-bold uppercase tracking-widest text-mint">Your verification ID</p>
                 <p className="mt-1 font-mono text-base font-bold text-white">{certId}</p>
-                <p className="mt-1 text-xs text-white/45">Verify it on the public Certification page.</p>
+                <p className="mt-1 text-xs text-white/55">Verify it on the public Certification page.</p>
               </div>
             ) : (
               <Button size="md" variant="neon" className="mt-4" onClick={doClaim} disabled={!allDone}>
