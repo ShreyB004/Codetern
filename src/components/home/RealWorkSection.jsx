@@ -1,9 +1,10 @@
 import { Boxes, CheckCircle2, GitPullRequest, Trophy } from 'lucide-react'
 import { useRevealScope } from '../../hooks/useReveal.js'
+import { useTheme } from '../../context/ThemeContext.jsx'
 import { useParallax } from '../../hooks/useParallax.js'
 import { FloatingCard } from '../ui/FloatingCard.jsx'
-import { Pill } from '../ui/Pill.jsx'
 import { BeamsBackground } from '../ui/backgrounds/BeamsBackground.jsx'
+import { ScrollReveal } from '../ui/effects/ScrollReveal.jsx'
 
 const CHECKPOINTS = [
   { icon: CheckCircle2, text: 'Sprint grader reviews code, not attendance' },
@@ -14,13 +15,14 @@ const CHECKPOINTS = [
 
 export function RealWorkSection() {
   const scope = useRevealScope()
+  const { isDark } = useTheme()
   const parallax = useParallax(0.06)
 
   return (
-    <section ref={scope} className="relative overflow-hidden bg-ink text-white">
+    <section ref={scope} className="relative overflow-hidden bg-paper text-ink dark:bg-ink dark:text-paper">
       {/* curved graphic band */}
       <svg className="absolute inset-x-0 top-0 w-full" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden>
-        <path className="fill-ink" d="M0,80 C320,20 720,120 1440,40 L1440,0 L0,0 Z" />
+        <path className="fill-paper dark:fill-ink" d="M0,80 C320,20 720,120 1440,40 L1440,0 L0,0 Z" />
       </svg>
       <BeamsBackground className="opacity-40" />
 
@@ -48,14 +50,18 @@ export function RealWorkSection() {
         {/* copy */}
         <div>
           <div data-reveal>
-            <span className="mb-4 inline-flex items-center gap-2 rounded-bubble border border-neon/40 bg-neon/10 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-neon">
-              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-neon" />
+            <span className="mb-4 inline-flex items-center gap-2 rounded-bubble border border-neon-deep/40 bg-neon-deep/10 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-neon-deep dark:border-neon/40 dark:bg-neon/10 dark:text-neon">
+              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-neon-deep dark:bg-neon" />
               Not a classroom — a real work setup
             </span>
-            <h2 className="font-display text-3xl font-bold leading-tight tracking-tight sm:text-5xl">
-              You won’t watch lectures. <span className="text-gradient-snap">You will ship stuff.</span>
-            </h2>
-            <p className="mt-5 max-w-lg text-base leading-relaxed text-white/60">
+            <ScrollReveal
+              as="h2"
+              className="font-display text-3xl font-bold leading-tight tracking-tight sm:text-5xl"
+              colors={isDark ? ['transparent', 'transparent', 'transparent', 'transparent', '#22d3ee', '#38ffb0', '#7c5cff', '#b4ff39'] : ['transparent', 'transparent', 'transparent', 'transparent', '#0e7490', '#047857', '#5b21b6', '#4d7c0f']}
+            >
+              You won’t watch lectures. You will ship stuff.
+            </ScrollReveal>
+            <p className="mt-5 max-w-lg text-base leading-relaxed text-ink/60 dark:text-paper/60">
               Every Codetern track is a simulated production environment: sprint deliverables, code reviews, live
               incident calls and honest grading on the work you produce — not on seat time.
             </p>
@@ -63,8 +69,8 @@ export function RealWorkSection() {
 
           <ul className="mt-8 space-y-3.5" data-reveal>
             {CHECKPOINTS.map(({ icon: Icon, text }) => (
-              <li key={text} className="flex items-center gap-3 text-sm text-white/70">
-                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-cyan-snap/12 text-cyan-snap">
+              <li key={text} className="flex items-center gap-3 text-sm text-ink/70 dark:text-paper/70">
+                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-cyan-deep/12 text-cyan-deep dark:bg-cyan-snap/12 dark:text-cyan-snap">
                   <Icon size={15} />
                 </span>
                 {text}
@@ -88,7 +94,10 @@ export function RealWorkSection() {
 
           <div className="relative rounded-panel border border-white/10 bg-ink-soft p-6 shadow-float lg:p-8">
             <div className="mb-4 flex items-center justify-between">
-              <Pill tone="mint" dot>Sprint 3 · In review</Pill>
+              <span className="inline-flex items-center gap-2 rounded-bubble border border-mint/30 bg-mint/10 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-mint">
+                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-mint" />
+                Sprint 3 · In review
+              </span>
               <span className="text-xs text-white/55">merged 4.6k lines</span>
             </div>
             <div className="space-y-2 font-mono text-[13px] leading-relaxed">

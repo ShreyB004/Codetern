@@ -8,6 +8,7 @@ import { InterviewStep } from '../components/student/InterviewStep.jsx'
 import { BookingStep } from '../components/student/BookingStep.jsx'
 import { WorkspaceStep } from '../components/student/WorkspaceStep.jsx'
 import { ReferEarn } from '../components/student/ReferEarn.jsx'
+import { GraduatePanel } from '../components/student/GraduatePanel.jsx'
 import { ThemeToggle } from '../components/ui/ThemeToggle.jsx'
 import { useAuth } from '../context/AppContext.jsx'
 import { SkeletonPage } from '../components/ui/Skeleton.jsx'
@@ -74,7 +75,11 @@ export default function DashboardPage() {
             <JourneyRail active={active} onJump={setActive} />
             <div className="mt-5 border-t border-ink/8 pt-4 dark:border-paper/10">
               <p className="text-xs font-semibold text-ink/50 dark:text-paper/50">
-                {candidate?.step >= 5 && candidate?.cert ? 'All five milestones complete 🎉' : `Next: ${STEPS.find((s) => s.key === Math.min(candidate?.step || 1, 5))?.title}`}
+                {candidate?.cert && candidate?.lor
+                  ? 'Graduate 🎓 LOR issued — ready for another internship'
+                  : candidate?.cert
+                    ? 'Certificate issued — LOR unlocks in 24h 🎉'
+                    : `Next: ${STEPS.find((s) => s.key === Math.min(candidate?.step || 1, 5))?.title}`}
               </p>
             </div>
           </div>
@@ -104,6 +109,13 @@ export default function DashboardPage() {
             <ActiveStep active={active} onAdvance={() => setActive((a) => Math.min(a + 1, 5))} />
           </div>
 
+          {/* graduate lounge: certificate + LOR + next internship */}
+          {candidate?.cert && (
+            <div>
+              <GraduatePanel />
+            </div>
+          )}
+
           {/* referral */}
           <div>
             <div className="mb-4 flex items-center gap-2" data-enter>
@@ -123,7 +135,6 @@ export default function DashboardPage() {
 // ── analytics row: KPIs + progress ring + activity ────────
 function AnalyticsGrid() {
   const { candidate } = useAuth()
-  const p = getProgramme(candidate?.domain)
 
   const journeyPct = Math.round(((candidate?.step || 1) - 1) / 4 * 100)
   const quizPct = candidate?.quizScore ?? null

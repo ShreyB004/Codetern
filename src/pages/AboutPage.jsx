@@ -2,20 +2,22 @@ import { Compass, Handshake, Layers, UserCheck, Users } from 'lucide-react'
 import { Page } from '../components/layout/Page.jsx'
 import { SectionHeading } from '../components/ui/SectionHeading.jsx'
 import { useRevealScope } from '../hooks/useReveal.js'
+import { useTheme } from '../context/ThemeContext.jsx'
 import { useCountUp } from '../hooks/useCountUp.js'
 import { COMPANY_STATS } from '../data/portfolio.js'
 import { AuroraBackground } from '../components/ui/backgrounds/AuroraBackground.jsx'
 import { ConstellationBackground } from '../components/ui/backgrounds/ConstellationBackground.jsx'
+import { ScrollReveal } from '../components/ui/effects/ScrollReveal.jsx'
 
 function StatCount({ value, suffix = '', label }) {
   const { ref, value: v } = useCountUp(value)
   return (
     <div ref={ref}>
-      <p className="font-display text-2xl font-extrabold text-neon tabular-nums">
+      <p className="font-display text-2xl font-extrabold text-neon-deep tabular-nums dark:text-neon">
         {v.toLocaleString('en-IN')}
         {suffix}
       </p>
-      <p className="text-[11px] text-white/55">{label}</p>
+      <p className="text-[11px] text-ink/55 dark:text-paper/55">{label}</p>
     </div>
   )
 }
@@ -51,21 +53,26 @@ const PILLARS = [
 export default function AboutPage() {
   const pillarsScope = useRevealScope()
   const mentorScope = useRevealScope()
+  const { isDark } = useTheme()
 
   return (
     <Page className="overflow-hidden">
       {/* hero */}
-      <section className="relative overflow-hidden bg-ink py-24 text-white">
+      <section className="relative overflow-hidden bg-paper py-24 text-ink dark:bg-ink dark:text-paper">
         <div className="grid-lines absolute inset-0 opacity-20" />
-        <AuroraBackground className="opacity-60" />
+        <AuroraBackground />
         <div className="relative mx-auto max-w-4xl px-5 text-center lg:px-8">
-          <span data-enter className="mb-5 inline-block rounded-bubble border border-neon/40 bg-neon/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-neon">
+          <span data-enter className="mb-5 inline-block rounded-bubble border border-neon-deep/40 bg-neon-deep/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-neon-deep dark:border-neon/40 dark:bg-neon/10 dark:text-neon">
             About Codetern
           </span>
-          <h1 data-enter className="font-display text-4xl font-extrabold leading-tight tracking-tight sm:text-6xl">
-            A bootcamp that behaves like <span className="text-gradient-snap">a real job.</span>
-          </h1>
-          <p data-enter className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-white/60 sm:text-lg">
+          <ScrollReveal
+            as="h1"
+            className="font-display text-4xl font-extrabold leading-tight tracking-tight sm:text-6xl"
+            colors={isDark ? ['transparent', 'transparent', 'transparent', 'transparent', 'transparent', '#22d3ee', '#38ffb0', '#7c5cff'] : ['transparent', 'transparent', 'transparent', 'transparent', 'transparent', '#0e7490', '#047857', '#5b21b6']}
+          >
+            A bootcamp that behaves like a real job.
+          </ScrollReveal>
+          <p data-enter className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-ink/60 dark:text-paper/60 sm:text-lg">
             Codetern was built after we watched thousands of “completed” internships never lead anywhere. No real
             code, no review, no proof. We inverted the model: entry is earned, work is graded, and the output is
             verifiable — so a hiring manager sees your ability, not your certificate’s logo.
@@ -103,7 +110,7 @@ export default function AboutPage() {
             {/* stats tile */}
             <div
               data-reveal
-              className="flex flex-col justify-center gap-5 rounded-panel bg-ink p-7 text-white shadow-float"
+              className="flex flex-col justify-center gap-5 rounded-panel bg-mist p-7 text-ink shadow-card dark:bg-ink dark:text-paper dark:shadow-float"
             >
               <h3 className="font-display text-lg font-bold">Proof over promises</h3>
               <div className="grid grid-cols-2 gap-4">
@@ -117,25 +124,25 @@ export default function AboutPage() {
       </section>
 
       {/* mentor network */}
-      <section ref={mentorScope} className="relative overflow-hidden bg-ink py-24 text-white">
+      <section ref={mentorScope} className="relative overflow-hidden bg-paper py-24 text-ink dark:bg-ink dark:text-paper">
         <ConstellationBackground count={44} className="opacity-50" />
         <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-5 lg:grid-cols-2 lg:px-8">
           <div data-reveal>
-            <span className="mb-4 inline-block rounded-bubble border border-cyan-snap/30 bg-cyan-snap/10 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-cyan-snap">
+            <span className="mb-4 inline-block rounded-bubble border border-cyan-deep/30 bg-cyan-deep/10 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-cyan-deep dark:border-cyan-snap/30 dark:bg-cyan-snap/10 dark:text-cyan-snap">
               The mentor network
             </span>
             <h2 className="font-display text-3xl font-bold leading-tight tracking-tight sm:text-5xl">
-              Reviewed by people who <span className="text-gradient-snap">hire for these roles.</span>
+              Reviewed by people who <span className="text-gradient-deep dark:text-gradient-snap">hire for these roles.</span>
             </h2>
-            <p className="mt-5 max-w-lg text-base leading-relaxed text-white/60">
+            <p className="mt-5 max-w-lg text-base leading-relaxed text-ink/60 dark:text-paper/60">
               Your work isn’t graded by test scripts alone. Every sprint ends with a structured review — architecture,
               code quality, communication — from engineers and designers working in the industry today.
             </p>
             <ul className="mt-7 space-y-3.5">
               {['Weekly 1:1 sprint reviews', 'Asynchronous PR feedback within 24h', 'Mock interviews with real hiring rubrics'].map(
                 (t) => (
-                  <li key={t} className="flex items-center gap-3 text-sm text-white/75">
-                    <span className="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-neon/15 text-neon">
+                  <li key={t} className="flex items-center gap-3 text-sm text-ink/75 dark:text-paper/75">
+                    <span className="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-neon-deep/15 text-neon-deep dark:bg-neon/15 dark:text-neon">
                       <Compass size={13} />
                     </span>
                     {t}

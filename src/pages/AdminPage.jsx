@@ -32,14 +32,14 @@ export default function AdminPage() {
     <div className="min-h-screen bg-paper dark:bg-ink">
       <div className="flex min-h-screen">
         {/* sidebar */}
-        <aside className="sticky top-0 flex h-screen w-full max-w-[260px] flex-col border-r border-ink/8 bg-ink text-white dark:border-white/10">
+        <aside className="sticky top-0 flex h-screen w-full max-w-[260px] flex-col border-r border-ink/8 bg-paper text-ink dark:border-white/10 dark:bg-ink dark:text-paper">
           <div className="flex items-center gap-2.5 px-6 py-6">
-            <span className="grid h-9 w-9 place-items-center rounded-xl bg-white/10 text-cyan-snap">
+            <span className="grid h-9 w-9 place-items-center rounded-xl bg-ink/10 text-cyan-deep dark:bg-white/10 dark:text-cyan-snap">
               <LayoutDashboard size={18} />
             </span>
             <div>
               <p className="font-display text-base font-bold leading-none">Codetern</p>
-              <p className="mt-0.5 text-[10px] font-bold uppercase tracking-[0.2em] text-neon">Admin suite</p>
+              <p className="mt-0.5 text-[10px] font-bold uppercase tracking-[0.2em] text-neon-deep dark:text-neon">Admin suite</p>
             </div>
           </div>
 
@@ -52,33 +52,33 @@ export default function AdminPage() {
                   onClick={() => setModule(m.key)}
                   className={cn(
                     'flex items-start gap-3 rounded-2xl px-4 py-3 text-left transition-all',
-                    module === m.key ? 'bg-white/10 text-white' : 'text-white/55 hover:bg-white/5 hover:text-white',
+                    module === m.key ? 'bg-ink/10 text-ink dark:bg-white/10 dark:text-paper' : 'text-ink/55 hover:bg-ink/5 hover:text-ink dark:text-paper/55 dark:hover:bg-white/5 dark:hover:text-paper',
                   )}
                 >
                   <Icon size={18} className="mt-0.5 shrink-0" strokeWidth={2} />
                   <span>
                     <span className="block text-sm font-semibold">{m.label}</span>
-                    <span className="mt-0.5 block text-[11px] leading-tight text-white/40">{m.desc}</span>
+                    <span className="mt-0.5 block text-[11px] leading-tight text-ink/40 dark:text-paper/40">{m.desc}</span>
                   </span>
                 </button>
               )
             })}
           </nav>
 
-          <div className="flex flex-col gap-2 border-t border-white/10 p-4">
+          <div className="flex flex-col gap-2 border-t border-ink/10 p-4 dark:border-white/10">
             <div className="flex items-center justify-between px-2 py-1">
-              <span className="text-[11px] font-bold uppercase tracking-widest text-white/60">Appearance</span>
-              <ThemeToggle onDark />
+              <span className="text-[11px] font-bold uppercase tracking-widest text-ink/60 dark:text-paper/60">Appearance</span>
+              <ThemeToggle />
             </div>
             <button
               onClick={() => navigate('/')}
-              className="rounded-xl px-4 py-2.5 text-left text-sm text-white/60 transition hover:bg-white/5 hover:text-white"
+              className="rounded-xl px-4 py-2.5 text-left text-sm text-ink/60 transition hover:bg-ink/5 hover:text-ink dark:text-paper/60 dark:hover:bg-white/5 dark:hover:text-paper"
             >
               ← View public site
             </button>
             <button
               onClick={logout}
-              className="flex items-center gap-2 rounded-xl px-4 py-2.5 text-left text-sm text-coral transition hover:bg-coral/10"
+              className="flex items-center gap-2 rounded-xl px-4 py-2.5 text-left text-sm text-coral-deep transition hover:bg-coral-deep/10 dark:text-coral dark:hover:bg-coral/10"
             >
               <LogOut size={15} /> Sign out
             </button>

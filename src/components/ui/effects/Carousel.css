@@ -1,0 +1,92 @@
+.carousel {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  perspective: 1000px;
+  overflow: hidden;
+  min-height: 400px;
+  padding: 20px 0 34px;
+}
+
+.carousel-slide {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-slide > * {
+  width: 100%;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.carousel-arrow {
+  position: absolute;
+  top: 46%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgb(11 14 26 / 0.12);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.85);
+  color: var(--color-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.25s, color 0.25s, border-color 0.25s;
+}
+.dark .carousel-arrow {
+  border-color: rgb(255 255 255 / 0.16);
+  background: rgb(255 255 255 / 0.08);
+  color: var(--color-paper);
+}
+.carousel-arrow:hover {
+  background: var(--color-cyan-snap);
+  border-color: var(--color-cyan-snap);
+  color: var(--color-ink);
+}
+.carousel-arrow:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-ink), 0 0 0 4px var(--color-cyan-snap);
+}
+.carousel-arrow.left {
+  left: 8px;
+}
+.carousel-arrow.right {
+  right: 8px;
+}
+
+.carousel-dots {
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  display: flex;
+  gap: 10px;
+}
+.carousel-dot {
+  width: 8px;
+  height: 8px;
+  border: none;
+  border-radius: 999px;
+  background: rgb(11 14 26 / 0.22);
+  cursor: pointer;
+  transition: background 0.3s ease, width 0.3s ease;
+}
+.dark .carousel-dot {
+  background: rgb(255 255 255 / 0.3);
+}
+.carousel-dot.active {
+  background: var(--color-cyan-snap);
+  width: 22px;
+}
+.carousel-dot:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-paper), 0 0 0 4px var(--color-cyan-snap);
+}

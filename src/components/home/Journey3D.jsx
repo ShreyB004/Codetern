@@ -77,7 +77,6 @@ export function Journey3D() {
       })
     }, stage)
     return () => ctx.revert()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const onPointerDown = (e) => {
@@ -119,30 +118,30 @@ export function Journey3D() {
   const go = () => (isAuthenticated ? navigate('/dashboard') : openLogin('signup'))
 
   return (
-    <section className="relative overflow-hidden bg-ink py-24 text-white">
+    <section className="relative overflow-hidden bg-paper py-24 text-ink dark:bg-ink dark:text-paper">
       <div className="grid-lines absolute inset-0 opacity-15" />
       <StarfieldBackground count={90} speed={0.7} className="opacity-45" />
-      <div className="cdt-blob pointer-events-none absolute left-[-10%] top-1/3 h-96 w-96 rounded-full bg-violet-deep/20 blur-[130px]" />
-      <div className="cdt-blob pointer-events-none absolute right-[-10%] top-1/4 h-96 w-96 rounded-full bg-cyan-snap/15 blur-[130px]" style={{ animationDelay: '-8s' }} />
+      <div className="cdt-blob pointer-events-none absolute left-[-10%] top-1/3 h-96 w-96 rounded-full bg-violet-ink/15 blur-[130px] dark:bg-violet-deep/20" />
+      <div className="cdt-blob pointer-events-none absolute right-[-10%] top-1/4 h-96 w-96 rounded-full bg-cyan-deep/15 blur-[130px] dark:bg-cyan-snap/15" style={{ animationDelay: '-8s' }} />
 
       <div className="relative mx-auto grid max-w-7xl items-center gap-16 px-5 lg:grid-cols-2 lg:px-8">
         {/* copy */}
         <div data-enter>
-          <span className="mb-5 inline-block rounded-bubble border border-neon/40 bg-neon/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-neon">
+          <span className="mb-5 inline-block rounded-bubble border border-neon-deep/40 bg-neon-deep/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-neon-deep dark:border-neon/40 dark:bg-neon/10 dark:text-neon">
             A journey in 3D
           </span>
           <h2 className="font-display text-balance text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl">
             Five milestones.
             <br />
-            One <span className="text-gradient-snap">real internship.</span>
+            One <span className="text-gradient-deep dark:text-gradient-snap">real internship.</span>
           </h2>
-          <p className="mt-5 max-w-lg text-base leading-relaxed text-white/60">
+          <p className="mt-5 max-w-lg text-base leading-relaxed text-ink/60 dark:text-paper/60">
             Scroll the stage — and drag it to spin the ring. Each milestone floats at its own depth, exactly like the
             journey: book your seat first, then profile, live workspace, assessment and interview.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             {MILESTONES.map((m) => (
-              <span key={m.step} className="flex items-center gap-1.5 rounded-bubble border border-white/12 bg-white/5 px-3.5 py-1.5 text-xs font-semibold text-white/75">
+              <span key={m.step} className="flex items-center gap-1.5 rounded-bubble border border-ink/12 bg-ink/5 px-3.5 py-1.5 text-xs font-semibold text-ink/75 dark:border-white/12 dark:bg-paper/5 dark:text-paper/75">
                 <span className="grid h-4 w-4 place-items-center rounded-full text-[9px] font-black text-ink" style={{ background: m.color }}>
                   {m.step[1]}
                 </span>

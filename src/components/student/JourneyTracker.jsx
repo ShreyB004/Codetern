@@ -1,16 +1,17 @@
 import { BrainCircuit, CalendarCheck, Check, KeyRound, Rocket, UserCheck, Video } from 'lucide-react'
-import { cn } from '../../lib/utils.js'
+import { cn, domainChip } from '../../lib/utils.js'
 import { useApp } from '../../context/AppContext.jsx'
+import { useTheme } from '../../context/ThemeContext.jsx'
 import { DOMAIN_COLORS } from '../../data/programmes.js'
 import { DomainIcon } from '../ui/Icon.jsx'
 
-// Journey order 2026: book → profile/resume → live workspace → final assessment → final interview
+// Journey order 2026: book → profile/resume → live workspace → final assessment → final interview → certificate
 export const STEPS = [
-  { key: 1, title: 'Book your seat', subtitle: 'Pick a track, batch & apply', icon: CalendarCheck },
+  { key: 1, title: 'Book your seat', subtitle: 'Pick a track, batch & pay', icon: CalendarCheck },
   { key: 2, title: 'Profile & Resume', subtitle: 'Your identity, resume & track', icon: UserCheck },
-  { key: 3, title: 'Live Workspace', subtitle: 'Ship real tasks, earn a certificate', icon: Rocket },
+  { key: 3, title: 'Live Workspace', subtitle: 'Ship tasks, get mentor-reviewed', icon: Rocket },
   { key: 4, title: 'Final Assessment', subtitle: 'Timed baseline screening', icon: BrainCircuit },
-  { key: 5, title: 'Final Interview', subtitle: 'AI-scored mock interview', icon: Video },
+  { key: 5, title: 'Final Interview', subtitle: 'AI-scored — certificate issued here', icon: Video },
 ]
 
 export function JourneyTracker({ active, onJump }) {
@@ -164,10 +165,16 @@ export function StepShell({ step, onBack, children }) {
 
 export function DomainPicker({ value, onChange, compact = false }) {
   const { programmes } = useApp()
+  const { isDark } = useTheme()
   return (
     <div>
-      <p className="mb-3 text-sm font-semibold text-ink dark:text-paper">Choose your track domain</p>
-      <div className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mb-3 flex items-center justify-between gap-3">
+        <p className="text-sm font-semibold text-ink dark:text-paper">Choose your track domain</p>
+        <span className="rounded-bubble bg-ink/5 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-ink/45 dark:bg-paper/5 dark:text-paper/45">
+          {programmes.length} tracks
+        </span>
+      </div>
+      <div className="grid gap-2">
         {programmes.map((p) => {
           const color = DOMAIN_COLORS[p.color]
           const selected = value === p.id
@@ -177,29 +184,43 @@ export function DomainPicker({ value, onChange, compact = false }) {
               type="button"
               onClick={() => onChange(p.id)}
               className={cn(
-                'group relative flex items-center gap-3 overflow-hidden rounded-2xl border px-4 py-3.5 text-left transition-all duration-300',
+                'group relative flex w-full items-center gap-3 rounded-2xl border px-4 py-3 text-left transition-all duration-300',
                 selected
                   ? 'border-cyan-snap/60 bg-cyan-snap/8 ring-4 ring-cyan-snap/10'
-                  : 'border-ink/10 hover:-translate-y-0.5 hover:border-ink/25 dark:border-paper/10 dark:hover:border-paper/30',
+                  : 'border-ink/10 hover:border-cyan-deep/40 hover:bg-cyan-deep/4 dark:border-paper/10 dark:hover:border-cyan-snap/40 dark:hover:bg-cyan-snap/5',
               )}
             >
               <span
                 className="grid h-10 w-10 shrink-0 place-items-center rounded-xl transition-transform duration-300 group-hover:scale-110"
-                style={{ background: color.bg, color: color.fg }}
+                style={domainChip(color, isDark)}
               >
                 <DomainIcon name={p.icon} size={18} />
               </span>
-              <span className="min-w-0">
-                <span className={cn('block truncate text-sm font-semibold', selected ? 'text-ink dark:text-paper' : 'text-ink/75 dark:text-paper/75')}>
+              <span className="min-w-0 flex-1">
+                <span className={cn('block truncate text-sm font-semibold', selected ? 'text-ink dark:text-paper' : 'text-ink/80 dark:text-paper/80')}>
                   {p.title}
                 </span>
-                <span className="block text-[11px] text-ink/45 dark:text-paper/45">{p.sub}</span>
-              </span>
-              {selected && (
-                <span className="absolute right-3 top-3 grid h-5 w-5 place-items-center rounded-full bg-cyan-snap text-[10px] font-black text-ink">
-                  <Check size={12} strokeWidth={3.5} />
+                <span className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5">
+                  <span className="text-[11px] text-ink/45 dark:text-paper/45">{p.sub}</span>
+                  {!compact && (
+                    <span className="hidden items-center gap-1 sm:flex">
+                      {p.stack.slice(0, 3).map((s) => (
+                        <span key={s} className="rounded-full border border-ink/10 px-2 py-0.5 text-[9px] font-semibold text-ink/45 dark:border-paper/10 dark:text-paper/45">
+                          {s}
+                        </span>
+                      ))}
+                    </span>
+                  )}
                 </span>
-              )}
+              </span>
+              <span
+                className={cn(
+                  'grid h-6 w-6 shrink-0 place-items-center rounded-full border-2 transition-all duration-300',
+                  selected ? 'border-cyan-snap bg-cyan-snap text-ink' : 'border-ink/20 text-transparent group-hover:border-cyan-snap/60 dark:border-paper/20',
+                )}
+              >
+                <Check size={12} strokeWidth={3.5} />
+              </span>
             </button>
           )
         })}

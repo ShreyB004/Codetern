@@ -3,12 +3,15 @@ import { ArrowUpRight, Globe, RefreshCcw } from 'lucide-react'
 import { useApp } from '../../context/AppContext.jsx'
 import { useSeats } from '../../context/SeatsContext.jsx'
 import { useToast } from '../../context/ToastContext.jsx'
+import { useTheme } from '../../context/ThemeContext.jsx'
 import { DOMAIN_COLORS } from '../../data/programmes.js'
 import { DomainIcon } from '../ui/Icon.jsx'
+import { domainChip, cn } from '../../lib/utils.js'
 
 export function SeatController() {
   const { programmes } = useApp()
   const { seats, setSeat, scaleAll } = useSeats()
+  const { isDark } = useTheme()
   const { push } = useToast()
   const [factor, setFactor] = useState(1)
   const totalCount = programmes.reduce((acc, p) => acc + Object.keys(seats?.[p.id] || {}).length, 0)
@@ -41,7 +44,7 @@ export function SeatController() {
               step="0.1"
               value={factor}
               onChange={(e) => setFactor(parseFloat(e.target.value))}
-              className="w-full accent-[#22d3ee]"
+              className="w-full accent-cyan-snap"
             />
             <span className="w-16 shrink-0 rounded-xl bg-ink/5 px-3 py-1.5 text-center font-display text-sm font-bold text-ink dark:text-paper">
               ×{factor.toFixed(1)}
@@ -73,7 +76,7 @@ export function SeatController() {
           return (
             <div key={p.id} className="rounded-panel border border-ink/8 bg-white dark:border-paper/10 dark:bg-ink-soft p-5 shadow-card">
               <div className="mb-4 flex items-center gap-3">
-                <span className="grid h-10 w-10 place-items-center rounded-xl" style={{ background: color.bg, color: color.fg }}>
+                <span className="grid h-10 w-10 place-items-center rounded-xl" style={domainChip(color, isDark)}>
                   <DomainIcon name={p.icon} size={18} />
                 </span>
                 <div className="min-w-0">
@@ -123,7 +126,7 @@ function CellEditor({ duration, total, remaining, onChange }) {
         </label>
       </div>
       <div className="mt-2.5 h-1.5 overflow-hidden rounded-full bg-ink/8 dark:bg-paper/8">
-        <div className="h-full rounded-full transition-all" style={{ width: `${total ? (remaining / total) * 100 : 0}%`, background: total && remaining / total <= 0.22 ? '#ff5c7a' : '#38ffb0' }} />
+        <div className={cn('h-full rounded-full transition-all', total && remaining / total <= 0.22 ? 'bg-coral-deep dark:bg-coral' : 'bg-mint-deep dark:bg-mint')} style={{ width: `${total ? (remaining / total) * 100 : 0}%` }} />
       </div>
     </div>
   )

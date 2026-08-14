@@ -2,10 +2,11 @@ import { useState } from 'react'
 import { Check, Edit3, Plus, Save, Trash2, Upload } from 'lucide-react'
 import { useApp } from '../../context/AppContext.jsx'
 import { useToast } from '../../context/ToastContext.jsx'
+import { useTheme } from '../../context/ThemeContext.jsx'
 import { DOMAIN_COLORS, DURATIONS } from '../../data/programmes.js'
 import { DomainIcon } from '../ui/Icon.jsx'
 import { Modal } from '../ui/Modal.jsx'
-import { cn } from '../../lib/utils.js'
+import { cn, domainChip } from '../../lib/utils.js'
 
 const BASE_FORM = {
   id: '',
@@ -20,6 +21,7 @@ const BASE_FORM = {
 
 export function DomainManager() {
   const { programmes, addDomain, updateDomain, removeDomain } = useApp()
+  const { isDark } = useTheme()
   const { push } = useToast()
   const [editing, setEditing] = useState(null)
   const [creating, setCreating] = useState(false)
@@ -61,7 +63,7 @@ export function DomainManager() {
           return (
             <div key={p.id} className="rounded-panel border border-ink/8 bg-white dark:border-paper/10 dark:bg-ink-soft p-5 shadow-card">
               <div className="flex items-start gap-3">
-                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl" style={{ background: color.bg, color: color.fg }}>
+                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl" style={domainChip(color, isDark)}>
                   <DomainIcon name={p.icon} size={20} />
                 </span>
                 <div className="min-w-0 flex-1">

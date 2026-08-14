@@ -73,7 +73,7 @@ function Node({ milestone, index, coreRef }) {
         <div ref={labelRef} className="pointer-events-none select-none whitespace-nowrap">
           <span className="flex items-center gap-1.5 rounded-bubble border border-white/12 bg-ink-soft/80 px-3 py-1.5 text-[10px] font-semibold text-white/85 backdrop-blur-md">
             <span
-              className="grid h-4 w-4 place-items-center rounded-full text-[9px] font-black text-ink dark:text-paper"
+              className="grid h-4 w-4 place-items-center rounded-full text-[9px] font-black text-ink"
               style={{ background: milestone.color }}
             >
               {milestone.step[1]}
@@ -283,7 +283,7 @@ export default function JourneyScene() {
         <Scene controller={controller.current} />
       </Canvas>
 
-      <span className="pointer-events-none absolute bottom-1 left-1/2 flex -translate-x-1/2 items-center gap-1.5 rounded-bubble border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-semibold uppercase tracking-widest text-white/40 backdrop-blur-sm">
+      <span className="pointer-events-none absolute bottom-1 left-1/2 flex -translate-x-1/2 items-center gap-1.5 rounded-bubble border border-ink/12 bg-ink/5 px-3 py-1 text-[10px] font-semibold uppercase tracking-widest text-ink/40 backdrop-blur-sm dark:border-white/10 dark:bg-white/5 dark:text-paper/40">
         <MoveHorizontal size={11} /> Drag to spin
       </span>
     </div>

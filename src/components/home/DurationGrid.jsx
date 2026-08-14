@@ -65,7 +65,7 @@ export function DurationGrid() {
               Programme durations
             </span>
             <h2 className="max-w-2xl font-display text-3xl font-bold leading-tight tracking-tight text-ink dark:text-paper sm:text-5xl">
-              Pick your pace — <span className="text-gradient-snap">1, 2, 3 or 6 months</span> of real work.
+              Pick your pace — <span className="text-gradient-deep dark:text-gradient-snap">1, 2, 3 or 6 months</span> of real work.
             </h2>
           </div>
           <Button variant="ghost" className="group" onClick={() => navigate('/domains')}>
@@ -120,7 +120,7 @@ export function DurationGrid() {
                       </span>
                     </div>
                     {featured === d.months && (
-                      <div className="absolute right-4 top-4 rounded-bubble bg-neon px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-ink dark:text-paper">
+                      <div className="absolute right-4 top-4 rounded-bubble bg-neon px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-ink">
                         Most chosen
                       </div>
                     )}

@@ -1,0 +1,13 @@
+.scroll-reveal .sr-mask {
+  display: inline-block;
+  vertical-align: bottom;
+  overflow: hidden;
+  /* headroom so descenders (g, y, p) are never clipped while idle */
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+
+.scroll-reveal .sr-word {
+  display: inline-block;
+  will-change: transform;
+}

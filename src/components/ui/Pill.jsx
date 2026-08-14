@@ -10,7 +10,7 @@ export function Pill({ children, className, tone = 'ink', dot }) {
         tone === 'neon' && 'border-neon-deep/40 bg-neon-deep/10 text-neon-deep dark:border-neon/40 dark:bg-neon/10 dark:text-neon',
         tone === 'mint' && 'border-mint-deep/30 bg-mint-deep/10 text-mint-deep dark:border-mint/30 dark:bg-mint/10 dark:text-mint',
         tone === 'coral' && 'border-coral-deep/40 bg-coral-deep/10 text-coral-deep dark:border-coral/40 dark:bg-coral/10 dark:text-coral',
-        tone === 'dark' && 'border-white/15 bg-white/5 text-white/90',
+        tone === 'dark' && 'border-ink/15 bg-ink/5 text-ink/90 dark:border-white/15 dark:bg-paper/5 dark:text-paper/90',
         className,
       )}
     >

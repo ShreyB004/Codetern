@@ -13,17 +13,17 @@ export default function PortfolioPage() {
 
   return (
     <Page className="overflow-hidden">
-      <section className="relative overflow-hidden bg-ink py-20 text-white">
+      <section className="relative overflow-hidden bg-paper py-20 text-ink dark:bg-ink dark:text-paper">
         <div className="grid-lines absolute inset-0 opacity-20" />
         <AuroraBackground className="opacity-50" />
         <div className="relative mx-auto max-w-4xl px-5 text-center lg:px-8">
-          <span data-enter className="mb-5 inline-block rounded-bubble border border-neon/40 bg-neon/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-neon">
+          <span data-enter className="mb-5 inline-block rounded-bubble border border-neon-deep/40 bg-neon-deep/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-neon-deep dark:border-neon/40 dark:bg-neon/10 dark:text-neon">
             Live project gallery
           </span>
           <h1 data-enter className="font-display text-4xl font-extrabold leading-tight tracking-tight sm:text-6xl">
-            Work our interns <span className="text-gradient-snap">actually shipped.</span>
+            Work our interns <span className="text-gradient-pop-deep dark:text-gradient-pop">actually shipped.</span>
           </h1>
-          <p data-enter className="mx-auto mt-5 max-w-2xl text-base text-white/60">
+          <p data-enter className="mx-auto mt-5 max-w-2xl text-base text-ink/60 dark:text-paper/60">
             These aren’t tutorials and there’s no “demo project”. Each outcome below ran a real sprint loop — tickets,
             reviews and releases — the same way you’ll work inside Codetern.
           </p>

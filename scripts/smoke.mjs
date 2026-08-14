@@ -13,8 +13,13 @@ function storage(entries = {}) {
   return { getItem: (k) => (map.has(k) ? map.get(k) : null), setItem: (k, v) => map.set(k, String(v)) }
 }
 
-globalThis.window = { matchMedia: () => ({ matches: true }) }
+globalThis.window = {
+  matchMedia: () => ({ matches: true }),
+  addEventListener: () => {},
+  removeEventListener: () => {},
+}
 window.scrollTo = () => {}
+window.document = { documentElement: { addEventListener: () => {}, removeEventListener: () => {} } }
 
 const baseCandidate = (id, name, extra = {}) => ({
   id,
@@ -47,24 +52,25 @@ const scenarios = [
       ['/domains', ['Fourteen ways', 'Career tracks']],
       ['/portfolio', ['Live project gallery', 'actually shipped']],
       ['/certification', ['Employer verification', 'unique ID']],
+      ['/pricing', ['One flat batch price', 'Pick a domain', 'Book this batch', 'launch marker']],
       ['/contact', ['Talk to a', 'mentor']],
     ],
   },
   {
     name: 'student',
     storage: {
-      'codetern:current:v1': JSON.stringify('u-smoke'),
-      'codetern:users:v1': JSON.stringify([{ id: 'u-smoke', name: 'Smoke Tester', email: 'u-smoke@codetern.dev', password: 'x', role: 'student', createdAt: '2026-01-01' }]),
-      'codetern:candidates:v1': JSON.stringify([baseCandidate('u-smoke', 'Smoke Tester')]),
+      'codetern:current:v2': JSON.stringify('u-smoke'),
+      'codetern:users:v2': JSON.stringify([{ id: 'u-smoke', name: 'Smoke Tester', email: 'u-smoke@codetern.dev', password: 'x', role: 'student', createdAt: '2026-01-01' }]),
+      'codetern:candidates:v2': JSON.stringify([baseCandidate('u-smoke', 'Smoke Tester')]),
     },
-    routes: [['/dashboard', ['Welcome back', 'Candidate journey', 'Profile', 'Resume', 'Screening Quiz']]],
+    routes: [['/dashboard', ['Welcome back', 'Book your seat', 'Choose your track domain']]],
   },
   {
     name: 'student-advanced',
     storage: {
-      'codetern:current:v1': JSON.stringify('u-adv'),
-      'codetern:users:v1': JSON.stringify([{ id: 'u-adv', name: 'Advanced Tester', email: 'u-adv@codetern.dev', password: 'x', role: 'student', createdAt: '2026-01-01' }]),
-      'codetern:candidates:v1': JSON.stringify([
+      'codetern:current:v2': JSON.stringify('u-adv'),
+      'codetern:users:v2': JSON.stringify([{ id: 'u-adv', name: 'Advanced Tester', email: 'u-adv@codetern.dev', password: 'x', role: 'student', createdAt: '2026-01-01' }]),
+      'codetern:candidates:v2': JSON.stringify([
         baseCandidate('u-adv', 'Advanced Tester', {
           step: 5,
           quizScore: 87,
@@ -75,17 +81,18 @@ const scenarios = [
           quiz: { bank: 'mern', score: 87, passed: true },
           interview: { score: 84, done: true },
           booking: { domain: 'mern', duration: 3 },
+          cert: { id: 'CDT-2026-9999', at: '2026-07-01' },
         }),
       ]),
     },
     routes: [
-      ['/dashboard', ['Welcome back', 'Live project checklist', 'Certificate']],
+      ['/dashboard', ['Welcome back', 'Certificate issued', 'Letter of Recommendation']],
       ['/certification', ['Employer verification', 'Not sure what to enter']],
     ],
   },
   {
     name: 'admin',
-    storage: { 'codetern:current:v1': JSON.stringify('admin-1') },
+    storage: { 'codetern:current:v2': JSON.stringify('admin-1') },
     routes: [['/admin', ['Admin suite', 'Candidate Roster', 'Seat Controller']]],
   },
 ]

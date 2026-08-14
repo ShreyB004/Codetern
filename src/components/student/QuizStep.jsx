@@ -141,7 +141,7 @@ export function QuizStep({ onComplete }) {
                 key={i}
                 className={cn(
                   'h-2 flex-1 rounded-full',
-                  a === questions[i].answer ? 'bg-mint' : 'bg-coral',
+                  a === questions[i].answer ? 'bg-mint-deep dark:bg-mint' : 'bg-coral-deep dark:bg-coral',
                 )}
               />
             ))}

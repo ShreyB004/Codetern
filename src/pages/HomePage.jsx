@@ -5,6 +5,7 @@ import { MetricsBar } from '../components/home/MetricsBar.jsx'
 import { DurationGrid } from '../components/home/DurationGrid.jsx'
 import { RealWorkSection } from '../components/home/RealWorkSection.jsx'
 import { Journey3D } from '../components/home/Journey3D.jsx'
+import { StepsCarousel } from '../components/home/StepsCarousel.jsx'
 import { ProgrammeShowcase } from '../components/home/ProgrammeShowcase.jsx'
 import { Testimonials } from '../components/home/Testimonials.jsx'
 import { CTABand } from '../components/home/CTABand.jsx'
@@ -18,6 +19,7 @@ export default function HomePage() {
       <DurationGrid />
       <RealWorkSection />
       <Journey3D />
+      <StepsCarousel />
       <ProgrammeShowcase />
       <Testimonials />
       <CTABand />

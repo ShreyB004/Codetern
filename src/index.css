@@ -8,9 +8,9 @@
   --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
   --font-grotesk: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
 
-  /* core palette */
-  --color-ink: #0b0e1a;
-  --color-ink-soft: #11152a;
+  /* core palette — violet-charcoal ink family (pairs with the WebGL backdrops) */
+  --color-ink: #0a0916;
+  --color-ink-soft: #121024;
   --color-paper: #f6f7fb;
   --color-mist: #e9ecf4;
 
@@ -19,6 +19,8 @@
   --color-neon: #b4ff39;
   --color-mint: #38ffb0;
   --color-violet-deep: #7c5cff;
+  --color-violet-electric: #5227ff;
+  --color-pink-pop: #ff5fa8;
   --color-coral: #ff5c7a;
 
   /* text-safe accents — dark enough for light backgrounds (WCAG 4.5:1) */
@@ -99,10 +101,126 @@ body {
     box-shadow: 0 0 0 2px var(--color-paper), 0 0 0 4px var(--color-cyan-snap);
   }
 }
+
+/* text selection — brand neon on ink */
+::selection {
+  background: var(--color-neon);
+  color: var(--color-ink);
+}
 @utility focus-ring-dark {
   outline: none;
   &:focus-visible {
     box-shadow: 0 0 0 2px var(--color-ink), 0 0 0 4px var(--color-neon);
+  }
+}
+
+/* keyboard-focus fallback for raw interactive elements (WCAG 2.4.7) */
+button:focus-visible:not(.focus-ring):not(.focus-ring-dark),
+a:focus-visible:not(.focus-ring):not(.focus-ring-dark),
+select:focus-visible,
+textarea:focus-visible,
+[role='button']:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--color-cyan-snap);
+  outline-offset: 2px;
+}
+input:focus-visible:not(.focus-ring):not(.focus-ring-dark) {
+  outline: 2px solid var(--color-cyan-snap);
+  outline-offset: 1px;
+}
+
+/* slim scrollbar for scrollable lists (domain picker, chat logs) */
+.cdt-scroll-slim {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(124 92 255 / 0.35) transparent;
+}
+.cdt-scroll-slim::-webkit-scrollbar {
+  width: 6px;
+}
+.cdt-scroll-slim::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgb(124 92 255 / 0.35);
+}
+.cdt-scroll-slim::-webkit-scrollbar-thumb:hover {
+  background: rgb(124 92 255 / 0.55);
+}
+
+/* pop-in for selection badges / micro confirmations */
+@keyframes cdt-pop {
+  0% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.animate-in {
+  animation: cdt-pop 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* gentle float for decorative orbs / sparkles */
+@keyframes cdt-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(0, -14px, 0) scale(1.05);
+  }
+}
+.cdt-float {
+  animation: cdt-float 7s ease-in-out infinite;
+}
+.cdt-float-slow {
+  animation: cdt-float 11s ease-in-out infinite;
+}
+.cdt-float-delayed {
+  animation-delay: -3.5s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .cdt-float,
+  .cdt-float-slow {
+    animation: none;
+  }
+}
+
+/* animated gradient underline that sweeps in on focus (peer) */
+.cdt-underline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #22d3ee, #7c5cff, #38ffb0);
+  background-size: 200% 100%;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+  opacity: 0;
+}
+.peer:focus ~ .cdt-underline {
+  transform: scaleX(1);
+  opacity: 1;
+  animation: cdt-underline-slide 1.6s linear infinite;
+}
+@keyframes cdt-underline-slide {
+  to {
+    background-position: 200% 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cdt-underline {
+    transition: opacity 0.2s ease;
+    animation: none;
+  }
+  .peer:focus ~ .cdt-underline {
+    background-position: initial;
   }
 }
 
@@ -204,6 +322,9 @@ body {
   will-change: transform;
   mix-blend-mode: screen;
 }
+.cdt-aurora-blend-normal {
+  mix-blend-mode: normal;
+}
 .cdt-aurora-alt {
   animation: cdt-aurora-drift-alt 30s ease-in-out infinite;
   mix-blend-mode: screen;
@@ -231,6 +352,19 @@ body {
     opacity: 0;
   }
 }
+
+/* beam colors — theme-aware (light = deep accents, dark = bright accents) */
+:root {
+  --beam-a: rgb(14 116 144 / 0.35);
+  --beam-b: rgb(91 33 182 / 0.35);
+  --beam-glow: rgb(14 116 144 / 0.14);
+}
+.dark {
+  --beam-a: rgb(34 211 238 / 0.5);
+  --beam-b: rgb(124 92 255 / 0.5);
+  --beam-glow: rgb(34 211 238 / 0.18);
+}
+
 .cdt-beam {
   position: absolute;
   top: 0;
@@ -247,12 +381,12 @@ body {
   background: linear-gradient(
     to bottom,
     transparent,
-    rgb(34 211 238 / 0.5) 35%,
-    rgb(124 92 255 / 0.5) 65%,
+    var(--beam-a) 35%,
+    var(--beam-b) 65%,
     transparent
   );
   filter: blur(3px);
-  box-shadow: 0 0 12px 3px rgb(34 211 238 / 0.18);
+  box-shadow: 0 0 12px 3px var(--beam-glow);
   border-radius: 999px;
 }
 
@@ -393,6 +527,27 @@ body {
 
 @utility text-gradient-snap {
   background: linear-gradient(100deg, var(--color-cyan-snap), var(--color-mint) 60%, var(--color-violet-deep));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility text-gradient-pop {
+  background: linear-gradient(100deg, var(--color-pink-pop), var(--color-violet-deep) 55%, var(--color-cyan-snap));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility text-gradient-deep {
+  background: linear-gradient(100deg, var(--color-cyan-deep), var(--color-mint-deep) 60%, var(--color-violet-ink));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility text-gradient-pop-deep {
+  background: linear-gradient(100deg, var(--color-coral-deep), var(--color-violet-ink) 55%, var(--color-cyan-deep));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;

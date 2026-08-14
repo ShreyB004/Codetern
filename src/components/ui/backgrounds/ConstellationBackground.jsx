@@ -1,14 +1,21 @@
 import { useRef } from 'react'
 import { useCanvasLayer } from '../../../hooks/useCanvasLayer.js'
+import { useTheme } from '../../../context/ThemeContext.jsx'
 import { cn } from '../../../lib/utils.js'
 
 /**
  * ConstellationBackground — canvas of nodes connected by thin lines
  * when within range (nodes + links), drifting slowly.
+ * Theme-adaptive: dark = cyan nodes / white links, light = violet nodes /
+ * violet links (reads on both paper and ink).
  */
-export function ConstellationBackground({ className, count = 42, linkDistance = 130, nodeColor = '#22d3ee', linkColor = '255,255,255' }) {
+export function ConstellationBackground({ className, count = 42, linkDistance = 130, nodeColor, linkColor, alpha }) {
+  const { isDark } = useTheme()
   const nodes = useRef([])
   const canvasRef = useCanvasLayer((ctx, w, h, dpr, now, dt) => {
+    const resolvedNode = nodeColor ?? (isDark ? '#22d3ee' : '#7c5cff')
+    const resolvedLink = linkColor ?? (isDark ? '255,255,255' : '124,92,255')
+    const linkAlpha = alpha ?? (isDark ? 0.22 : 0.14)
     if (nodes.current.length !== count) {
       nodes.current = Array.from({ length: count }, () => ({
         x: Math.random() * w,
@@ -40,18 +47,18 @@ export function ConstellationBackground({ className, count = 42, linkDistance = 
         const dy = a.y - b.y
         const dist = Math.hypot(dx, dy)
         if (dist < linkDistance) {
-          const alpha = (1 - dist / linkDistance) * 0.22
+          const alpha = (1 - dist / linkDistance) * linkAlpha
           ctx.beginPath()
           ctx.moveTo(a.x, a.y)
           ctx.lineTo(b.x, b.y)
-          ctx.strokeStyle = `rgba(${linkColor},${alpha})`
+          ctx.strokeStyle = `rgba(${resolvedLink},${alpha})`
           ctx.lineWidth = 0.7 * dpr
           ctx.stroke()
         }
       }
       ctx.beginPath()
       ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2)
-      ctx.fillStyle = nodeColor
+      ctx.fillStyle = resolvedNode
       ctx.globalAlpha = a.a
       ctx.fill()
     }

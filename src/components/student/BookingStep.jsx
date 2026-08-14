@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { ArrowRight, BadgeCheck, CalendarCheck, GraduationCap, Mail, Phone, ShieldCheck, Sparkles, User as UserIcon } from 'lucide-react'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { StepShell, DomainPicker } from './JourneyTracker.jsx'
 import { Button } from '../ui/Button.jsx'
 import { SeatCounter } from '../ui/SeatCounter.jsx'
@@ -9,16 +9,19 @@ import { useApp } from '../../context/AppContext.jsx'
 import { useSeats } from '../../context/SeatsContext.jsx'
 import { useToast } from '../../context/ToastContext.jsx'
 import { getProgramme, DOMAIN_COLORS } from '../../data/programmes.js'
+import { batchPrice } from '../../data/plans.js'
 import { cn } from '../../lib/utils.js'
 
 const PERKS = ['Live seat counter', 'Free retake if needed', 'Refer & earn ₹50 cash']
 
 export function BookingStep({ onComplete }) {
-  const { candidate, saveBooking } = useApp()
-  const { getRemaining, getTotal, bookSeat } = useSeats()
+  const { candidate, setBookingDraft } = useApp()
+  const { getRemaining, getTotal } = useSeats()
   const { push } = useToast()
+  const navigate = useNavigate()
   const [params] = useSearchParams()
   const preselect = params.get('d')
+  const preselectedDur = Number(params.get('dur'))
 
   const programme = candidate?.domain ? getProgramme(candidate.domain) : null
   const [domain, setDomain] = useState(programme?.id || preselect || '')
@@ -30,13 +33,13 @@ export function BookingStep({ onComplete }) {
     college: '',
     start: '',
   })
-  const [confirmed, setConfirmed] = useState(candidate?.booking ? true : false)
-
+  const confirmed = !!candidate?.booking
   useEffect(() => {
     if (preselect && !programme) {
-      setDuration(null)
+      const available = getProgramme(preselect)
+      setDuration(available?.durations.includes(preselectedDur) ? preselectedDur : available?.durations[0] || null)
     }
-  }, [preselect, programme])
+  }, [preselect, preselectedDur, programme])
 
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }))
   const detailsValid = form.name.trim() && form.email.trim() && form.phone.trim().length >= 7
@@ -50,17 +53,15 @@ export function BookingStep({ onComplete }) {
     if (!domain) return push('Choose your domain track first', 'error')
     if (!duration) return push('Pick a batch duration', 'error')
     if (!detailsValid) return push('Add your name, email and phone to lock the seat', 'error')
-    const ok = bookSeat(domain, duration)
-    if (!ok) return push('Seats sold out for that batch — try another duration.', 'error')
-    const p = getProgramme(domain)
-    saveBooking(domain, duration, { name: form.name.trim(), email: form.email.trim(), phone: form.phone.trim(), college: form.college.trim(), start: form.start })
-    setConfirmed(true)
-    push(`Seat locked — ${p?.title} · ${duration} month${duration > 1 ? 's' : ''}`, 'success')
+    setBookingDraft({ domain, duration, form: { ...form } })
+    navigate(`/checkout?d=${domain}&dur=${duration}`)
   }
+
+  const selected = duration ? getProgramme(domain) : null
+  const price = duration ? batchPrice(duration) : null
 
   if (confirmed) {
     const p = getProgramme(domain)
-    const color = p ? DOMAIN_COLORS[p.color] : null
     return (
       <StepShell step={1}>
         <div className="flex flex-col items-center py-4 text-center">
@@ -72,7 +73,7 @@ export function BookingStep({ onComplete }) {
               <Sparkles size={15} />
             </span>
           </span>
-          <h3 className="mt-6 font-display text-3xl font-bold text-ink dark:text-paper">Seat locked — let's build</h3>
+          <h3 className="mt-6 font-display text-3xl font-bold text-ink dark:text-paper">Seat locked — let&apos;s build</h3>
           <p className="mt-2 max-w-md text-sm text-ink/55 dark:text-paper/55">
             Your seat in the <span className="font-bold text-ink dark:text-paper">{p?.title}</span> ·{' '}
             {candidate.booking?.duration || duration}-month batch is confirmed. Next: complete your profile & resume to unlock the live workspace.
@@ -105,6 +106,24 @@ export function BookingStep({ onComplete }) {
       {/* ── domain track ── */}
       <DomainPicker value={domain} onChange={(id) => { setDomain(id); setDuration(null) }} />
 
+      {/* ── batch price ── */}
+      {domain && (
+        <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 rounded-2xl border border-ink/10 bg-paper/60 px-5 py-4 dark:border-paper/10 dark:bg-ink" data-enter>
+          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl" style={(() => { const c = DOMAIN_COLORS[getProgramme(domain).color]; return { background: c.bg } })()}>
+            <DomainIcon name={getProgramme(domain).icon} size={18} />
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-bold text-ink dark:text-paper">{getProgramme(domain).title}</p>
+            <p className="text-[11px] text-ink/55 dark:text-paper/55">Full batch price — no monthly billing. Longer batches save more.</p>
+          </div>
+          <p className="text-right">
+            <span className="mr-1.5 text-sm font-bold text-ink/35 dark:text-paper/35 line-through">₹{batchPrice(1).original}</span>
+            <span className="font-display text-2xl font-extrabold text-ink dark:text-paper">₹{batchPrice(1).total}</span>
+            <span className="ml-1 block text-[11px] font-semibold text-ink/45 dark:text-paper/45">whole batch · save ₹{batchPrice(1).saved}</span>
+          </p>
+        </div>
+      )}
+
       {/* ── duration ── */}
       {domain && (
         <div className="mt-8" data-enter>
@@ -118,6 +137,7 @@ export function BookingStep({ onComplete }) {
               const total = getTotal(domain, d)
               const soldOut = remaining <= 0
               const active = duration === d
+              const totalPrice = batchPrice(d)
               return (
                 <button
                   key={d}
@@ -135,10 +155,20 @@ export function BookingStep({ onComplete }) {
                       Filled
                     </span>
                   )}
+                  {totalPrice.saved > 0 && !soldOut && (
+                    <span className="absolute right-3 top-3 rounded-bubble bg-mint-deep/10 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-mint-deep dark:bg-mint/10 dark:text-mint">
+                      Save ₹{totalPrice.saved}
+                    </span>
+                  )}
                   <p className="font-display text-3xl font-extrabold text-ink dark:text-paper">
                     {d}<span className="ml-1 text-sm font-bold text-ink/40 dark:text-paper/40">month{d > 1 ? 's' : ''}</span>
                   </p>
-                  <div className="mt-4">
+                  <div className="mt-3 flex items-baseline gap-1.5">
+                    <span className="text-xs font-bold text-ink/35 dark:text-paper/35 line-through">₹{totalPrice.original}</span>
+                    <span className="font-display text-lg font-extrabold text-cyan-deep dark:text-cyan-snap">₹{totalPrice.total}</span>
+                  </div>
+                  <span className="text-[10px] font-semibold text-ink/40 dark:text-paper/40">whole batch</span>
+                  <div className="mt-3">
                     <SeatCounter remaining={remaining} total={total} duration={d} compact />
                   </div>
                   {!soldOut && (
@@ -188,10 +218,19 @@ export function BookingStep({ onComplete }) {
             </span>
           ))}
         </div>
-        <Button size="lg" variant={domain && duration && detailsValid ? 'neon' : 'primary'} onClick={book} disabled={!domain || !duration}>
-          <CalendarCheck size={17} />
-          {!domain ? 'Pick a track first' : !duration ? 'Pick a batch' : 'Lock my seat'}
-        </Button>
+        <div className="flex items-center gap-4">
+          {price && (
+            <p className="text-right">
+              <span className="mr-1.5 text-sm font-bold text-ink/35 dark:text-paper/35 line-through">₹{price.original}</span>
+              <span className="font-display text-2xl font-extrabold text-ink dark:text-paper">₹{price.total}</span>
+              <span className="ml-1 block text-[11px] font-semibold text-ink/45 dark:text-paper/45">{duration}mo · {selected?.title}</span>
+            </p>
+          )}
+          <Button size="lg" variant={domain && duration && detailsValid ? 'neon' : 'primary'} onClick={book} disabled={!domain || !duration}>
+            <CalendarCheck size={17} />
+            {!domain ? 'Pick a track first' : !duration ? 'Pick a batch' : 'Continue to payment'}
+          </Button>
+        </div>
       </div>
 
       {domain && (

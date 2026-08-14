@@ -86,6 +86,9 @@ export function AppProvider({ children }) {
         interview: null,
         booking: null,
         cert: null,
+        lor: null,
+        payment: null,
+        history: [],
         workspace: null,
         referralCode: code,
         referredBy: referred ? referred.id : null,
@@ -214,6 +217,84 @@ export function AppProvider({ children }) {
     return certId
   }, [candidate, updateCandidate])
 
+  // LOR unlocks 24h after the certificate is issued.
+  const LOR_UNLOCK_MS = 24 * 60 * 60 * 1000
+
+  const requestLor = useCallback(() => {
+    if (!candidate?.cert) return null
+    if (Date.now() - new Date(candidate.cert.at).getTime() < LOR_UNLOCK_MS) return null
+    const lorId = `LOR-2026-${String(2000 + (candidate.id.charCodeAt(0) * 11 + candidate.id.length) % 7999).padStart(4, '0')}`
+    updateCandidate(candidate.id, { lor: { id: lorId, at: new Date().toISOString(), status: 'issued' } })
+    return lorId
+  }, [candidate, updateCandidate, LOR_UNLOCK_MS])
+
+  // Graduate flow: archive the finished internship, start a fresh seat booking.
+  const startNextInternship = useCallback(() => {
+    if (!candidate) return null
+    const entry = {
+      domain: candidate.domain,
+      domainTitle: candidate.domainTitle,
+      duration: candidate.booking?.duration || null,
+      cert: candidate.cert,
+      lor: candidate.lor,
+      completedAt: new Date().toISOString(),
+    }
+    updateCandidate(candidate.id, {
+      history: [...(candidate.history || []), entry],
+      domain: null,
+      domainTitle: null,
+      step: 1,
+      quizScore: null,
+      quizPassed: false,
+      interviewScore: null,
+      status: 'pending',
+      profile: null,
+      quiz: null,
+      interview: null,
+      booking: null,
+      cert: null,
+      lor: null,
+      payment: null,
+      workspace: null,
+    })
+    return entry
+  }, [candidate, updateCandidate])
+
+  // ── live project evidence: student submits → admin reviews ──
+  const submitTaskWork = useCallback(
+    (taskIndex, evidence) => {
+      if (!candidate?.workspace) return
+      const next = {
+        ...candidate.workspace,
+        tasks: candidate.workspace.tasks.map((t, i) =>
+          i === taskIndex ? { ...t, done: false, status: 'pending', evidence: { ...evidence, at: new Date().toISOString() }, review: null } : t,
+        ),
+      }
+      updateWorkspace(next)
+    },
+    [candidate, updateWorkspace],
+  )
+
+  const reviewTaskWork = useCallback(
+    (candidateId, taskIndex, verdict, note = '') => {
+      const c = candidates.find((x) => x.id === candidateId)
+      if (!c?.workspace) return
+      const approved = verdict === 'approve'
+      const tasks = c.workspace.tasks.map((t, i) =>
+        i === taskIndex
+          ? { ...t, done: approved, status: approved ? 'approved' : 'revision', review: { verdict, note, at: new Date().toISOString() } }
+          : t,
+      )
+      const allDone = tasks.length > 0 && tasks.every((t) => t.done)
+      updateCandidate(candidateId, { workspace: { ...c.workspace, tasks }, step: allDone ? Math.max(c.step, 3) : c.step })
+    },
+    [candidates, updateCandidate],
+  )
+
+  // ── checkout draft (step-1 → /checkout handoff) ──────────
+  const [bookingDraft, setBookingDraft] = useState(() => load('bookingdraft:v1', null))
+  useEffect(() => save('bookingdraft:v1', bookingDraft), [bookingDraft])
+
   // ── admin: programmes ───────────────────────────────────
   const addDomain = useCallback((domain) => {
     setProgrammes((prev) => [...prev, domain])
@@ -305,6 +386,12 @@ export function AppProvider({ children }) {
       saveInterview,
       saveBooking,
       claimCert,
+      requestLor,
+      startNextInternship,
+      submitTaskWork,
+      reviewTaskWork,
+      bookingDraft,
+      setBookingDraft,
       updateWorkspace,
       creditWallet,
       candidates,
@@ -340,6 +427,12 @@ export function AppProvider({ children }) {
       saveInterview,
       saveBooking,
       claimCert,
+      requestLor,
+      startNextInternship,
+      submitTaskWork,
+      reviewTaskWork,
+      bookingDraft,
+      setBookingDraft,
       updateWorkspace,
       creditWallet,
       candidates,

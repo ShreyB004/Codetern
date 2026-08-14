@@ -1,14 +1,16 @@
 import { useMemo, useState } from 'react'
-import { BookOpen, CheckCircle2, ChevronDown, Save, Search, Settings2, Trash2, X } from 'lucide-react'
+import { BookOpen, CheckCircle2, ChevronDown, ExternalLink, Save, Search, Send, Settings2, Trash2, X } from 'lucide-react'
 import { useApp } from '../../context/AppContext.jsx'
 import { useToast } from '../../context/ToastContext.jsx'
+import { useTheme } from '../../context/ThemeContext.jsx'
 import { getProgramme, DOMAIN_COLORS } from '../../data/programmes.js'
 import { Modal } from '../ui/Modal.jsx'
-import { cn } from '../../lib/utils.js'
+import { cn, domainChip } from '../../lib/utils.js'
 
 export function WorkspaceManager() {
-  const { candidates, programmes, updateWorkspaceFor, workspaceDefaults, updateWorkspaceDefault } = useApp()
+  const { candidates, programmes, updateWorkspaceFor, workspaceDefaults, reviewTaskWork } = useApp()
   const { push } = useToast()
+  const { isDark } = useTheme()
 
   const [domain, setDomain] = useState('all')
   const [q, setQ] = useState('')
@@ -88,6 +90,7 @@ export function WorkspaceManager() {
           const color = p ? DOMAIN_COLORS[p.color] : null
           const ws = resolveWorkspace(c)
           const doneCount = ws?.tasks?.filter((t) => t.done).length || 0
+          const pendingCount = ws?.tasks?.filter((t) => t.status === 'pending').length || 0
           const total = ws?.tasks?.length || 0
           const open = expanded === c.id
           const isSel = selected.includes(c.id)
@@ -98,12 +101,12 @@ export function WorkspaceManager() {
                   type="checkbox"
                   checked={isSel}
                   onChange={() => toggleSelect(c.id)}
-                  className="h-4 w-4 accent-[#22d3ee]"
+                  className="h-4 w-4 accent-cyan-snap"
                   aria-label={`Select ${c.name}`}
                 />
                 <span
                   className="grid h-10 w-10 shrink-0 place-items-center rounded-xl text-xs font-bold"
-                  style={{ background: color?.bg || 'rgba(34,211,238,0.12)', color: color?.fg || '#22d3ee' }}
+                  style={domainChip(color || { bg: 'rgba(34,211,238,0.12)', fg: '#22d3ee' }, isDark)}
                 >
                   {c.name.split(' ').map((w) => w[0]).slice(0, 2).join('')}
                 </span>
@@ -112,6 +115,11 @@ export function WorkspaceManager() {
                   <p className="text-xs text-ink/45 dark:text-paper/45">{c.email} · {p?.title || 'No domain'}</p>
                 </div>
                 <div className="flex items-center gap-4">
+                  {pendingCount > 0 && (
+                    <span className="flex items-center gap-1.5 rounded-bubble border border-amber-400/40 bg-amber-400/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-amber-600 dark:text-amber-300">
+                      <Send size={10} /> {pendingCount} review
+                    </span>
+                  )}
                   <div className="hidden sm:block">
                     <div className="flex items-center justify-between gap-2 text-[10px] font-bold uppercase tracking-wider text-ink/40 dark:text-paper/40">
                       <span>{doneCount}/{total}</span>
@@ -136,6 +144,10 @@ export function WorkspaceManager() {
                   key={c.id}
                   workspace={ws || { tasks: [], resources: [] }}
                   onChange={(next) => updateWorkspaceFor(c.id, next)}
+                  onReview={(taskIndex, verdict, note) => {
+                    reviewTaskWork(c.id, taskIndex, verdict, note)
+                    push(verdict === 'approve' ? `Approved ${c.name.split(' ')[0]}'s submission` : `Requested changes on ${c.name.split(' ')[0]}'s submission`, 'success')
+                  }}
                 />
               )}
             </div>
@@ -154,8 +166,10 @@ export function WorkspaceManager() {
   )
 }
 
-function WorkspaceEditor({ workspace, onChange }) {
+function WorkspaceEditor({ workspace, onChange, onReview }) {
   const [ws, setWs] = useState(() => ({ tasks: workspace.tasks.map((t) => ({ ...t })), resources: [...workspace.resources] }))
+  const [noteFor, setNoteFor] = useState(null)
+  const [note, setNote] = useState('')
 
   const commit = (next) => {
     setWs(next)
@@ -176,32 +190,86 @@ function WorkspaceEditor({ workspace, onChange }) {
           <p className="mb-3 text-[11px] font-bold uppercase tracking-widest text-ink/40 dark:text-paper/40">Tasks</p>
           <div className="grid gap-2.5">
             {ws.tasks.map((t, i) => (
-              <div key={i} className="flex items-start gap-3 rounded-xl border border-ink/10 bg-white p-3 dark:border-paper/10 dark:bg-ink-soft">
-                <button
-                  onClick={() => patchTask(i, { done: !t.done })}
-                  className={cn(
-                    'mt-1 grid h-5 w-5 shrink-0 place-items-center rounded-md border-2 text-[10px] font-black transition',
-                    t.done ? 'border-mint bg-mint text-ink' : 'border-ink/25 text-transparent dark:border-paper/25',
-                  )}
-                  aria-label="Toggle done"
-                >
-                  ✓
-                </button>
-                <div className="min-w-0 flex-1 space-y-1.5">
-                  <input
-                    value={t.title}
-                    onChange={(e) => patchTask(i, { title: e.target.value })}
-                    className="cdt-input w-full rounded-lg px-3 py-1.5 text-sm font-semibold outline-none focus:border-cyan-snap/60"
-                  />
-                  <input
-                    value={t.tips}
-                    onChange={(e) => patchTask(i, { tips: e.target.value })}
-                    className="cdt-input w-full rounded-lg px-3 py-1.5 text-xs outline-none focus:border-cyan-snap/60"
-                  />
+              <div key={i} className="rounded-xl border border-ink/10 bg-white p-3 dark:border-paper/10 dark:bg-ink-soft">
+                <div className="flex items-start gap-3">
+                  <button
+                    onClick={() => patchTask(i, { done: !t.done, status: !t.done ? 'approved' : 'todo' })}
+                    className={cn(
+                      'mt-1 grid h-5 w-5 shrink-0 place-items-center rounded-md border-2 text-[10px] font-black transition',
+                      t.done ? 'border-mint bg-mint text-ink' : 'border-ink/25 text-transparent dark:border-paper/25',
+                    )}
+                    aria-label="Toggle done"
+                  >
+                    ✓
+                  </button>
+                  <div className="min-w-0 flex-1 space-y-1.5">
+                    <input
+                      value={t.title}
+                      onChange={(e) => patchTask(i, { title: e.target.value })}
+                      className="cdt-input w-full rounded-lg px-3 py-1.5 text-sm font-semibold outline-none focus:border-cyan-snap/60"
+                    />
+                    <input
+                      value={t.tips}
+                      onChange={(e) => patchTask(i, { tips: e.target.value })}
+                      className="cdt-input w-full rounded-lg px-3 py-1.5 text-xs outline-none focus:border-cyan-snap/60"
+                    />
+                  </div>
+                  <button onClick={() => removeTask(i)} className="mt-1 shrink-0 text-coral-deep/60 transition hover:text-coral-deep dark:text-coral/60 dark:hover:text-coral" aria-label="Delete task">
+                    <Trash2 size={13} />
+                  </button>
                 </div>
-                <button onClick={() => removeTask(i)} className="mt-1 shrink-0 text-coral-deep/60 transition hover:text-coral-deep dark:text-coral/60 dark:hover:text-coral" aria-label="Delete task">
-                  <Trash2 size={13} />
-                </button>
+
+                {/* submitted evidence → review */}
+                {t.status === 'pending' && t.evidence && (
+                  <div className="mt-3 rounded-xl border border-amber-400/30 bg-amber-400/5 p-3">
+                    <div className="flex flex-wrap items-center gap-3">
+                      {t.evidence.images?.map((src, j) => (
+                        <img key={j} src={src} alt={`Evidence ${j + 1}`} className="h-16 w-20 rounded-lg border border-ink/10 object-cover dark:border-paper/10" />
+                      ))}
+                      {t.evidence.link && (
+                        <a href={t.evidence.link} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 rounded-bubble border border-cyan-deep/25 bg-cyan-deep/8 px-3 py-1.5 text-[11px] font-semibold text-cyan-deep hover:underline dark:border-cyan-snap/25 dark:bg-cyan-snap/8 dark:text-cyan-snap">
+                          <ExternalLink size={11} /> {t.evidence.link.replace(/^https?:\/\//, '').slice(0, 30)}
+                        </a>
+                      )}
+                    </div>
+                    {noteFor === i ? (
+                      <div className="mt-3 flex flex-wrap items-center gap-2">
+                        <input
+                          autoFocus
+                          value={note}
+                          onChange={(e) => setNote(e.target.value)}
+                          placeholder="What should they fix?"
+                          className="cdt-input min-w-0 flex-1 rounded-lg px-3 py-2 text-xs outline-none focus:border-cyan-snap/60"
+                        />
+                        <button
+                          onClick={() => { onReview(i, 'revision', note || 'Please revise and resubmit'); setNoteFor(null); setNote('') }}
+                          className="rounded-lg bg-coral-deep/15 px-4 py-2 text-xs font-bold text-coral-deep transition hover:bg-coral-deep/25 dark:bg-coral/15 dark:text-coral dark:hover:bg-coral/25"
+                        >
+                          Send feedback
+                        </button>
+                        <button onClick={() => setNoteFor(null)} className="text-xs font-semibold text-ink/50 dark:text-paper/50">Cancel</button>
+                      </div>
+                    ) : (
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        <button
+                          onClick={() => onReview(i, 'approve', '')}
+                          className="flex items-center gap-1.5 rounded-lg bg-mint-deep/15 px-4 py-2 text-xs font-bold text-mint-deep transition hover:bg-mint-deep/25 dark:bg-mint/15 dark:text-mint dark:hover:bg-mint/25"
+                        >
+                          <CheckCircle2 size={13} /> Approve
+                        </button>
+                        <button
+                          onClick={() => { setNoteFor(i); setNote('') }}
+                          className="flex items-center gap-1.5 rounded-lg bg-coral-deep/10 px-4 py-2 text-xs font-bold text-coral-deep transition hover:bg-coral-deep/20 dark:bg-coral/10 dark:text-coral dark:hover:bg-coral/20"
+                        >
+                          <X size={13} /> Request changes
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
+                {t.status === 'revision' && t.review?.note && (
+                  <p className="mt-2 text-[11px] text-coral-deep dark:text-coral">Feedback sent: “{t.review.note}” — awaiting resubmission.</p>
+                )}
               </div>
             ))}
           </div>
@@ -269,7 +337,7 @@ function DefaultEditor({ domain, onClose }) {
           <h3 id="wsm-editor-title" className="flex items-center gap-2 font-display text-lg font-bold text-ink dark:text-paper">
             <Settings2 size={18} className="text-cyan-deep dark:text-cyan-snap" /> Domain default workspace
           </h3>
-          <p className="mt-1 text-sm text-ink/60 dark:text-paper/50">Applies to candidates who haven't customized their own yet.</p>
+          <p className="mt-1 text-sm text-ink/60 dark:text-paper/50">Applies to candidates who haven&apos;t customized their own yet.</p>
         </div>
         <button onClick={onClose} className="grid h-8 w-8 place-items-center rounded-full border border-ink/10 text-ink/60 dark:border-paper/15 dark:text-paper/60" aria-label="Close">
           <X size={15} />
@@ -308,7 +376,7 @@ function DefaultEditor({ domain, onClose }) {
                       className="cdt-input w-full rounded-lg px-3 py-1.5 text-xs outline-none focus:border-cyan-snap/60"
                     />
                   </div>
-                  <button onClick={() => removeTask(i)} className="mt-1 shrink-0 text-coral/60 transition hover:text-coral" aria-label="Delete task">
+                  <button onClick={() => removeTask(i)} className="mt-1 shrink-0 text-coral-deep/60 transition hover:text-coral-deep dark:text-coral/60 dark:hover:text-coral" aria-label="Delete task">
                     <X size={15} />
                   </button>
                 </div>

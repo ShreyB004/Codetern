@@ -34,7 +34,7 @@ export const DEFAULT_WORKSPACE = {
     { title: 'Onboard into the programme handbook', done: true, tips: 'Read the sprint calendar and grading rubric.' },
     { title: 'Complete week-01 hands-on lab', done: true, tips: 'Submit evidence: code, logs, or screenshots.' },
     { title: 'Submit progress checkpoint to mentor', done: false, tips: '30-minute live review; prepare your wins and blockers.' },
-    { title: 'Claim your final certification', done: false, tips: 'You unlock the certificate ID once all tasks and the finale are complete.' },
+    { title: 'Submit your final deliverable for review', done: false, tips: 'Upload screenshots + your live link — the mentor approves it once the quality bar is met.' },
   ],
   resources: ['Programme handbook', 'Sprint calendar', 'Mentor office-hours link', 'Community channel'],
 }

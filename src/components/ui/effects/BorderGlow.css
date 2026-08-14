@@ -1,0 +1,39 @@
+.border-glow {
+  --card-x: 50%;
+  --card-y: 50%;
+  position: relative;
+  border-radius: inherit;
+}
+.border-glow::before,
+.border-glow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s var(--ease-snap);
+}
+.border-glow::before {
+  padding: 1.5px;
+  background: radial-gradient(
+    140px circle at var(--card-x) var(--card-y),
+    var(--border-glow-color),
+    transparent 70%
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+.border-glow::after {
+  background: radial-gradient(
+    230px circle at var(--card-x) var(--card-y),
+    color-mix(in srgb, var(--border-glow-color) 13%, transparent),
+    transparent 70%
+  );
+}
+.border-glow:hover::before,
+.border-glow:hover::after {
+  opacity: 1;
+}

@@ -2,13 +2,15 @@ import { useState } from 'react'
 import { CheckCircle2, Eye, EyeOff, Pencil, Plus, Save, Trash2, X } from 'lucide-react'
 import { useApp } from '../../context/AppContext.jsx'
 import { useToast } from '../../context/ToastContext.jsx'
+import { useTheme } from '../../context/ThemeContext.jsx'
 import { getProgramme, DOMAIN_COLORS } from '../../data/programmes.js'
 import { Modal } from '../ui/Modal.jsx'
-import { cn } from '../../lib/utils.js'
+import { cn, domainChip } from '../../lib/utils.js'
 
 export function QuestionManager() {
   const { programmes, quizBanks, setQuestionEnabled, upsertQuestion, removeQuestion } = useApp()
   const { push } = useToast()
+  const { isDark } = useTheme()
   const [domain, setDomain] = useState(programmes[0]?.id || '')
   const [editing, setEditing] = useState(null)
 
@@ -34,7 +36,7 @@ export function QuestionManager() {
             {programmes.map((pr) => <option key={pr.id} value={pr.id}>{pr.title}</option>)}
           </select>
           {p && (
-            <span className="flex items-center gap-2 rounded-bubble px-3 py-1.5 text-xs font-bold" style={{ background: color.bg, color: color.fg }}>
+            <span className="flex items-center gap-2 rounded-bubble px-3 py-1.5 text-xs font-bold" style={domainChip(color, isDark)}>
               {p.sub}
             </span>
           )}
@@ -191,7 +193,7 @@ function QuestionForm({ question, isNew, onClose, onSave }) {
               type="checkbox"
               checked={q.enabled !== false}
               onChange={(e) => setQ((prev) => ({ ...prev, enabled: e.target.checked }))}
-              className="h-4 w-4 accent-[#22d3ee]"
+              className="h-4 w-4 accent-cyan-snap"
             />
             Show in the Final Assessment
           </label>

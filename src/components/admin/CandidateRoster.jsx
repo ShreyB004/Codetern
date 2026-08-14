@@ -2,9 +2,10 @@ import { useMemo, useState } from 'react'
 import { ChevronLeft, ChevronRight, Search, Trash2 } from 'lucide-react'
 import { useApp } from '../../context/AppContext.jsx'
 import { useToast } from '../../context/ToastContext.jsx'
+import { useTheme } from '../../context/ThemeContext.jsx'
 import { getProgramme, DOMAIN_COLORS } from '../../data/programmes.js'
 import { formatDate } from '../../lib/utils.js'
-import { cn } from '../../lib/utils.js'
+import { cn, domainChip } from '../../lib/utils.js'
 
 const STATUSES = ['all', 'pending', 'active', 'retake', 'graduated']
 const PAGE_SIZE = 6
@@ -19,6 +20,7 @@ const STEPS = {
 
 export function CandidateRoster() {
   const { candidates, programmes, removeCandidate, updateCandidateAdmin } = useApp()
+  const { isDark } = useTheme()
   const { push } = useToast()
   const [q, setQ] = useState('')
   const [domain, setDomain] = useState('all')
@@ -100,7 +102,7 @@ export function CandidateRoster() {
                     </td>
                     <td className="px-5 py-3.5">
                       {p ? (
-                        <span className="rounded-full px-2.5 py-1 text-[11px] font-semibold" style={{ background: color.bg, color: color.fg }}>
+                        <span className="rounded-full px-2.5 py-1 text-[11px] font-semibold" style={domainChip(color, isDark)}>
                           {p.title}
                         </span>
                       ) : (
@@ -124,7 +126,7 @@ export function CandidateRoster() {
                     </td>
                     <td className="px-5 py-3.5">
                       {c.interviewScore != null ? (
-                        <span className="font-bold tabular-nums text-violet-deep">{c.interviewScore}%</span>
+                        <span className="font-bold tabular-nums text-violet-ink dark:text-violet-deep">{c.interviewScore}%</span>
                       ) : (
                         <span className="text-ink/30 dark:text-paper/30">—</span>
                       )}

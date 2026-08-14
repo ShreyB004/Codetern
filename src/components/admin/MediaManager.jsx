@@ -71,14 +71,14 @@ export function MediaManager() {
               <div className="absolute inset-0 flex items-center justify-center gap-2 bg-ink/60 opacity-0 backdrop-blur-sm transition group-hover:opacity-100">
                 <button
                   onClick={() => setEditing(m.id)}
-                  className="grid h-9 w-9 place-items-center rounded-xl bg-white text-ink dark:text-paper transition hover:scale-110"
+                  className="grid h-9 w-9 place-items-center rounded-xl bg-white text-ink transition hover:scale-110 dark:bg-paper dark:text-ink"
                   aria-label="Edit"
                 >
                   <Pencil size={15} />
                 </button>
                 <button
                   onClick={() => { removeMedia(m.id); push('Asset removed', 'info') }}
-                  className="grid h-9 w-9 place-items-center rounded-xl bg-coral text-white transition hover:scale-110"
+                  className="grid h-9 w-9 place-items-center rounded-xl bg-coral text-ink transition hover:scale-110"
                   aria-label="Delete"
                 >
                   <Trash2 size={15} />

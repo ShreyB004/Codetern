@@ -1,4 +1,5 @@
 import { cn } from '../../lib/utils.js'
+import { ScrollReveal } from './effects/ScrollReveal.jsx'
 
 export function SectionHeading({ eyebrow, title, description, align = 'center', dark = false, className }) {
   return (
@@ -15,14 +16,15 @@ export function SectionHeading({ eyebrow, title, description, align = 'center', 
           {eyebrow}
         </span>
       )}
-      <h2
+      <ScrollReveal
+        as="h2"
         className={cn(
           'font-display text-balance text-3xl font-bold leading-[1.08] tracking-tight sm:text-4xl lg:text-5xl',
           dark ? 'text-white' : 'text-ink dark:text-paper',
         )}
       >
         {title}
-      </h2>
+      </ScrollReveal>
       {description && (
         <p className={cn('mt-4 text-base leading-relaxed sm:text-lg', dark ? 'text-white/65' : 'text-ink/60 dark:text-paper/60')} data-reveal>
           {description}

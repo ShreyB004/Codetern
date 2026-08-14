@@ -7,11 +7,15 @@ import { gsap } from '../../lib/gsap.js'
 export function Preloader({ onDone }) {
   const [gone, setGone] = useState(false)
   const root = useRef(null)
+  const onDoneRef = useRef(onDone)
+  useEffect(() => {
+    onDoneRef.current = onDone
+  }, [onDone])
 
   useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (reduced) {
-      onDone?.()
+      onDoneRef.current?.()
       return
     }
     const tl = gsap.timeline({ onComplete: () => setGone(true) })

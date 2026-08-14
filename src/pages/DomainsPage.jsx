@@ -13,7 +13,7 @@ import { useToast } from '../context/ToastContext.jsx'
 import { DURATIONS, DOMAIN_COLORS } from '../data/programmes.js'
 import { useRevealScope } from '../hooks/useReveal.js'
 import { cn } from '../lib/utils.js'
-import { AuroraBackground } from '../components/ui/backgrounds/AuroraBackground.jsx'
+import { DotField } from '../components/ui/backgrounds/DotField.jsx'
 
 const ALL = 'ALL'
 
@@ -58,17 +58,17 @@ export default function DomainsPage() {
   return (
     <Page className="overflow-hidden">
       {/* ── hero ── */}
-      <section className="relative overflow-hidden bg-ink py-20 text-white">
+      <section className="relative overflow-hidden bg-paper py-20 text-ink dark:bg-ink dark:text-paper">
         <div className="grid-lines absolute inset-0 opacity-20" />
-        <AuroraBackground className="opacity-40" />
+        <DotField />
         <div className="relative mx-auto max-w-4xl px-5 text-center lg:px-8">
-          <span data-enter className="mb-5 inline-block rounded-bubble border border-neon/40 bg-neon/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-neon">
+          <span data-enter className="mb-5 inline-block rounded-bubble border border-neon-deep/40 bg-neon-deep/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-neon-deep dark:border-neon/40 dark:bg-neon/10 dark:text-neon">
             Career tracks
           </span>
           <h1 data-enter className="font-display text-4xl font-extrabold leading-tight tracking-tight sm:text-6xl">
-            Fourteen ways to get a <span className="text-gradient-snap">head start.</span>
+            Fourteen ways to get a <span className="text-gradient-deep dark:text-gradient-snap">head start.</span>
           </h1>
-          <p data-enter className="mx-auto mt-5 max-w-2xl text-base text-white/60">
+          <p data-enter className="mx-auto mt-5 max-w-2xl text-base text-ink/60 dark:text-paper/60">
             Every track includes live seat counts, a screening quiz and an AI mock interview before you begin. Pick a
             duration and claim your seat while it lasts.
           </p>
@@ -76,7 +76,7 @@ export default function DomainsPage() {
           {/* search + duration tabs */}
           <div data-enter className="mx-auto mt-10 max-w-2xl">
             <div className="relative mb-4">
-              <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-white/35">
+              <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-ink/35 dark:text-paper/35">
                 <Search size={16} />
               </span>
               <input
@@ -84,7 +84,7 @@ export default function DomainsPage() {
                 onChange={(e) => setQ(e.target.value)}
                 placeholder="Search tracks — React, Python, Figma, security…"
                 aria-label="Search career tracks"
-                className="focus-ring w-full rounded-full border border-white/15 bg-white/5 py-3.5 pl-11 pr-4 text-sm text-white outline-none transition placeholder:text-white/45 focus:bg-white/10"
+                className="focus-ring w-full rounded-full border border-ink/15 bg-white/80 py-3.5 pl-11 pr-4 text-sm text-ink outline-none transition placeholder:text-ink/45 focus:bg-white dark:border-paper/15 dark:bg-white/5 dark:text-paper dark:placeholder:text-paper/45 dark:focus:bg-white/10"
               />
             </div>
             <div className="flex flex-wrap items-center justify-center gap-2">
@@ -93,7 +93,7 @@ export default function DomainsPage() {
                 aria-pressed={duration === ALL}
                 className={cn(
                   'focus-ring inline-flex min-h-11 items-center gap-1.5 rounded-full px-5 py-2.5 text-sm font-semibold transition-all',
-                  duration === ALL ? 'bg-neon text-ink shadow-card' : 'border border-white/15 bg-white/5 text-white/70 hover:bg-white/10',
+                  duration === ALL ? 'bg-neon text-ink shadow-card' : 'border border-ink/15 bg-ink/5 text-ink/70 hover:bg-ink/10 dark:border-white/15 dark:bg-white/5 dark:text-paper/70 dark:hover:bg-white/10',
                 )}
               >
                 <Filter size={14} />
@@ -106,7 +106,7 @@ export default function DomainsPage() {
                   aria-pressed={duration === d}
                   className={cn(
                     'focus-ring min-h-11 rounded-full px-5 py-2.5 text-sm font-semibold transition-all',
-                    duration === d ? 'bg-neon text-ink shadow-card' : 'border border-white/15 bg-white/5 text-white/70 hover:bg-white/10',
+                    duration === d ? 'bg-neon text-ink shadow-card' : 'border border-ink/15 bg-ink/5 text-ink/70 hover:bg-ink/10 dark:border-white/15 dark:bg-white/5 dark:text-paper/70 dark:hover:bg-white/10',
                   )}
                 >
                   {d} Month{d > 1 ? 's' : ''}

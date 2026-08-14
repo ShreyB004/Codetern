@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Camera, Check, Mic, MicOff, Scan, Sparkles, Video, VideoOff } from 'lucide-react'
+import { BadgeCheck, Camera, Check, Clock3, Mic, MicOff, Scan, Sparkles, Video, VideoOff } from 'lucide-react'
 import { StepShell } from './JourneyTracker.jsx'
 import { Button } from '../ui/Button.jsx'
 import { useApp } from '../../context/AppContext.jsx'
@@ -10,12 +10,13 @@ import { cn } from '../../lib/utils.js'
 const PHASES = ['idle', 'recording', 'analyzing', 'done']
 
 export function InterviewStep({ onComplete }) {
-  const { candidate, saveInterview } = useApp()
+  const { candidate, saveInterview, claimCert } = useApp()
   const [phase, setPhase] = useState(() => (candidate?.interview ? 'done' : 'idle'))
   const [qIndex, setQIndex] = useState(0)
   const [typed, setTyped] = useState('')
   const [micOn, setMicOn] = useState(true)
   const [camOn, setCamOn] = useState(true)
+  const [certId, setCertId] = useState(candidate?.cert?.id || '')
   const cam = useRef(null)
 
   // GSAP cam intro + screen-glow
@@ -50,10 +51,12 @@ export function InterviewStep({ onComplete }) {
       setQIndex((i) => i + 1)
     } else {
       setPhase('analyzing')
-      // unlock milestone
+      // unlock milestone + issue certificate right after the interview
       setTimeout(() => {
         const score = 84
         saveInterview({ score, feedback: INTERVIEW_FEEDBACK, done: true })
+        const id = claimCert()
+        if (id) setCertId(id)
         setPhase('done')
       }, 2400)
     }
@@ -87,6 +90,24 @@ export function InterviewStep({ onComplete }) {
               </div>
             ))}
           </div>
+
+          {/* certificate issued right after the interview */}
+          <div className="mt-6 w-full max-w-md rounded-2xl border border-mint-deep/30 bg-mint-deep/8 p-5 text-left dark:border-mint/30 dark:bg-mint/8">
+            <div className="flex items-center gap-3">
+              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-mint-deep/15 text-mint-deep dark:bg-mint/15 dark:text-mint">
+                <BadgeCheck size={22} />
+              </span>
+              <div className="min-w-0">
+                <p className="text-[11px] font-bold uppercase tracking-widest text-mint-deep dark:text-mint">Certificate issued</p>
+                <p className="mt-0.5 font-mono text-sm font-bold text-ink dark:text-paper">{certId}</p>
+              </div>
+            </div>
+            <p className="mt-3 flex items-center gap-1.5 text-xs text-ink/60 dark:text-paper/55">
+              <Clock3 size={13} className="text-mint-deep dark:text-mint" />
+              Verify it on the public Certification page. Your Letter of Recommendation unlocks 24 hours from now.
+            </p>
+          </div>
+
           <Button size="lg" variant="accent" className="mt-7" onClick={onComplete}>
             Complete my journey →
           </Button>

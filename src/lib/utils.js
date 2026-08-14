@@ -25,3 +25,12 @@ export function initials(name = '') {
 export function clamp(v, min, max) {
   return Math.max(min, Math.min(max, v))
 }
+
+/**
+ * Theme-aware style for domain tinted chips (icon tiles / badges).
+ * Light mode: ink glyph on the tinted wash (readable). Dark mode: bright
+ * domain fg on the tinted wash (readable). Pass `isDark` from useTheme().
+ */
+export function domainChip(color, isDark) {
+  return { background: color.bg, color: isDark ? color.fg : 'var(--color-ink)' }
+}

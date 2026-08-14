@@ -11,7 +11,8 @@ export function ReferEarn() {
 
   if (!candidate) return null
 
-  const link = `${window.location.origin}/?ref=${candidate.referralCode}`
+  const origin = typeof window !== 'undefined' && window.location ? window.location.origin : 'https://codetern.dev'
+  const link = `${origin}/?ref=${candidate.referralCode}`
   const balance = candidate.wallet?.balance || 0
   const transactions = candidate.wallet?.transactions || []
   const referrals = candidates.filter((c) => c.referredBy === candidate.id)
@@ -34,7 +35,7 @@ export function ReferEarn() {
       <div className="rounded-panel border border-ink/10 bg-white p-6 shadow-card dark:border-paper/10 dark:bg-ink-soft dark:shadow-none">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <span className="grid h-11 w-11 place-items-center rounded-2xl bg-violet-deep/15 text-violet-deep">
+            <span className="grid h-11 w-11 place-items-center rounded-2xl bg-violet-deep/15 text-violet-ink dark:text-violet-deep">
               <Gift size={20} />
             </span>
             <div>
@@ -51,7 +52,7 @@ export function ReferEarn() {
 
         <div className="mt-5 flex flex-col gap-3 sm:flex-row">
           <div className="flex flex-1 items-center gap-3 rounded-2xl border border-dashed border-violet-deep/40 bg-violet-deep/5 px-4 py-3">
-            <Link2 size={16} className="shrink-0 text-violet-deep" />
+            <Link2 size={16} className="shrink-0 text-violet-ink dark:text-violet-deep" />
             <div className="min-w-0 flex-1">
               <p className="text-[10px] font-bold uppercase tracking-wider text-ink/40 dark:text-paper/40">Your code</p>
               <code className="block truncate font-mono text-sm font-semibold text-ink dark:text-paper">{link}</code>
@@ -61,7 +62,7 @@ export function ReferEarn() {
             <button
               onClick={copy}
               className={cn(
-                'flex items-center justify-center gap-2 rounded-2xl px-5 py-3 text-sm font-bold transition',
+                'flex w-36 items-center justify-center gap-2 rounded-2xl py-3 text-sm font-bold transition',
                 copied ? 'bg-mint text-ink' : 'bg-violet-deep text-white hover:bg-violet-deep/85',
               )}
             >
@@ -91,7 +92,7 @@ export function ReferEarn() {
 
         <div className="mt-5 grid gap-3 rounded-2xl bg-gradient-to-br from-violet-deep/10 to-cyan-deep/10 p-4 sm:grid-cols-3 dark:to-cyan-snap/10">
           <div className="flex items-center gap-3">
-            <span className="grid h-9 w-9 place-items-center rounded-xl bg-violet-deep/15 text-violet-deep"><Users size={15} /></span>
+            <span className="grid h-9 w-9 place-items-center rounded-xl bg-violet-deep/15 text-violet-ink dark:text-violet-deep"><Users size={15} /></span>
             <div>
               <p className="font-display text-lg font-extrabold text-ink dark:text-paper">{referrals.length}</p>
               <p className="text-[10px] font-bold uppercase tracking-wider text-ink/60 dark:text-paper/45">Friends referred</p>
@@ -150,7 +151,7 @@ export function ReferEarn() {
               '₹50 lands in your wallet automatically',
             ].map((t, i) => (
               <li key={t} className="flex items-start gap-3 text-xs text-ink/60 dark:text-paper/60">
-                <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-violet-deep/15 text-[10px] font-black text-violet-deep">{i + 1}</span>
+                <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-violet-deep/15 text-[10px] font-black text-violet-ink dark:text-violet-deep">{i + 1}</span>
                 {t}
               </li>
             ))}
