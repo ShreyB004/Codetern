@@ -1,0 +1,57 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: codetern-db
+    environment:
+      POSTGRES_DB: codetern
+      POSTGRES_USER: codetern
+      POSTGRES_PASSWORD: codetern
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U codetern -d codetern"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: codetern-redis
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redisdata:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  api:
+    build: .
+    container_name: codetern-api
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgres://codetern:codetern@db:5432/codetern
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - "4000:4000"
+    volumes:
+      - uploads:/opt/codetern/uploads
+    restart: unless-stopped
+
+volumes:
+  pgdata: {}
+  redisdata: {}
+  uploads: {}

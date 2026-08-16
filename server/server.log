@@ -1,0 +1,6 @@
+{"level":30,"time":1786819067995,"pid":4496,"hostname":"ExteraTerrestrial","msg":"Server listening at http://127.0.0.1:4000"}
+{"level":30,"time":1786819067995,"pid":4496,"hostname":"ExteraTerrestrial","msg":"Server listening at http://192.168.56.1:4000"}
+{"level":30,"time":1786819067995,"pid":4496,"hostname":"ExteraTerrestrial","msg":"Server listening at http://192.168.1.2:4000"}
+{"level":30,"time":1786819067995,"pid":4496,"hostname":"ExteraTerrestrial","msg":"Server listening at http://172.17.176.1:4000"}
+[mail] (not configured) to=ref-1786819277412@test.dev subject="Codetern — payment received"
+[mail] (not configured) to=ref-1786819299015@test.dev subject="Codetern — payment received"
