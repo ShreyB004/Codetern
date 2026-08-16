@@ -2,7 +2,6 @@ import { ArrowRight, PlayCircle, Sparkles, Timer, Trophy, Users } from 'lucide-r
 import { Button } from '../ui/Button.jsx'
 import { Pill } from '../ui/Pill.jsx'
 import { FloatingCard } from '../ui/FloatingCard.jsx'
-import { SeatCounter } from '../ui/SeatCounter.jsx'
 import { useLoginModal } from '../ui/LoginModal.jsx'
 import { useAuth } from '../../context/AppContext.jsx'
 import { useRevealScope } from '../../hooks/useReveal.js'
@@ -32,39 +31,39 @@ export function Hero() {
         {/* copy */}
         <div data-reveal>
           <div className="mb-6 flex flex-wrap gap-2.5">
-            <Pill tone="neon" dot>Live cohorts open</Pill>
-            <Pill tone="dark">14 domains</Pill>
-            <Pill tone="dark">AI screening</Pill>
+            <Pill tone="neon" dot>Applications open</Pill>
+            <Pill tone="dark">14 internship domains</Pill>
+            <Pill tone="dark">Mentor-led sprints</Pill>
           </div>
 
           <h1 className="font-display text-balance text-[2.7rem] font-extrabold leading-[1.02] tracking-tight sm:text-6xl lg:text-7xl">
-            Get some
+            Do an internship
             <br />
-            <span className="text-gradient-deep dark:text-gradient-snap">real work done</span>
+            <span className="text-gradient-deep dark:text-gradient-snap">with real stakes,</span>
             <br />
             before your first job.
           </h1>
 
           <p className="mt-6 max-w-xl text-base leading-relaxed text-ink/65 dark:text-paper/60 sm:text-lg">
-            Codetern runs an interactive internship simulator — baseline quizzes, AI mock interviews and studio-grade
-            live projects in engineering, data and design. Graduate with work employers can verify, not just courses
-            they skip.
+            Codetern recreates a real engineering internship — production-shaped projects in engineering, data and
+            design, senior-style code reviews every week, and deployed work recruiters can actually verify. You
+            graduate with lines in your portfolio, not credits on a transcript.
           </p>
 
           <div className="mt-9 flex flex-wrap items-center gap-4">
             <Button size="lg" variant="neon" onClick={go}>
-              Start the 5-step challenge
+              Start your internship
               <ArrowRight size={17} />
             </Button>
             <Button size="lg" variant="ghost" magnetic={false} onClick={() => navigate('/domains')}>
               <PlayCircle size={17} />
-              Explore domains
+              See the projects you&apos;ll ship
             </Button>
           </div>
 
           <div className="mt-10 flex flex-wrap gap-x-8 gap-y-3">
             {[
-              { icon: Users, label: '1,240+ interns' },
+              { icon: Users, label: '1,240+ interns trained' },
               { icon: Trophy, label: '86% placed' },
               { icon: Timer, label: '1–6 month tracks' },
             ].map(({ icon: Icon, label }) => (
@@ -85,20 +84,19 @@ export function Hero() {
                 <Sparkles size={20} />
               </span>
               <div>
-                <p className="text-sm font-bold">AI Screening Engine</p>
-                <p className="text-xs text-ink/55 dark:text-paper/55">quiz → mock interview → seat</p>
+                <p className="text-sm font-bold">Internship engine</p>
+                <p className="text-xs text-ink/55 dark:text-paper/55">mentor-guided production sprints</p>
               </div>
             </div>
             <div className="mt-5 space-y-2.5">
               {[
-                ['Baseline quiz', '87% · passed'],
-                ['AI mock interview', 'Cleared ✓'],
-                ['Live project handoff', 'Ready to ship'],
-              ].map(([k, v], i) => (
+                ['Mentor code review', 'PR approved ✓'],
+                ['Production handoff', 'Live + CI green ✓'],
+                ['Portfolio evidence', 'Linked on your resume ✓'],
+              ].map(([k, v]) => (
                 <div key={k} className="flex items-center justify-between rounded-xl border border-ink/8 bg-ink/[0.04] px-3.5 py-2.5 dark:border-white/8 dark:bg-white/[0.04]">
                   <span className="text-xs text-ink/65 dark:text-paper/65">{k}</span>
                   <span className="text-xs font-bold text-neon-deep dark:text-neon">{v}</span>
-                  <span className="ml-1 text-[10px] text-ink/55 dark:text-paper/55">{i + 1}/3</span>
                 </div>
               ))}
             </div>
@@ -106,19 +104,20 @@ export function Hero() {
 
           {/* floating small cards */}
           <FloatingCard className="left-0 top-16" amplitude={14} duration={4}>
-            <div className="w-52 rounded-2xl border border-ink/10 bg-ink/[0.05] p-4 shadow-float backdrop-blur-md dark:border-white/10 dark:bg-white/[0.05]">
-              <p className="text-[11px] font-bold uppercase tracking-widest text-ink/55 dark:text-paper/55">MERN · 3mo</p>
-              <div className="mt-2 flex items-center justify-between">
-                <SeatCounter remaining={7} total={24} duration={3} compact />
+            <div className="w-56 rounded-2xl border border-ink/10 bg-ink/[0.05] p-4 shadow-float backdrop-blur-md dark:border-white/10 dark:bg-white/[0.05]">
+              <p className="text-[11px] font-bold uppercase tracking-widest text-ink/55 dark:text-paper/55">MERN · 3-month internship</p>
+              <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-ink/8 dark:bg-white/10">
+                <div className="h-full w-2/3 rounded-full bg-gradient-to-r from-cyan-deep to-neon-deep dark:from-cyan-snap dark:to-neon" />
               </div>
+              <p className="mt-2 text-[11px] text-ink/55 dark:text-paper/55">Sprint 4 of 6 · in mentor review</p>
             </div>
           </FloatingCard>
 
           <FloatingCard className="right-[-4%] top-40" amplitude={18} duration={4.6} delay={0.6}>
-            <div className="w-48 rounded-2xl border border-neon/30 bg-ink-soft p-4 shadow-float">
-              <p className="text-[11px] font-bold uppercase tracking-widest text-neon">Seat countdown</p>
-              <p className="mt-2 font-display text-3xl font-extrabold text-white tabular-nums">12</p>
-              <p className="text-[11px] text-white/55">AI & LLM · 6mo</p>
+            <div className="w-52 rounded-2xl border border-neon/30 bg-ink-soft p-4 shadow-float">
+              <p className="text-[11px] font-bold uppercase tracking-widest text-neon">Shipped this week</p>
+              <p className="mt-2 font-display text-3xl font-extrabold text-white tabular-nums">21</p>
+              <p className="text-[11px] text-white/55">production deploys by interns</p>
             </div>
           </FloatingCard>
 
@@ -128,8 +127,8 @@ export function Hero() {
                 <Trophy size={16} />
               </span>
               <div>
-                <p className="text-xs font-bold text-ink dark:text-paper">Cert verified</p>
-                <p className="text-[10px] text-ink/55 dark:text-paper/55">by 58 companies</p>
+                <p className="text-xs font-bold text-ink dark:text-paper">Portfolio that proves it</p>
+                <p className="text-[10px] text-ink/55 dark:text-paper/55">live projects recruiters can open</p>
               </div>
             </div>
           </FloatingCard>

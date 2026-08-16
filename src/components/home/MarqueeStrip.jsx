@@ -3,14 +3,14 @@ import { Sparkle } from 'lucide-react'
 const WORDS = [
   'Sprints',
   'PR reviews',
-  'Baseline quizzes',
-  'AI mock interviews',
-  'Live projects',
+  'Production-ready projects',
   'Mentor 1:1s',
-  'Verifiable certificates',
   'Real code reviews',
-  'Seat-gated cohorts',
+  'Deployed + CI green',
+  'Cohort-based internships',
+  'No lecture halls',
   'Portfolio you can prove',
+  'Keep shipping',
 ]
 
 /**

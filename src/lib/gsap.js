@@ -21,7 +21,7 @@ export function mountReveals(scope) {
   const st = targets.map((el, i) =>
     ScrollTrigger.create({
       trigger: el,
-      start: 'top 90%',
+      start: 'top 78%',
       once: true,
       onEnter: () => {
         gsap.to(el, {

@@ -445,6 +445,65 @@ input:focus-visible:not(.focus-ring):not(.focus-ring-dark) {
   will-change: transform;
 }
 
+/* organic orbit for decorative orbs — multi-stop, non-repeating path */
+@keyframes cdt-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+  }
+  25% {
+    transform: translate3d(7%, -6%, 0) rotate(4deg) scale(1.05);
+  }
+  50% {
+    transform: translate3d(-5%, -10%, 0) rotate(-3deg) scale(0.96);
+  }
+  75% {
+    transform: translate3d(-8%, 2%, 0) rotate(3deg) scale(1.02);
+  }
+}
+.cdt-drift {
+  animation: cdt-drift 17s ease-in-out infinite;
+  will-change: transform;
+}
+.cdt-drift-slow {
+  animation-duration: 26s;
+}
+.cdt-drift-fast {
+  animation-duration: 10s;
+}
+.cdt-drift-delayed {
+  animation-delay: -9s;
+}
+
+/* breathing scale for chips & float-card innards — child-safe transform */
+@keyframes cdt-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.045);
+  }
+}
+.cdt-breathe {
+  animation: cdt-breathe 5.5s var(--ease-snap) infinite;
+  will-change: transform;
+}
+.cdt-breathe-slow {
+  animation-duration: 8.5s;
+}
+
+/* human presence — decor wakes up and quickens when the cursor is inside */
+.cdt-lively:hover .cdt-drift {
+  animation-duration: 8s;
+}
+.cdt-lively:hover .cdt-blob {
+  animation-duration: 9s;
+}
+.cdt-lively:hover .cdt-breathe {
+  animation-duration: 2.8s;
+}
+
 /* ── keyword marquee strip ─────────────────────────────────── */
 @keyframes cdt-marquee {
   from {

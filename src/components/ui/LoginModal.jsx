@@ -178,7 +178,7 @@ function LoginSignupModal({ mode, onClose }) {
     const res = tab === 'login' ? login(form.email, form.password) : signup(form.name, form.email, form.password, refCode)
     if (res.error) return setError(res.error)
     if (tab === 'signup' && refCode) {
-      push(res.referred ? 'Account created — referral applied, earn ₹50 when you book!' : 'Account created — let’s build', 'success')
+      push(res.referred ? 'Referral applied — share your link and earn ₹50 per friend!' : 'Account created — let’s build', 'success')
     } else {
       push(tab === 'login' ? 'Welcome back to Codetern' : 'Account created — let’s build', 'success')
     }

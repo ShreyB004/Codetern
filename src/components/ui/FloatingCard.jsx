@@ -3,8 +3,10 @@ import { cn } from '../../lib/utils.js'
 
 /**
  * Floating physics card — wraps children in a decorative floating element.
+ * The inner layer breathes (gentle scale) so the card feels alive without
+ * fighting the GSAP transform on the outer wrapper.
  */
-export function FloatingCard({ children, className, amplitude = 12, duration = 3.4, delay = 0, depth }) {
+export function FloatingCard({ children, className, amplitude = 12, duration = 3.4, delay = 0, depth, breathe = true }) {
   const ref = useFloat({ amplitude, duration, delay })
   return (
     <div
@@ -12,7 +14,7 @@ export function FloatingCard({ children, className, amplitude = 12, duration = 3
       className={cn('pointer-events-none absolute select-none will-change-transform', className)}
       style={{ ['--depth']: depth }}
     >
-      {children}
+      {breathe ? <div className="cdt-breathe">{children}</div> : children}
     </div>
   )
 }

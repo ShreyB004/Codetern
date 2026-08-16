@@ -66,11 +66,12 @@ export default function DomainsPage() {
             Career tracks
           </span>
           <h1 data-enter className="font-display text-4xl font-extrabold leading-tight tracking-tight sm:text-6xl">
-            Fourteen ways to get a <span className="text-gradient-deep dark:text-gradient-snap">head start.</span>
+            Fourteen domains. One <span className="text-gradient-deep dark:text-gradient-snap">outcome — hired.</span>
           </h1>
           <p data-enter className="mx-auto mt-5 max-w-2xl text-base text-ink/60 dark:text-paper/60">
-            Every track includes live seat counts, a screening quiz and an AI mock interview before you begin. Pick a
-            duration and claim your seat while it lasts.
+            Every track is a mentor-led internship: a screening quiz, an AI mock interview, then weeks of
+            production-shaped projects reviewed like a senior engineer would review you. Pick a duration and start
+            building — your live project load is tracked right here.
           </p>
 
           {/* search + duration tabs */}
@@ -121,8 +122,8 @@ export default function DomainsPage() {
       <section ref={scope} className="bg-paper py-20 dark:bg-ink">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <SectionHeading
-            eyebrow={`${filtered.length} programme${filtered.length === 1 ? '' : 's'} · live seats`}
-            title={q ? `Results for “${q}”` : duration === ALL ? 'All career tracks' : `${duration}-month career tracks`}
+            eyebrow={`${filtered.length} internship track${filtered.length === 1 ? '' : 's'} · live availability`}
+            title={q ? `Results for “${q}”` : duration === ALL ? 'All internship tracks' : `${duration}-month internship tracks`}
             align="left"
             className="mb-12"
           />

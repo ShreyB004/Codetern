@@ -30,7 +30,8 @@ export function useParallax(speed = 0.12) {
 }
 
 /**
- * Idle floating physics for decorative cards — layered bob + gentle rotation.
+ * Idle floating physics for decorative cards — organic two-axis lissajous drift
+ * with gentle rotation and scale, so every card moves on its own rhythm.
  */
 export function useFloat({ amplitude = 10, duration = 3.2, delay = 0 } = {}) {
   const ref = useRef(null)
@@ -41,9 +42,29 @@ export function useFloat({ amplitude = 10, duration = 3.2, delay = 0 } = {}) {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
     const tl = gsap.timeline({ repeat: -1, yoyo: true, delay })
-    tl.to(el, { y: amplitude, duration: duration * 0.6, ease: 'sine.inOut' })
-      .to(el, { rotation: 1.6, duration: duration * 0.4, ease: 'sine.inOut' }, 0)
-      .to(el, { rotation: -1.6, duration: duration * 0.4, ease: 'sine.inOut' }, '<')
+    tl.to(
+      el,
+      {
+        y: amplitude,
+        x: amplitude * 0.35,
+        rotation: 2.2,
+        scale: 1.025,
+        duration: duration * 0.55,
+        ease: 'sine.inOut',
+      },
+      0,
+    ).to(
+      el,
+      {
+        y: -amplitude * 0.45,
+        x: -amplitude * 0.4,
+        rotation: -2.8,
+        scale: 0.985,
+        duration: duration * 0.55,
+        ease: 'sine.inOut',
+      },
+      0,
+    )
 
     return () => tl.kill()
   }, [amplitude, duration, delay])

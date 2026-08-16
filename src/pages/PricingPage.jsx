@@ -36,180 +36,154 @@ export default function PricingPage() {
 
   return (
     <Page className="overflow-hidden">
-      {/* ── hero ── */}
       <section className="relative overflow-hidden bg-paper py-20 text-ink dark:bg-ink dark:text-paper">
         <div className="grid-lines absolute inset-0 opacity-20" />
         <AuroraGlow className="opacity-60" />
         <div className="relative mx-auto max-w-4xl px-5 text-center lg:px-8">
           <span className="mb-5 inline-block rounded-bubble border border-neon-deep/40 bg-neon-deep/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-neon-deep dark:border-neon/40 dark:bg-neon/10 dark:text-neon">
-            One flat batch price
+            One flat price per batch
           </span>
           <ScrollReveal
             as="h1"
             className="font-display text-4xl font-extrabold leading-tight tracking-tight sm:text-6xl"
-            colors={isDark ? ['transparent', 'transparent', 'transparent', 'transparent', 'transparent', '#38ffb0', 'transparent', '#22d3ee', '#7c5cff'] : ['transparent', 'transparent', 'transparent', 'transparent', 'transparent', '#047857', 'transparent', '#0e7490', '#5b21b6']}
+            colors={isDark ? ['transparent', 'transparent', 'transparent', 'transparent', 'transparent', '#38ffb0', 'transparent', '#22d3ee'] : ['transparent', 'transparent', 'transparent', 'transparent', 'transparent', '#047857', 'transparent', '#0e7490']}
           >
-            Pick a domain, pick a batch length. That&apos;s the price.
+            ₹149 to ₹799. The whole batch.
           </ScrollReveal>
-          <p className="mx-auto mt-5 max-w-2xl text-base text-ink/60 dark:text-white/60">
-            No per-month subscriptions, no hidden tiers. One fixed fee covers the whole batch —
-            longer batches simply cost less per month. Pick 1, 2, 3 or 6 months.
+          <p className="mx-auto mt-5 max-w-2xl text-base text-ink/60 dark:text-paper/60">
+            No subscriptions. No hidden tiers. The batch length decides the price — every one of the 14 domains
+            costs the same and ships the same full package.
           </p>
         </div>
       </section>
 
-      {/* ── domain picker ── */}
-      <section className="relative mx-auto -mt-12 max-w-6xl px-5 pb-24 lg:px-8">
-        <div className="rounded-panel border border-ink/10 bg-white p-5 shadow-float sm:p-7 dark:border-paper/10 dark:bg-ink-soft dark:shadow-none" data-enter>
-          <p className="mb-1 text-sm font-bold text-ink dark:text-paper">1 · Choose your domain</p>
-          <p className="mb-5 text-xs text-ink/55 dark:text-paper/55">Each track has its own mentor, stack and live-project load — the batch price stays flat across all of them.</p>
+      <section className="relative mx-auto -mt-10 max-w-6xl px-5 pb-24 lg:px-8">
+        <div className="rounded-panel border border-ink/10 bg-white p-5 shadow-float sm:p-8 dark:border-paper/10 dark:bg-ink-soft dark:shadow-none" data-enter>
+          <p className="text-sm font-bold text-ink dark:text-paper">1 · Pick your batch length</p>
+          <p className="mb-5 text-xs text-ink/55 dark:text-paper/55">
+            Longer batches cost less per month. The struck-through price is the launch marker — you pay the price
+            below, today.
+          </p>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {DURATIONS.map((d) => {
+              const p = batchPrice(d)
+              const active = months === d
+              return (
+                <button
+                  key={d}
+                  type="button"
+                  onClick={() => setMonths(d)}
+                  aria-pressed={active}
+                  className={cn(
+                    'relative flex flex-col rounded-2xl border p-4 text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-card',
+                    active
+                      ? 'border-neon-deep/60 bg-neon-deep/8 ring-4 ring-neon-deep/10 dark:border-neon/60 dark:bg-neon/8 dark:ring-neon/10'
+                      : 'border-ink/10 bg-paper/60 dark:border-paper/10 dark:bg-ink',
+                  )}
+                >
+                  <div className="flex items-baseline justify-between">
+                    <p className="font-display text-xl font-extrabold text-ink dark:text-paper">
+                      {d}<span className="ml-1 text-xs font-bold text-ink/40 dark:text-paper/40">month{d > 1 ? 's' : ''}</span>
+                    </p>
+                    {p.saved > 0 && (
+                      <span className="rounded-bubble bg-mint-deep/10 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-mint-deep dark:bg-mint/10 dark:text-mint">
+                        Save ₹{p.saved}
+                      </span>
+                    )}
+                  </div>
+                  <div className="mt-3 flex items-baseline gap-2">
+                    <span className="font-display text-3xl font-extrabold tracking-tight text-ink dark:text-paper">
+                      ₹{p.total}
+                    </span>
+                    <span className="text-xs font-semibold text-ink/40 dark:text-paper/40">
+                      ₹{Math.round(p.total / d)}/mo
+                    </span>
+                  </div>
+                  <p className="mt-1 text-[10px] font-medium text-ink/45 dark:text-paper/45">one payment · whole batch</p>
+                </button>
+              )
+            })}
+          </div>
 
-          <div className="relative">
-            <div className="cdt-scroll-slim grid max-h-[340px] grid-cols-1 gap-2.5 overflow-y-auto pr-2 sm:grid-cols-2">
-              {PROGRAMMES.map((p, i) => {
+          <div className="mt-8 border-t border-ink/8 pt-6 dark:border-paper/10">
+            <p className="text-sm font-bold text-ink dark:text-paper">2 · Choose your domain</p>
+            <p className="mb-4 text-xs text-ink/55 dark:text-paper/55">
+              Same price on every track — pick the work you want to be known for.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {PROGRAMMES.map((p) => {
                 const c = DOMAIN_COLORS[p.color]
                 const active = domain === p.id
                 return (
                   <button
                     key={p.id}
                     type="button"
-                    onClick={() => { setDomain(p.id); if (!getProgramme(p.id).durations.includes(months)) setMonths(getProgramme(p.id).durations[0]) }}
+                    onClick={() => {
+                      setDomain(p.id)
+                      if (!getProgramme(p.id).durations.includes(months)) setMonths(getProgramme(p.id).durations[0])
+                    }}
                     aria-pressed={active}
-                    style={{ transitionDelay: `${Math.min(i, 12) * 18}ms` }}
                     className={cn(
-                      'group relative flex items-center gap-3 rounded-2xl border px-3.5 py-3 text-left transition-all duration-300',
+                      'focus-ring flex items-center gap-2 rounded-full border px-3.5 py-2 text-xs font-bold transition-all duration-300',
                       active
                         ? 'border-ink bg-ink text-white dark:border-paper dark:bg-paper dark:text-ink'
-                        : 'border-ink/10 bg-paper/60 hover:-translate-y-0.5 hover:border-ink/30 hover:shadow-card dark:border-paper/10 dark:bg-ink dark:hover:border-paper/30',
+                        : 'border-ink/12 bg-paper/60 text-ink/65 hover:-translate-y-0.5 hover:border-ink/30 hover:text-ink dark:border-paper/15 dark:bg-ink dark:text-paper/65 dark:hover:border-paper/35 dark:hover:text-paper',
                     )}
                   >
                     <span
-                      className="grid h-10 w-10 shrink-0 place-items-center rounded-xl transition-all duration-300 group-hover:scale-110"
+                      className="grid h-5 w-5 place-items-center rounded-md"
                       style={active ? { background: c.fg, color: 'var(--color-ink)' } : { background: c.bg, color: isDark ? c.fg : 'var(--color-ink)' }}
                     >
-                      <DomainIcon name={p.icon} size={17} />
+                      <DomainIcon name={p.icon} size={11} />
                     </span>
-                    <span className="min-w-0 flex-1">
-                      <span className={cn('block truncate text-[13px] font-bold leading-tight transition-colors duration-300', active ? 'text-white dark:text-ink' : 'text-ink dark:text-paper')}>
-                        {p.title}
-                      </span>
-                      <span className={cn('mt-0.5 block truncate text-[10px] font-medium transition-colors duration-300', active ? 'text-white/60 dark:text-ink/60' : 'text-ink/45 dark:text-paper/45')}>
-                        {p.sub}
-                      </span>
-                    </span>
-                    <span className="mx-1 hidden shrink-0 flex-col items-end gap-1 sm:flex">
-                      {p.durations.map((d) => (
-                        <span key={d} className={cn('rounded-bubble px-1.5 py-px text-[9px] font-bold transition-colors duration-300', active ? 'bg-white/10 text-white/80 dark:bg-ink/10 dark:text-ink/80' : 'bg-ink/5 text-ink/50 dark:bg-paper/5 dark:text-paper/50')}>
-                          {d}mo
-                        </span>
-                      ))}
-                    </span>
-                    {active && (
-                      <span className="absolute -right-1.5 -top-1.5 grid h-5 w-5 place-items-center rounded-full bg-neon text-ink shadow-card animate-in">
-                        <Check size={11} strokeWidth={3} />
-                      </span>
-                    )}
+                    {p.title}
                   </button>
                 )
               })}
             </div>
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 rounded-b-2xl bg-gradient-to-t from-white to-transparent dark:from-ink-soft" />
+            <p className="mt-3 text-[11px] text-ink/45 dark:text-paper/45">
+              {programme.durations.includes(months)
+                ? `${programme.title} runs ${programme.durations.join(', ')}-month batches.`
+                : `${programme.title} doesn’t offer ${months}-month batches — we picked ${programme.durations[0]} months for you.`}
+            </p>
           </div>
 
-          {/* ── duration picker + price panel ── */}
-          <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_360px]">
-            <div>
-              <p className="mb-1 text-sm font-bold text-ink dark:text-paper">2 · Pick your batch length</p>
-              <p className="mb-5 text-xs text-ink/55 dark:text-paper/55">
-                One fixed price for the entire batch — not a monthly charge. The struck-through price is the launch marker; you pay the price below.
-              </p>
-              <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-                {DURATIONS.map((d) => {
-                  const available = programme.durations.includes(d)
-                  const p = batchPrice(d)
-                  const active = months === d
-                  return (
-                    <button
-                      key={d}
-                      type="button"
-                      disabled={!available}
-                      onClick={() => setMonths(d)}
-                      aria-pressed={active}
-                      className={cn(
-                        'relative flex flex-col rounded-2xl border p-4 text-left transition-all duration-300',
-                        available && 'hover:-translate-y-1 hover:shadow-card',
-                        active
-                          ? 'border-neon-deep/60 bg-neon-deep/8 ring-4 ring-neon-deep/10 dark:border-neon/60 dark:bg-neon/8 dark:ring-neon/10'
-                          : available
-                            ? 'border-ink/10 bg-paper/60 dark:border-paper/10 dark:bg-ink'
-                            : 'cursor-not-allowed border-ink/5 opacity-40 dark:border-paper/5',
-                      )}
-                    >
-                      {!available && (
-                        <span className="absolute right-2.5 top-2.5 text-[9px] font-bold uppercase tracking-wider text-ink/35 dark:text-paper/35">
-                          n/a
-                        </span>
-                      )}
-                      <p className="font-display text-2xl font-extrabold text-ink dark:text-paper">
-                        {d}<span className="ml-1 text-xs font-bold text-ink/40 dark:text-paper/40">month{d > 1 ? 's' : ''}</span>
-                      </p>
-                      <div className="mt-2 flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                        <span className={cn('text-sm font-bold line-through decoration-[1.5px]', active ? 'text-neon-deep/45 dark:text-neon/45' : 'text-ink/35 dark:text-paper/35')}>
-                          ₹{p.original}
-                        </span>
-                        <span className="font-display text-2xl font-extrabold tracking-tight text-ink dark:text-paper">₹{p.total}</span>
-                      </div>
-                      <p className="mt-0.5 text-[10px] font-semibold text-ink/45 dark:text-paper/45">whole batch</p>
-                      {p.saved > 0 && available && (
-                        <span className="mt-2 self-start rounded-bubble bg-mint-deep/10 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-mint-deep dark:bg-mint/10 dark:text-mint">
-                          Save ₹{p.saved}
-                        </span>
-                      )}
-                    </button>
-                  )
-                })}
+          <div className="mt-8 flex flex-col gap-6 rounded-2xl border border-ink/10 bg-paper/60 p-6 lg:flex-row lg:items-center dark:border-paper/10 dark:bg-ink">
+            <div className="flex min-w-0 flex-1 items-center gap-4">
+              <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl" style={{ background: color.bg, color: 'var(--color-ink)' }}>
+                <DomainIcon name={programme.icon} size={20} />
+              </span>
+              <div className="min-w-0">
+                <p className="truncate text-sm font-bold text-ink dark:text-paper">{programme.title} · {months}-month batch</p>
+                <p className="text-[11px] text-ink/50 dark:text-paper/50">
+                  launch marker <span className="line-through">₹{price.original}</span> → save ₹{price.saved} today
+                </p>
+              </div>
+              <div className="ml-auto shrink-0 text-right">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-ink/45 dark:text-paper/45">You pay</p>
+                <p className="font-display text-3xl font-extrabold italic tracking-tight text-ink dark:text-paper">₹{price.total}</p>
               </div>
             </div>
-
-            {/* ── summary ── */}
-            <div className="self-start rounded-2xl border border-ink/10 bg-paper/60 p-5 dark:border-paper/10 dark:bg-ink">
-              <div className="flex items-center gap-3">
-                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl" style={{ background: color.bg, color: 'var(--color-ink)' }}>
-                  <DomainIcon name={programme.icon} size={18} />
-                </span>
-                <div className="min-w-0">
-                  <p className="truncate text-sm font-bold text-ink dark:text-paper">{programme.title}</p>
-                  <p className="text-[11px] text-ink/50 dark:text-paper/50">{programme.sub} · {months}-month batch</p>
-                </div>
-              </div>
-
-              <div className="mt-5 grid gap-2.5 text-sm">
-                <div className="flex justify-between gap-3">
-                  <span className="text-ink/55 dark:text-paper/55">Launch marker (struck off)</span>
-                  <span className="font-semibold line-through text-ink/45 dark:text-paper/45">₹{price.original}</span>
-                </div>
-                <div className="flex justify-between gap-3">
-                  <span className="text-ink/55 dark:text-paper/55">You save today</span>
-                  <span className="font-semibold text-mint-deep dark:text-mint">−₹{price.saved}</span>
-                </div>
-                <div className="flex items-end justify-between border-t border-ink/8 pt-3 dark:border-paper/10">
-                  <span className="text-xs font-bold uppercase tracking-widest text-ink/45 dark:text-paper/45">You pay</span>
-                  <span className="font-display text-3xl font-extrabold text-ink dark:text-paper">₹{price.total}</span>
-                </div>
-              </div>
-
-              <Button size="lg" variant="neon" className="mt-5 w-full" onClick={start}>
-                <Rocket size={16} /> Book this batch
-              </Button>
-              <p className="mt-3 text-center text-[11px] text-ink/40 dark:text-paper/40">
-                Refundable within 7 days · free retake included
-              </p>
-            </div>
+            <Button size="lg" variant="neon" className="w-full lg:w-auto" onClick={start}>
+              <Rocket size={16} /> Book this batch <ArrowRight size={15} />
+            </Button>
           </div>
 
-          {/* ── what's included ── */}
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-2 text-[11px] text-ink/55 dark:text-paper/55">
+            {[
+              { icon: ShieldCheck, label: 'Refundable within 7 days' },
+              { icon: BadgeCheck, label: 'Free retake included' },
+              { icon: FileSignature, label: 'College internship documentation' },
+              { icon: Wallet, label: 'Refer a friend — earn ₹50' },
+            ].map(({ icon: Icon, label }) => (
+              <span key={label} className="flex items-center gap-1.5">
+                <Icon size={12} className="text-mint-deep dark:text-mint" /> {label}
+              </span>
+            ))}
+          </div>
+
           <div className="mt-8 border-t border-ink/8 pt-6 dark:border-paper/10">
-            <p className="mb-4 text-sm font-bold text-ink dark:text-paper">Every {programme.title} batch includes</p>
+            <p className="mb-4 text-sm font-bold text-ink dark:text-paper">The same full package on every track</p>
             <ul className="grid gap-2.5 sm:grid-cols-2">
               {INCLUDED.map((f) => (
                 <li key={f} className="flex items-start gap-2.5 text-sm text-ink/75 dark:text-paper/75">
@@ -223,36 +197,18 @@ export default function PricingPage() {
           </div>
         </div>
 
-        {/* ── duration discount strip ── */}
-        <div data-enter className="mt-10 grid gap-3 sm:grid-cols-3">
-          {[
-            { Icon: Wallet, title: 'Pay once per batch', sub: 'No monthly billing — 1-month is ₹149, 2-month ₹299, 3-month ₹429, 6-month ₹799.' },
-            { Icon: BadgeCheck, title: 'Certificate after the interview', sub: 'Employer-verifiable certificate with a unique ID — issued once you clear the final interview.' },
-            { Icon: FileSignature, title: 'LOR unlocks in 24 hours', sub: 'A signed letter of recommendation unlocks a day after your certificate is issued.' },
-          ].map(({ Icon, title, sub }, i) => (
-            <div key={title} className="flex items-start gap-3 rounded-2xl border border-ink/10 bg-white p-4 dark:border-paper/10 dark:bg-ink-soft" style={{ transitionDelay: `${i * 80}ms` }}>
-              <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-cyan-deep/10 text-cyan-deep dark:bg-cyan-snap/10 dark:text-cyan-snap">
-                <Icon size={16} />
-              </span>
-              <div>
-                <p className="text-sm font-bold text-ink dark:text-paper">{title}</p>
-                <p className="mt-0.5 text-xs text-ink/55 dark:text-paper/55">{sub}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* ── FAQ ── */}
         <div data-enter className="mx-auto mt-14 max-w-3xl">
-          <h2 className="text-center font-display text-2xl font-bold text-ink dark:text-paper">Common questions</h2>
+          <h2 className="text-center font-display text-2xl font-bold text-ink dark:text-paper">
+            Questions people ask before booking
+          </h2>
           <div className="mt-6 grid gap-3">
             {[
-              ['Is the price per month or for the whole batch?', 'Per whole batch. ₹149 is the full fee for a 1-month batch, ₹299 for 2 months and so on — there is no monthly subscription.'],
-              ['Why is the struck-through price higher?', 'It is the launch marker of the batch. You always pay the fixed fee shown — the difference is simply what you save today.'],
-              ['Is there a free retake if I fail the assessment?', 'Yes — you can retake the final assessment once for free on every batch.'],
-              ['What does a mentor review mean?', 'An admin mentor reviews every live-project submission (screenshots + link) on every track and approves or requests changes.'],
-              ['How do referral rewards work?', 'Every friend who pays for a seat using your link credits ₹50 to your internship wallet, which you can apply at checkout.'],
-              ['Can I join another internship after finishing?', 'Yes — once your LOR is issued, you can start a fresh internship on any track. Every internship earns its own certificate.'],
+              ['Is the price per month?', 'No — one payment per whole batch. ₹149 for 1 month, ₹299 for 2, ₹429 for 3, ₹799 for 6. No subscription anywhere.'],
+              ['Do I need experience or connections to join?', 'No. Entry is a baseline quiz plus an AI mock interview — no referrals, no prior portfolio, no network required. The work itself builds your proof.'],
+              ['What if I fail the assessment?', 'You get one free retake on every batch, and mentors tell you exactly what to strengthen between attempts.'],
+              ['What does the struck-through price mean?', 'It is the batch launch marker. You always pay the fixed price shown — the difference is simply today’s saving.'],
+              ['How does a mentor review work?', 'You submit evidence of each deliverable (screenshots + live link) and a mentor approves it or sends you back with specific changes — like a real code review.'],
+              ['Can I do another internship after this one?', 'Yes — once your LOR is issued, start a fresh batch on any domain. Every internship earns its own certificate and each one adds to your portfolio.'],
             ].map(([q, a]) => (
               <div key={q} className="rounded-2xl border border-ink/10 bg-white p-4 dark:border-paper/10 dark:bg-ink-soft">
                 <p className="flex items-center gap-2 text-sm font-bold text-ink dark:text-paper">
@@ -264,14 +220,14 @@ export default function PricingPage() {
           </div>
         </div>
 
-        {/* ── CTA ── */}
-        <div data-enter className="relative mt-16 overflow-hidden rounded-panel border border-ink/8 bg-mist p-10 text-center text-ink shadow-float dark:border-paper/10 dark:bg-ink dark:text-paper">
-          <div className="pointer-events-none absolute -left-16 -top-16 h-48 w-48 rounded-full bg-cyan-deep/15 blur-3xl dark:bg-cyan-snap/20" />
-          <div className="pointer-events-none absolute -bottom-16 -right-16 h-48 w-48 rounded-full bg-neon-deep/15 blur-3xl dark:bg-neon/20" />
+        <div data-enter className="cdt-lively relative mt-16 overflow-hidden rounded-panel border border-ink/8 bg-mist p-10 text-center text-ink shadow-float dark:border-paper/10 dark:bg-ink dark:text-paper">
+          <div className="cdt-drift pointer-events-none absolute -left-16 -top-16 h-48 w-48 rounded-full bg-cyan-deep/15 blur-3xl dark:bg-cyan-snap/20" />
+          <div className="cdt-drift cdt-drift-delayed pointer-events-none absolute -bottom-16 -right-16 h-48 w-48 rounded-full bg-neon-deep/15 blur-3xl dark:bg-neon/20" />
           <GraduationCap size={30} className="mx-auto text-neon-deep dark:text-neon" />
           <h2 className="mt-4 font-display text-3xl font-bold">Your first real project is a booking away</h2>
           <p className="mx-auto mt-2 max-w-xl text-sm text-ink/55 dark:text-paper/55">
-            Pick a domain, lock a {months}-month batch for ₹{price.total} and start shipping today. Full refund within 7 days if you&apos;re not satisfied.
+            Lock a {months}-month {programme.title} batch for ₹{price.total} and start shipping today. Full refund
+            within 7 days if it isn&apos;t for you.
           </p>
           <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
             <Button size="lg" variant="neon" onClick={start}>
@@ -281,8 +237,8 @@ export default function PricingPage() {
               Browse all domains <ArrowRight size={16} />
             </Button>
           </div>
-          <p className="mt-5 flex items-center justify-center gap-1.5 text-[11px] text-ink/40 dark:text-paper/40">
-            <ShieldCheck size={12} /> 100% simulated checkout on this demo · no real charges
+          <p className="mt-5 text-[11px] text-ink/40 dark:text-paper/40">
+            Striped as &ldquo;betting &amp; gambling&rdquo; on some UPI receipts — your bank story, not ours.
           </p>
         </div>
       </section>

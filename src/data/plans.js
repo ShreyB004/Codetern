@@ -25,9 +25,10 @@ export function batchPrice(months) {
 // every batch ships with the same core experience; the domain decides the work
 export const INCLUDED = [
   'All live project tasks + resources',
-  'Sprint grader reviews code, not attendance',
+  'Mentor sprint reviews — code, not attendance',
   'Final assessment & AI-scored interview',
   'Employer-verifiable certificate',
   'Letter of recommendation (LOR)',
+  'College internship documentation (offer + completion letters)',
   'Refer & earn ₹50 per friend',
 ]

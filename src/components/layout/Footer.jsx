@@ -50,8 +50,8 @@ export function Footer() {
               </span>
             </Link>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-ink/60 dark:text-paper/60">
-              An elite internship simulator. Get real work done before your first job — through quizzes, AI mock
-              interviews and studio-grade projects across 14 domains.
+              Mentor-led internships with real stakes. Ship production-ready projects across 14 domains and graduate
+              with deployed, reviewable work recruiters can verify — not just a certificate.
             </p>
             <div className="mt-6 flex gap-2.5">
               {SOCIALS.map(({ label, href, Icon }) => (

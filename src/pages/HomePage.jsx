@@ -4,6 +4,8 @@ import { MarqueeStrip } from '../components/home/MarqueeStrip.jsx'
 import { MetricsBar } from '../components/home/MetricsBar.jsx'
 import { DurationGrid } from '../components/home/DurationGrid.jsx'
 import { RealWorkSection } from '../components/home/RealWorkSection.jsx'
+import { IndustrialTraining } from '../components/home/IndustrialTraining.jsx'
+import { ResourceEcosystem } from '../components/home/ResourceEcosystem.jsx'
 import { Journey3D } from '../components/home/Journey3D.jsx'
 import { StepsCarousel } from '../components/home/StepsCarousel.jsx'
 import { ProgrammeShowcase } from '../components/home/ProgrammeShowcase.jsx'
@@ -18,6 +20,8 @@ export default function HomePage() {
       <MetricsBar />
       <DurationGrid />
       <RealWorkSection />
+      <IndustrialTraining />
+      <ResourceEcosystem />
       <Journey3D />
       <StepsCarousel />
       <ProgrammeShowcase />
