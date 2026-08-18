@@ -40,7 +40,7 @@ export function Hero() {
           </h1>
 
           <p className="mt-6 max-w-xl text-base leading-relaxed text-ink/65 dark:text-paper/60 sm:text-lg">
-            Codetern recreates a real engineering internship — production-shaped projects in engineering, data and
+            Codetern is a mentor-led engineering internship — production-shaped projects in engineering, data and
             design, senior-style code reviews every week, and deployed work recruiters can actually verify. You
             graduate with lines in your portfolio, not credits on a transcript.
           </p>

@@ -39,7 +39,7 @@ export function Preloader({ onDone }) {
         <div className="cdt-prel-bar mt-6 h-1 w-44 origin-left overflow-hidden rounded-full bg-white/10">
           <div className="h-full w-full origin-left scale-x-0 rounded-full bg-gradient-to-r from-cyan-snap to-neon" />
         </div>
-        <p className="mt-4 text-xs font-medium uppercase tracking-[0.3em] text-white/60">Internship simulator</p>
+        <p className="mt-4 text-xs font-medium uppercase tracking-[0.3em] text-white/60">Internship programme</p>
       </div>
     </div>
   )
