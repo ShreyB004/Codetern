@@ -1,0 +1,22 @@
+.aurora-glow {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.aurora-glow-sheet {
+  position: absolute;
+  inset: -35%;
+  animation: cdt-aurora-drift 26s ease-in-out infinite;
+  mix-blend-mode: screen;
+  will-change: transform;
+}
+.aurora-glow-alt {
+  animation: cdt-aurora-drift-alt 32s ease-in-out infinite;
+}
+.aurora-glow-blob {
+  mix-blend-mode: screen;
+}
+.aurora-glow-noblend {
+  mix-blend-mode: normal;
+}
