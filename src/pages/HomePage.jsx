@@ -9,7 +9,6 @@ import { ResourceEcosystem } from '../components/home/ResourceEcosystem.jsx'
 import { Journey3D } from '../components/home/Journey3D.jsx'
 import { StepsCarousel } from '../components/home/StepsCarousel.jsx'
 import { ProgrammeShowcase } from '../components/home/ProgrammeShowcase.jsx'
-import { Testimonials } from '../components/home/Testimonials.jsx'
 import { CTABand } from '../components/home/CTABand.jsx'
 
 export default function HomePage() {
@@ -25,7 +24,6 @@ export default function HomePage() {
       <Journey3D />
       <StepsCarousel />
       <ProgrammeShowcase />
-      <Testimonials />
       <CTABand />
     </Page>
   )
