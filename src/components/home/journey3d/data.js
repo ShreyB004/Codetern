@@ -1,5 +1,5 @@
 import { BrainCircuit, CalendarCheck, Rocket, UserCheck, Video } from 'lucide-react'
-
+// mainly for mobile apps
 export const MILESTONES = [
   { icon: UserCheck, step: '01', title: 'Profile & resume', desc: 'Your identity, resume and track on file.', color: '#b4ff39' },
   { icon: Rocket, step: '02', title: 'Live workspace', desc: 'Weekly sprints; a mentor curates and reviews your checklist.', color: '#38ffb0' },
