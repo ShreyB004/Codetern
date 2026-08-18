@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
+import { Analytics } from '@vercel/analytics/react'
 import App from './App.jsx'
 import { Providers } from './context/Providers.jsx'
 import { load } from './lib/store.js'
@@ -23,6 +24,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <Providers>
         <App />
       </Providers>
+      <Analytics />
     </BrowserRouter>
   </React.StrictMode>,
 )
