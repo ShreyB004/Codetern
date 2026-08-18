@@ -2,7 +2,6 @@ import { ArrowRight } from 'lucide-react'
 import { Button } from '../ui/Button.jsx'
 import { openRegistration } from '../../lib/analytics.js'
 import { useRevealScope } from '../../hooks/useReveal.js'
-import { useNavigate } from 'react-router-dom'
 import { useMagnetic } from '../../hooks/useMagnetic.js'
 import { AuroraBackground } from '../ui/backgrounds/AuroraBackground.jsx'
 import { ScrollReveal } from '../ui/effects/ScrollReveal.jsx'
@@ -13,7 +12,6 @@ import { ScrollReveal } from '../ui/effects/ScrollReveal.jsx'
  */
 export function CTABand() {
   const scope = useRevealScope()
-  const navigate = useNavigate()
   const magRef = useMagnetic(0.15)
 
   return (
@@ -55,9 +53,6 @@ export function CTABand() {
                 <ArrowRight size={17} />
               </Button>
             </span>
-            <Button size="lg" variant="lightGhost" magnetic={false} onClick={() => navigate('/portfolio')}>
-              See the work it produces
-            </Button>
           </div>
 
           <p className="mt-6 text-xs text-paper/45">

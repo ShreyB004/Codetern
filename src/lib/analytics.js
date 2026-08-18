@@ -2,10 +2,10 @@ import { analyticsPromise, db } from './firebase.js'
 import { getDatabase, ref, push } from 'firebase/database'
 import { logEvent } from 'firebase/analytics'
 
-// Registration funnel: every "Register" CTA funnels here. Swap in the real
+// Registration funnel: every "Register" CTA funnels here. Swap in a different
 // form (Tally/Google Forms/Typeform) via VITE_REGISTRATION_URL.
 export const REGISTRATION_URL =
-  (import.meta.env.VITE_REGISTRATION_URL || '').trim() || 'https://forms.gle/update-me'
+  (import.meta.env.VITE_REGISTRATION_URL || '').trim() || 'https://forms.gle/QGGDFFewL4rfHZuT9'
 
 // ── attribution ──────────────────────────────────────────────────────────
 const SOCIAL = ['instagram.com', 'linkedin.com', 'youtube.com', 'facebook.com', 'twitter.com', 'x.com', 'whatsapp.com', 't.me', 'wa.me']

@@ -17,14 +17,12 @@ const COLUMNS = [
       { label: 'AI & LLM Development', to: '/domains' },
       { label: 'Cybersecurity', to: '/domains' },
       { label: 'UI/UX Design', to: '/domains' },
-      { label: 'View all domains', to: '/domains' },
     ],
   },
   {
     title: 'Platform',
     links: [
       { label: 'About Codetern', to: '/about' },
-      { label: 'Live projects', to: '/portfolio' },
       { label: 'Pricing', to: '/pricing' },
       { label: 'Certificate verification', to: '/certification' },
       { label: 'Student dashboard', to: '/dashboard' },

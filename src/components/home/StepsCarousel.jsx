@@ -1,4 +1,4 @@
-import { ArrowUpRight, BadgeCheck, BriefcaseBusiness, Code2, GitPullRequest, Mic2, Sparkles } from 'lucide-react'
+import { BadgeCheck, BriefcaseBusiness, Code2, GitPullRequest, Mic2, Sparkles } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { useRevealScope } from '../../hooks/useReveal.js'
 import { useTheme } from '../../context/ThemeContext.jsx'
@@ -51,13 +51,6 @@ export function StepsCarousel() {
               moment you finish, you can open the work and win the argument.
             </p>
           </div>
-          <button
-            onClick={() => navigate('/portfolio')}
-            className="group inline-flex min-h-11 items-center gap-1.5 rounded-full px-2 py-2 text-sm font-semibold text-ink transition-colors hover:text-neon-deep focus-ring dark:text-paper dark:hover:text-neon"
-          >
-            See what interns shipped
-            <ArrowUpRight size={15} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          </button>
         </div>
 
         {/* bento grid */}

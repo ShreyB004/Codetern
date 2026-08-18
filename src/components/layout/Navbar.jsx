@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
-import { ArrowRight, Sparkles } from 'lucide-react'
+import { ArrowRight, BadgeCheck, Home, Info, Mail, Tag } from 'lucide-react'
 import { cn } from '../../lib/utils.js'
 import { Button } from '../ui/Button.jsx'
 import { ThemeToggle } from '../ui/ThemeToggle.jsx'
@@ -8,12 +8,11 @@ import { openRegistration } from '../../lib/analytics.js'
 import { gsap } from '../../lib/gsap.js'
 
 const LINKS = [
-  { to: '/', label: 'Home' },
-  { to: '/about', label: 'About' },
-  { to: '/portfolio', label: 'Projects' },
-  { to: '/certification', label: 'Certification' },
-  { to: '/pricing', label: 'Pricing' },
-  { to: '/contact', label: 'Contact' },
+  { to: '/', label: 'Home', icon: Home },
+  { to: '/about', label: 'About', icon: Info },
+  { to: '/certification', label: 'Certification', icon: BadgeCheck },
+  { to: '/pricing', label: 'Pricing', icon: Tag },
+  { to: '/contact', label: 'Contact', icon: Mail },
 ]
 
 function NavUnderline({ active = false }) {
@@ -140,7 +139,7 @@ export function Navbar() {
           )}
         >
           <Link to="/" data-nav-enter className="group flex items-center gap-2.5 rounded-full focus-ring">
-            <span className="relative grid h-9 w-9 place-items-center rounded-xl bg-ink text-cyan-snap shadow-card transition-all duration-300 group-hover:scale-105 dark:bg-ink-soft dark:text-neon">
+            <span className="relative h-9 w-9 place-items-center rounded-xl bg-[#eee] text-cyan-snap shadow-card transition-all duration-300 group-hover:scale-105 dark:bg-ink-soft dark:text-neon">
               <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width={45}
@@ -262,7 +261,7 @@ export function Navbar() {
               >
                 <span className="flex items-center gap-3">
                   <span className="grid h-7 w-7 place-items-center rounded-lg bg-cyan-snap/10 text-cyan-deep dark:bg-cyan-snap/10 dark:text-cyan-snap">
-                    <Sparkles size={13} />
+                    <l.icon size={13} />
                   </span>
                   {l.label}
                 </span>
