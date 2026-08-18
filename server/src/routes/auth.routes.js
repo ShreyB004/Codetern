@@ -1,9 +1,11 @@
 import { requireAuth } from '../auth/guards.js'
 import { parse, signupSchema, loginSchema } from '../lib/validate.js'
-import { hashPassword, verifyPassword } from '../lib/passwords.js'
-import { signAccessToken, verifyRefreshToken, refreshTtlSeconds } from '../lib/jwt.js'
+import { hashPassword, verifyPassword, verifyPasswordDummy } from '../lib/passwords.js'
+import { signAccessToken, verifyRefreshToken } from '../lib/jwt.js'
 import { setRefreshCookie, clearRefreshCookie, readRefreshCookie } from '../lib/cookies.js'
-import { newSessionId, saveSession, validateSession, destroySession, rotateSession } from '../lib/sessions.js'
+import {
+  newSessionId, saveSession, validateSession, destroySession, rotateSession, revokeFamily,
+} from '../lib/sessions.js'
 import { query, tx } from '../db/pool.js'
 import { uid, referralCodeFor } from '../lib/ids.js'
 import { badRequest, conflict, unauthorized } from '../lib/errors.js'
@@ -12,7 +14,7 @@ const REFERRAL_REWARD = 50
 
 export async function authRoutes(app) {
   // ── signup ──────────────────────────────────────────────────────────
-  app.post('/auth/signup', { config: { rateLimit: { max: 5, timeWindow: '1 minute' } } }, async (request, reply) => {
+  app.post('/auth/signup', { config: { rateLimit: { max: 8, timeWindow: '1 minute' } } }, async (request, reply) => {
     const { name, email, password, referralCode } = parse(signupSchema, request.body || {})
 
     const id = uid('u')
@@ -43,6 +45,7 @@ export async function authRoutes(app) {
     await saveSession(sessionId, created.id)
     const access = await signAccessToken(created)
     const refresh = await rotateSession(null, created.id).then((r) => r.token)
+    await destroySession(sessionId)
     setRefreshCookie(reply, refresh)
 
     return reply.code(201).send({
@@ -59,7 +62,14 @@ export async function authRoutes(app) {
     const { rows } = await query('SELECT * FROM users WHERE email = $1', [email])
     const user = rows[0]
 
-    if (!user || !(await verifyPassword(password, user.password_hash))) {
+    // Uniform failure path: unknown emails burn a real bcrypt compare so
+    // timing cannot reveal whether an email exists, and both cases return
+    // the exact same message.
+    if (!user) {
+      await verifyPasswordDummy(password)
+      throw unauthorized('Invalid email or password.')
+    }
+    if (!(await verifyPassword(password, user.password_hash))) {
       throw unauthorized('Invalid email or password.')
     }
 
@@ -67,6 +77,7 @@ export async function authRoutes(app) {
     await saveSession(sessionId, user.id)
     const access = await signAccessToken(user)
     const refresh = await rotateSession(null, user.id).then((r) => r.token)
+    await destroySession(sessionId)
     setRefreshCookie(reply, refresh)
 
     return {
@@ -77,13 +88,20 @@ export async function authRoutes(app) {
   })
 
   // ── refresh (rotation on every use) ────────────────────────────────
-  app.post('/auth/refresh', async (request, reply) => {
+  app.post('/auth/refresh', { config: { rateLimit: { max: 10, timeWindow: '1 minute' } } }, async (request, reply) => {
     const token = readRefreshCookie(request)
     if (!token) throw unauthorized('No refresh token provided.')
 
     const { userId, sessionId } = await verifyRefreshToken(token)
-    const active = await validateSession(sessionId)
-    if (!active) throw unauthorized('Session expired. Sign in again.')
+    const session = await validateSession(sessionId)
+    if (!session) throw unauthorized('Session expired. Sign in again.')
+
+    if (session.status === 'rotated') {
+      // A rotated token was presented again → almost certainly theft.
+      // Revoke every live refresh session of this user (token family).
+      await revokeFamily(userId)
+      throw unauthorized('Session expired. Sign in again.')
+    }
 
     const { rows } = await query('SELECT id, name, email, role FROM users WHERE id = $1', [userId])
     if (!rows[0]) throw unauthorized('Account no longer exists.')
@@ -97,7 +115,7 @@ export async function authRoutes(app) {
   })
 
   // ── logout ─────────────────────────────────────────────────────────
-  app.post('/auth/logout', async (request, reply) => {
+  app.post('/auth/logout', { config: { rateLimit: { max: 10, timeWindow: '1 minute' } } }, async (request, reply) => {
     const token = readRefreshCookie(request)
     if (token) {
       try {

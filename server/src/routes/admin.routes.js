@@ -1,12 +1,15 @@
 import { requireAdmin } from '../auth/guards.js'
 import { query, tx } from '../db/pool.js'
-import { parse, idParamSchema } from '../lib/validate.js'
+import { parse, idParamSchema, durationParamSchema } from '../lib/validate.js'
 import { badRequest, notFound, conflict } from '../lib/errors.js'
 import { overrideSeat, scaleSeats, ensureSeat, getSeatMap } from '../lib/seats.js'
 import { getPricing, batchPrice } from '../lib/pricing.js'
 import { adminCreditCandidate } from '../lib/wallet.js'
 import { uid } from '../lib/ids.js'
 import { z } from 'zod'
+
+const domainParamSchema = z.object({ domain: z.string().trim().min(1).max(40) })
+const seatRefSchema = z.object({ domain: z.string().trim().min(1).max(40), duration: z.coerce.number().int().min(1).max(6) })
 
 const domainSchema = z.object({
   id: z.string().trim().min(1).max(40),
@@ -206,7 +209,7 @@ export async function adminRoutes(app) {
   })
 
   app.put('/admin/quiz/:domain', async (request) => {
-    const { domain } = request.params
+    const { domain } = parse(domainParamSchema, request.params)
     const data = parse(quizSchema, { domain, ...(request.body || {}) })
     await query(
       `INSERT INTO quiz_banks (domain, minutes, questions) VALUES ($1,$2,$3)
@@ -217,7 +220,7 @@ export async function adminRoutes(app) {
   })
 
   app.patch('/admin/quiz/:domain/questions/:index', async (request) => {
-    const { domain } = request.params
+    const { domain } = parse(domainParamSchema, request.params)
     const index = Number(request.params.index)
     const { enabled } = request.body || {}
     if (typeof enabled !== 'boolean') throw badRequest('enabled (boolean) is required.')
@@ -233,7 +236,7 @@ export async function adminRoutes(app) {
   })
 
   app.delete('/admin/quiz/:domain/questions/:index', async (request) => {
-    const { domain } = request.params
+    const { domain } = parse(domainParamSchema, request.params)
     const index = Number(request.params.index)
     const { rows } = await query('SELECT questions FROM quiz_banks WHERE domain = $1', [domain])
     if (!rows[0]) throw notFound('Quiz bank not found.')
@@ -249,7 +252,7 @@ export async function adminRoutes(app) {
   })
 
   app.put('/admin/workspace-defaults/:domain', async (request) => {
-    const { domain } = request.params
+    const { domain } = parse(domainParamSchema, request.params)
     const { tasks, resources } = request.body || {}
     if (!Array.isArray(tasks) || !Array.isArray(resources)) throw badRequest('tasks and resources arrays are required.')
     await query(
@@ -264,9 +267,10 @@ export async function adminRoutes(app) {
   app.get('/admin/seats', async () => ({ seats: await getSeatMap() }))
 
   app.put('/admin/seats/:domain/:duration', async (request) => {
-    const { domain, duration } = request.params
+    const { domain } = parse(domainParamSchema, request.params)
+    const { duration } = parse(durationParamSchema, request.params)
     const data = parse(seatPatchSchema, request.body || {})
-    const seat = await overrideSeat(domain, Number(duration), data)
+    const seat = await overrideSeat(domain, duration, data)
     return { seat: { ...seat, remaining: Math.max(0, seat.total - seat.sold - seat.held) } }
   })
 
@@ -277,9 +281,8 @@ export async function adminRoutes(app) {
   })
 
   app.post('/admin/seats/ensure', async (request) => {
-    const { domain, duration } = request.body || {}
-    if (!domain || !duration) throw badRequest('domain and duration are required.')
-    const seat = await ensureSeat(domain, Number(duration))
+    const { domain, duration } = parse(seatRefSchema, (request.body || {}))
+    const seat = await ensureSeat(domain, duration)
     return { seat }
   })
 

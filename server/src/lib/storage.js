@@ -55,7 +55,7 @@ export const storage = {
   },
 
   async remove(filename) {
-    if (!filename || filename.includes('..') || path.isAbsolute(filename)) return
+    if (!safeName(filename)) return
     try {
       await unlink(path.resolve(env.UPLOAD_DIR, filename))
     } catch (err) {
@@ -64,7 +64,7 @@ export const storage = {
   },
 
   async exists(filename) {
-    if (!filename || filename.includes('..') || path.isAbsolute(filename)) return false
+    if (!safeName(filename)) return false
     try {
       await stat(path.resolve(env.UPLOAD_DIR, filename))
       return true
@@ -72,4 +72,14 @@ export const storage = {
       return false
     }
   },
+}
+
+// A stored filename must be a plain basename inside the upload dir — no
+// separators, no "..", and the resolved path must stay within UPLOAD_DIR.
+function safeName(filename) {
+  if (!filename || typeof filename !== 'string') return false
+  if (path.basename(filename) !== filename) return false
+  if (filename.includes('..') || path.isAbsolute(filename)) return false
+  const abs = path.resolve(env.UPLOAD_DIR, filename)
+  return abs.startsWith(path.resolve(env.UPLOAD_DIR) + path.sep)
 }

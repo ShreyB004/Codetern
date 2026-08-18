@@ -1,0 +1,379 @@
+
+> codetern-server@1.0.0 dev
+> node --watch src/index.js
+
+Restarting 'src/index.js'
+{"level":30,"time":1786880961248,"pid":24884,"hostname":"ExteraTerrestrial","msg":"Server listening at http://127.0.0.1:4000"}
+{"level":30,"time":1786880961248,"pid":24884,"hostname":"ExteraTerrestrial","msg":"Server listening at http://192.168.56.1:4000"}
+{"level":30,"time":1786880961248,"pid":24884,"hostname":"ExteraTerrestrial","msg":"Server listening at http://192.168.1.6:4000"}
+{"level":30,"time":1786880961248,"pid":24884,"hostname":"ExteraTerrestrial","msg":"Server listening at http://172.17.176.1:4000"}
+Restarting 'src/index.js'
+{"level":30,"time":1786880966925,"pid":6700,"hostname":"ExteraTerrestrial","msg":"Server listening at http://127.0.0.1:4000"}
+{"level":30,"time":1786880966925,"pid":6700,"hostname":"ExteraTerrestrial","msg":"Server listening at http://192.168.56.1:4000"}
+{"level":30,"time":1786880966925,"pid":6700,"hostname":"ExteraTerrestrial","msg":"Server listening at http://192.168.1.6:4000"}
+{"level":30,"time":1786880966925,"pid":6700,"hostname":"ExteraTerrestrial","msg":"Server listening at http://172.17.176.1:4000"}
+{"level":30,"time":1786880969340,"pid":6700,"hostname":"ExteraTerrestrial","reqId":"req-1","req":{"method":"GET","url":"/health","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":48596},"msg":"incoming request"}
+{"level":30,"time":1786880969352,"pid":6700,"hostname":"ExteraTerrestrial","reqId":"req-1","res":{"statusCode":200},"responseTime":11.124000000000251,"msg":"request completed"}
+Restarting 'src/index.js'
+{"level":30,"time":1786880973668,"pid":22892,"hostname":"ExteraTerrestrial","msg":"Server listening at http://127.0.0.1:4000"}
+{"level":30,"time":1786880973668,"pid":22892,"hostname":"ExteraTerrestrial","msg":"Server listening at http://192.168.56.1:4000"}
+{"level":30,"time":1786880973668,"pid":22892,"hostname":"ExteraTerrestrial","msg":"Server listening at http://192.168.1.6:4000"}
+{"level":30,"time":1786880973668,"pid":22892,"hostname":"ExteraTerrestrial","msg":"Server listening at http://172.17.176.1:4000"}
+{"level":30,"time":1786880977671,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-1","req":{"method":"POST","url":"/api/auth/signup","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":48607},"msg":"incoming request"}
+{"level":30,"time":1786880977685,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-1","res":{"statusCode":400},"responseTime":11.880400000000009,"msg":"request completed"}
+{"level":30,"time":1786880983597,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-2","req":{"method":"POST","url":"/api/auth/signup","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":48609},"msg":"incoming request"}
+{"level":30,"time":1786880983605,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-2","res":{"statusCode":400},"responseTime":8.166799999999057,"msg":"request completed"}
+{"level":30,"time":1786881003321,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-3","req":{"method":"POST","url":"/api/auth/signup","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":15129},"msg":"incoming request"}
+{"level":30,"time":1786881003423,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-3","res":{"statusCode":201},"responseTime":102.22460000000137,"msg":"request completed"}
+{"level":30,"time":1786881009796,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-4","req":{"method":"GET","url":"/api/seats","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":45303},"msg":"incoming request"}
+{"level":30,"time":1786881009803,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-4","res":{"statusCode":200},"responseTime":6.143799999998009,"msg":"request completed"}
+{"level":30,"time":1786881010053,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-5","req":{"method":"POST","url":"/api/auth/login","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":45305},"msg":"incoming request"}
+{"level":30,"time":1786881010127,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-5","res":{"statusCode":200},"responseTime":73.4010999999955,"msg":"request completed"}
+{"level":30,"time":1786881010407,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-6","req":{"method":"GET","url":"/api/auth/me","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":45307},"msg":"incoming request"}
+{"level":30,"time":1786881010413,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-6","res":{"statusCode":200},"responseTime":5.545900000004622,"msg":"request completed"}
+[mail] (not configured) to=ref-1786881012665@test.dev subject="Codetern — payment received"
+{"level":30,"time":1786881024630,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-7","req":{"method":"POST","url":"/api/booking/order","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":6614},"msg":"incoming request"}
+{"level":30,"time":1786881024646,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-7","res":{"statusCode":201},"responseTime":15.48080000000482,"msg":"request completed"}
+{"level":30,"time":1786881024956,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-8","req":{"method":"POST","url":"/api/booking/pay-mock","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":6616},"msg":"incoming request"}
+{"level":30,"time":1786881024958,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-8","res":{"statusCode":400},"responseTime":1.5037000000011176,"msg":"request completed"}
+{"level":30,"time":1786881030125,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-9","req":{"method":"POST","url":"/api/booking/pay-mock","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":6618},"msg":"incoming request"}
+{"level":30,"time":1786881030131,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-9","res":{"statusCode":401},"responseTime":5.5077000000019325,"msg":"request completed"}
+{"level":30,"time":1786881043850,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-a","req":{"method":"POST","url":"/api/booking/ord_mock_0368a809d432820fb46c0d4a2715e9f1/cancel","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":18717},"msg":"incoming request"}
+{"level":30,"time":1786881043864,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-a","res":{"statusCode":200},"responseTime":13.25,"msg":"request completed"}
+{"level":30,"time":1786881044100,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-b","req":{"method":"POST","url":"/api/auth/login","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":18719},"msg":"incoming request"}
+{"level":30,"time":1786881044104,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-b","res":{"statusCode":429},"responseTime":4.217999999993481,"msg":"request completed"}
+{"level":30,"time":1786881075775,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-c","req":{"method":"POST","url":"/api/auth/login","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":55063},"msg":"incoming request"}
+{"level":30,"time":1786881075868,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-c","res":{"statusCode":200},"responseTime":93.0795999999973,"msg":"request completed"}
+{"level":30,"time":1786881082431,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-d","req":{"method":"POST","url":"/api/booking/order","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":16939},"msg":"incoming request"}
+{"level":30,"time":1786881082442,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-d","res":{"statusCode":400},"responseTime":11.088499999998021,"msg":"request completed"}
+{"level":30,"time":1786881082710,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-e","req":{"method":"POST","url":"/api/booking/pay-mock","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":16942},"msg":"incoming request"}
+{"level":30,"time":1786881082717,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-e","res":{"statusCode":400},"responseTime":7.335099999996601,"msg":"request completed"}
+[mail] (not configured) to=itest-1786881059155-xf1nbb@test.dev subject="Codetern — payment received"
+{"level":30,"time":1786881148531,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-f","req":{"method":"POST","url":"/api/auth/login","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":50476},"msg":"incoming request"}
+{"level":30,"time":1786881148620,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-f","res":{"statusCode":200},"responseTime":89.43299999998999,"msg":"request completed"}
+{"level":30,"time":1786881148915,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-g","req":{"method":"GET","url":"/api/auth/me","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":50478},"msg":"incoming request"}
+{"level":30,"time":1786881148922,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-g","res":{"statusCode":200},"responseTime":6.13990000000922,"msg":"request completed"}
+{"level":30,"time":1786881149155,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-h","req":{"method":"POST","url":"/api/booking/order","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":50480},"msg":"incoming request"}
+{"level":30,"time":1786881149169,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-h","res":{"statusCode":201},"responseTime":14.123699999996461,"msg":"request completed"}
+{"level":30,"time":1786881149411,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-i","req":{"method":"POST","url":"/api/booking/pay-mock","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":50482},"msg":"incoming request"}
+{"level":30,"time":1786881149440,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-i","res":{"statusCode":200},"responseTime":28.39890000000014,"msg":"request completed"}
+[mail] (not configured) to=fe-int-1786880977311@codetern.dev subject="Codetern — payment received"
+{"level":30,"time":1786881157548,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-j","req":{"method":"GET","url":"/api/booking/order/ord_mock_d4aad184969f49805aefef86f66065e0","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":9073},"msg":"incoming request"}
+{"level":30,"time":1786881157555,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-j","res":{"statusCode":200},"responseTime":6.197299999999814,"msg":"request completed"}
+{"level":30,"time":1786881157787,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-k","req":{"method":"GET","url":"/api/me/candidate","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":9075},"msg":"incoming request"}
+{"level":30,"time":1786881157795,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-k","res":{"statusCode":200},"responseTime":7.804299999988871,"msg":"request completed"}
+{"level":30,"time":1786881158029,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-l","req":{"method":"GET","url":"/api/me/wallet","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":9077},"msg":"incoming request"}
+{"level":30,"time":1786881158036,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-l","res":{"statusCode":200},"responseTime":7.0988000000070315,"msg":"request completed"}
+{"level":30,"time":1786881158299,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-m","req":{"method":"POST","url":"/api/auth/refresh","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":9079},"msg":"incoming request"}
+{"level":30,"time":1786881158308,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-m","res":{"statusCode":200},"responseTime":8.163999999989755,"msg":"request completed"}
+{"level":30,"time":1786881158541,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-n","req":{"method":"GET","url":"/api/seats","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":9082},"msg":"incoming request"}
+{"level":30,"time":1786881158544,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-n","res":{"statusCode":200},"responseTime":3.4694000000017695,"msg":"request completed"}
+{"level":30,"time":1786881166968,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-o","req":{"method":"POST","url":"/api/me/seats/hold","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":9136},"msg":"incoming request"}
+{"level":30,"time":1786881166979,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-o","res":{"statusCode":200},"responseTime":10.63300000000163,"msg":"request completed"}
+{"level":30,"time":1786881167238,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-p","req":{"method":"POST","url":"/api/me/seats/release","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":9138},"msg":"incoming request"}
+{"level":30,"time":1786881167248,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-p","res":{"statusCode":200},"responseTime":9.72500000000582,"msg":"request completed"}
+{"level":30,"time":1786881167496,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-q","req":{"method":"PUT","url":"/api/me/profile","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":9140},"msg":"incoming request"}
+{"level":30,"time":1786881167508,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-q","res":{"statusCode":200},"responseTime":12.00800000000163,"msg":"request completed"}
+{"level":30,"time":1786881176931,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-r","req":{"method":"GET","url":"/api/seats","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":51958},"msg":"incoming request"}
+{"level":30,"time":1786881176932,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-s","req":{"method":"GET","url":"/api/auth/me","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":51959},"msg":"incoming request"}
+{"level":30,"time":1786881176935,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-s","res":{"statusCode":401},"responseTime":3.167199999996228,"msg":"request completed"}
+{"level":30,"time":1786881176936,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-r","res":{"statusCode":200},"responseTime":5.003400000015972,"msg":"request completed"}
+{"level":30,"time":1786881176945,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-t","req":{"method":"GET","url":"/api/seats","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":51962},"msg":"incoming request"}
+{"level":30,"time":1786881176946,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-u","req":{"method":"GET","url":"/api/auth/me","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":51963},"msg":"incoming request"}
+{"level":30,"time":1786881176948,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-u","res":{"statusCode":401},"responseTime":1.5993000000016764,"msg":"request completed"}
+{"level":30,"time":1786881176949,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-t","res":{"statusCode":200},"responseTime":3.2669000000169035,"msg":"request completed"}
+{"level":30,"time":1786881177089,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-v","req":{"method":"POST","url":"/api/auth/refresh","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":51965},"msg":"incoming request"}
+{"level":30,"time":1786881177092,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-v","res":{"statusCode":400},"responseTime":2.135599999979604,"msg":"request completed"}
+{"level":30,"time":1786881181876,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-w","req":{"method":"GET","url":"/api/seats","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":39847},"msg":"incoming request"}
+{"level":30,"time":1786881181877,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-x","req":{"method":"GET","url":"/api/auth/me","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":39848},"msg":"incoming request"}
+{"level":30,"time":1786881181879,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-x","res":{"statusCode":401},"responseTime":2.235899999999674,"msg":"request completed"}
+{"level":30,"time":1786881181881,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-w","res":{"statusCode":200},"responseTime":4.339900000020862,"msg":"request completed"}
+{"level":30,"time":1786881181898,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-y","req":{"method":"GET","url":"/api/seats","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":39851},"msg":"incoming request"}
+{"level":30,"time":1786881181898,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-z","req":{"method":"GET","url":"/api/auth/me","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":39852},"msg":"incoming request"}
+{"level":30,"time":1786881181900,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-z","res":{"statusCode":401},"responseTime":1.603000000002794,"msg":"request completed"}
+{"level":30,"time":1786881181901,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-y","res":{"statusCode":200},"responseTime":3.4390000000130385,"msg":"request completed"}
+{"level":30,"time":1786881181969,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-10","req":{"method":"POST","url":"/api/auth/refresh","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":39854},"msg":"incoming request"}
+{"level":30,"time":1786881181972,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-10","res":{"statusCode":400},"responseTime":2.974599999986822,"msg":"request completed"}
+{"level":30,"time":1786881182475,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-11","req":{"method":"GET","url":"/api/seats","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":39857},"msg":"incoming request"}
+{"level":30,"time":1786881182478,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-11","res":{"statusCode":200},"responseTime":3.0340999999898486,"msg":"request completed"}
+{"level":30,"time":1786881189182,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-12","req":{"method":"GET","url":"/api/seats","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":65034},"msg":"incoming request"}
+{"level":30,"time":1786881189183,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-13","req":{"method":"GET","url":"/api/auth/me","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":65035},"msg":"incoming request"}
+{"level":30,"time":1786881189185,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-13","res":{"statusCode":401},"responseTime":1.5890000000072177,"msg":"request completed"}
+{"level":30,"time":1786881189187,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-12","res":{"statusCode":200},"responseTime":4.1001000000105705,"msg":"request completed"}
+{"level":30,"time":1786881189200,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-14","req":{"method":"GET","url":"/api/seats","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":65038},"msg":"incoming request"}
+{"level":30,"time":1786881189200,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-15","req":{"method":"GET","url":"/api/auth/me","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":65039},"msg":"incoming request"}
+{"level":30,"time":1786881189204,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-15","res":{"statusCode":401},"responseTime":3.4279000000096858,"msg":"request completed"}
+{"level":30,"time":1786881189205,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-14","res":{"statusCode":200},"responseTime":5.335099999996601,"msg":"request completed"}
+{"level":30,"time":1786881189256,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-16","req":{"method":"POST","url":"/api/auth/refresh","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":65041},"msg":"incoming request"}
+{"level":30,"time":1786881189259,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-16","res":{"statusCode":400},"responseTime":2.20339999999851,"msg":"request completed"}
+{"level":30,"time":1786881193489,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-17","req":{"method":"GET","url":"/api/auth/me","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":40802},"msg":"incoming request"}
+{"level":30,"time":1786881193489,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-18","req":{"method":"GET","url":"/api/seats","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":40803},"msg":"incoming request"}
+{"level":30,"time":1786881193491,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-17","res":{"statusCode":401},"responseTime":2.637799999996787,"msg":"request completed"}
+{"level":30,"time":1786881193494,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-18","res":{"statusCode":200},"responseTime":4.916300000011688,"msg":"request completed"}
+{"level":30,"time":1786881193505,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-19","req":{"method":"GET","url":"/api/seats","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":40806},"msg":"incoming request"}
+{"level":30,"time":1786881193506,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-1a","req":{"method":"GET","url":"/api/auth/me","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":40807},"msg":"incoming request"}
+{"level":30,"time":1786881193509,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-1a","res":{"statusCode":401},"responseTime":3.339399999997113,"msg":"request completed"}
+{"level":30,"time":1786881193511,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-19","res":{"statusCode":200},"responseTime":5.030999999988126,"msg":"request completed"}
+{"level":30,"time":1786881193594,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-1b","req":{"method":"POST","url":"/api/auth/refresh","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":40809},"msg":"incoming request"}
+{"level":30,"time":1786881193596,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-1b","res":{"statusCode":400},"responseTime":2.2929000000003725,"msg":"request completed"}
+{"level":30,"time":1786881198566,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-1c","req":{"method":"GET","url":"/api/seats","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":29362},"msg":"incoming request"}
+{"level":30,"time":1786881198566,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-1d","req":{"method":"GET","url":"/api/auth/me","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":29363},"msg":"incoming request"}
+{"level":30,"time":1786881198569,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-1d","res":{"statusCode":401},"responseTime":2.2488000000012107,"msg":"request completed"}
+{"level":30,"time":1786881198570,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-1c","res":{"statusCode":200},"responseTime":4.096399999980349,"msg":"request completed"}
+{"level":30,"time":1786881198583,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-1e","req":{"method":"GET","url":"/api/seats","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":29366},"msg":"incoming request"}
+{"level":30,"time":1786881198584,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-1f","req":{"method":"GET","url":"/api/auth/me","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":29367},"msg":"incoming request"}
+{"level":30,"time":1786881198587,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-1f","res":{"statusCode":401},"responseTime":2.929100000008475,"msg":"request completed"}
+{"level":30,"time":1786881198588,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-1e","res":{"statusCode":200},"responseTime":4.488899999996647,"msg":"request completed"}
+{"level":30,"time":1786881198642,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-1g","req":{"method":"POST","url":"/api/auth/refresh","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":29369},"msg":"incoming request"}
+{"level":30,"time":1786881198645,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-1g","res":{"statusCode":400},"responseTime":2.35999999998603,"msg":"request completed"}
+{"level":30,"time":1786881201794,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-1h","req":{"method":"GET","url":"/api/auth/me","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":40248},"msg":"incoming request"}
+{"level":30,"time":1786881201795,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-1i","req":{"method":"GET","url":"/api/seats","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":40249},"msg":"incoming request"}
+{"level":30,"time":1786881201798,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-1h","res":{"statusCode":401},"responseTime":3.5947999999916647,"msg":"request completed"}
+{"level":30,"time":1786881201800,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-1i","res":{"statusCode":200},"responseTime":5.129500000010012,"msg":"request completed"}
+{"level":30,"time":1786881201812,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-1j","req":{"method":"GET","url":"/api/seats","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":40252},"msg":"incoming request"}
+{"level":30,"time":1786881201813,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-1k","req":{"method":"GET","url":"/api/auth/me","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":40253},"msg":"incoming request"}
+{"level":30,"time":1786881201816,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-1k","res":{"statusCode":401},"responseTime":3.009300000005169,"msg":"request completed"}
+{"level":30,"time":1786881201817,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-1j","res":{"statusCode":200},"responseTime":4.803699999989476,"msg":"request completed"}
+{"level":30,"time":1786881201869,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-1l","req":{"method":"POST","url":"/api/auth/refresh","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":40255},"msg":"incoming request"}
+{"level":30,"time":1786881201871,"pid":22892,"hostname":"ExteraTerrestrial","reqId":"req-1l","res":{"statusCode":400},"responseTime":2.1876999999803957,"msg":"request completed"}
+[mail] (not configured) to=itest-1786881163178-ina8y4@test.dev subject="Codetern — payment received"
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+Restarting 'src/index.js'
+{"level":50,"time":1786881576464,"pid":20500,"hostname":"ExteraTerrestrial","err":{"type":"Error","message":"listen EADDRINUSE: address already in use 0.0.0.0:4000","stack":"Error: listen EADDRINUSE: address already in use 0.0.0.0:4000\n    at Server.setupListenHandle [as _listen2] (node:net:1940:16)\n    at listenInCluster (node:net:1997:12)\n    at node:net:2206:7\n    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)","code":"EADDRINUSE","errno":-4091,"syscall":"listen","address":"0.0.0.0","port":4000},"msg":"listen EADDRINUSE: address already in use 0.0.0.0:4000"}
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+Restarting 'src/index.js'
+{"level":50,"time":1786881679610,"pid":22592,"hostname":"ExteraTerrestrial","err":{"type":"Error","message":"listen EADDRINUSE: address already in use 0.0.0.0:4000","stack":"Error: listen EADDRINUSE: address already in use 0.0.0.0:4000\n    at Server.setupListenHandle [as _listen2] (node:net:1940:16)\n    at listenInCluster (node:net:1997:12)\n    at node:net:2206:7\n    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)","code":"EADDRINUSE","errno":-4091,"syscall":"listen","address":"0.0.0.0","port":4000},"msg":"listen EADDRINUSE: address already in use 0.0.0.0:4000"}
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+Restarting 'src/index.js'
+{"level":50,"time":1786881964363,"pid":9860,"hostname":"ExteraTerrestrial","err":{"type":"Error","message":"listen EADDRINUSE: address already in use 0.0.0.0:4000","stack":"Error: listen EADDRINUSE: address already in use 0.0.0.0:4000\n    at Server.setupListenHandle [as _listen2] (node:net:1940:16)\n    at listenInCluster (node:net:1997:12)\n    at node:net:2206:7\n    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)","code":"EADDRINUSE","errno":-4091,"syscall":"listen","address":"0.0.0.0","port":4000},"msg":"listen EADDRINUSE: address already in use 0.0.0.0:4000"}
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+Restarting 'src/index.js'
+{"level":50,"time":1786882084435,"pid":23448,"hostname":"ExteraTerrestrial","err":{"type":"Error","message":"listen EADDRINUSE: address already in use 0.0.0.0:4000","stack":"Error: listen EADDRINUSE: address already in use 0.0.0.0:4000\n    at Server.setupListenHandle [as _listen2] (node:net:1940:16)\n    at listenInCluster (node:net:1997:12)\n    at node:net:2206:7\n    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)","code":"EADDRINUSE","errno":-4091,"syscall":"listen","address":"0.0.0.0","port":4000},"msg":"listen EADDRINUSE: address already in use 0.0.0.0:4000"}
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+Restarting 'src/index.js'
+{"level":30,"time":1786882299752,"pid":9380,"hostname":"ExteraTerrestrial","msg":"Server listening at http://127.0.0.1:4000"}
+{"level":30,"time":1786882299752,"pid":9380,"hostname":"ExteraTerrestrial","msg":"Server listening at http://192.168.56.1:4000"}
+{"level":30,"time":1786882299752,"pid":9380,"hostname":"ExteraTerrestrial","msg":"Server listening at http://192.168.1.6:4000"}
+{"level":30,"time":1786882299752,"pid":9380,"hostname":"ExteraTerrestrial","msg":"Server listening at http://172.17.176.1:4000"}
+{"level":30,"time":1786882303378,"pid":9380,"hostname":"ExteraTerrestrial","reqId":"req-1","req":{"method":"GET","url":"/api/payments/config","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":52090},"msg":"incoming request"}
+{"level":30,"time":1786882303384,"pid":9380,"hostname":"ExteraTerrestrial","reqId":"req-1","res":{"statusCode":404},"responseTime":5.296099999999569,"msg":"request completed"}
+Restarting 'src/index.js'
+{"level":50,"time":1786882310307,"pid":21676,"hostname":"ExteraTerrestrial","err":{"type":"Error","message":"listen EADDRINUSE: address already in use 0.0.0.0:4000","stack":"Error: listen EADDRINUSE: address already in use 0.0.0.0:4000\n    at Server.setupListenHandle [as _listen2] (node:net:1940:16)\n    at listenInCluster (node:net:1997:12)\n    at node:net:2206:7\n    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)","code":"EADDRINUSE","errno":-4091,"syscall":"listen","address":"0.0.0.0","port":4000},"msg":"listen EADDRINUSE: address already in use 0.0.0.0:4000"}
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+Restarting 'src/index.js'
+{"level":30,"time":1786882318324,"pid":7752,"hostname":"ExteraTerrestrial","msg":"Server listening at http://127.0.0.1:4000"}
+{"level":30,"time":1786882318324,"pid":7752,"hostname":"ExteraTerrestrial","msg":"Server listening at http://192.168.56.1:4000"}
+{"level":30,"time":1786882318324,"pid":7752,"hostname":"ExteraTerrestrial","msg":"Server listening at http://192.168.1.6:4000"}
+{"level":30,"time":1786882318324,"pid":7752,"hostname":"ExteraTerrestrial","msg":"Server listening at http://172.17.176.1:4000"}
+{"level":30,"time":1786882319882,"pid":7752,"hostname":"ExteraTerrestrial","reqId":"req-1","req":{"method":"GET","url":"/api/payments/config","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":37158},"msg":"incoming request"}
+{"level":30,"time":1786882319887,"pid":7752,"hostname":"ExteraTerrestrial","reqId":"req-1","res":{"statusCode":404},"responseTime":4.288900000000012,"msg":"request completed"}
+{"level":30,"time":1786882328125,"pid":7752,"hostname":"ExteraTerrestrial","reqId":"req-2","req":{"method":"GET","url":"/api/payments/config","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":6345},"msg":"incoming request"}
+{"level":30,"time":1786882328126,"pid":7752,"hostname":"ExteraTerrestrial","reqId":"req-2","res":{"statusCode":404},"responseTime":1.00039999999899,"msg":"request completed"}
+{"level":30,"time":1786882336346,"pid":7752,"hostname":"ExteraTerrestrial","reqId":"req-3","req":{"method":"GET","url":"/api/payments/config","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":31624},"msg":"incoming request"}
+{"level":30,"time":1786882336347,"pid":7752,"hostname":"ExteraTerrestrial","reqId":"req-3","res":{"statusCode":404},"responseTime":0.36260000000038417,"msg":"request completed"}
+{"level":30,"time":1786882344579,"pid":7752,"hostname":"ExteraTerrestrial","reqId":"req-4","req":{"method":"GET","url":"/api/payments/config","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":31626},"msg":"incoming request"}
+{"level":30,"time":1786882344580,"pid":7752,"hostname":"ExteraTerrestrial","reqId":"req-4","res":{"statusCode":404},"responseTime":0.5959000000002561,"msg":"request completed"}
+{"level":30,"time":1786882352797,"pid":7752,"hostname":"ExteraTerrestrial","reqId":"req-5","req":{"method":"GET","url":"/api/payments/config","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":20084},"msg":"incoming request"}
+{"level":30,"time":1786882352798,"pid":7752,"hostname":"ExteraTerrestrial","reqId":"req-5","res":{"statusCode":404},"responseTime":0.40939999999682186,"msg":"request completed"}
+{"level":30,"time":1786882358999,"pid":7752,"hostname":"ExteraTerrestrial","reqId":"req-6","req":{"method":"GET","url":"/files/msvrmcb8-839a495ccc6d.png","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":20101},"msg":"incoming request"}
+{"level":30,"time":1786882358999,"pid":7752,"hostname":"ExteraTerrestrial","reqId":"req-6","res":{"statusCode":404},"responseTime":0.3761000000013155,"msg":"request completed"}
+{"level":30,"time":1786882361030,"pid":7752,"hostname":"ExteraTerrestrial","reqId":"req-7","req":{"method":"GET","url":"/api/payments/config","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":20120},"msg":"incoming request"}
+{"level":30,"time":1786882361031,"pid":7752,"hostname":"ExteraTerrestrial","reqId":"req-7","res":{"statusCode":404},"responseTime":0.5337999999974272,"msg":"request completed"}
+{"level":30,"time":1786882369256,"pid":7752,"hostname":"ExteraTerrestrial","reqId":"req-8","req":{"method":"GET","url":"/api/payments/config","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":60776},"msg":"incoming request"}
+{"level":30,"time":1786882369257,"pid":7752,"hostname":"ExteraTerrestrial","reqId":"req-8","res":{"statusCode":404},"responseTime":0.5965999999971245,"msg":"request completed"}
+{"level":30,"time":1786882377476,"pid":7752,"hostname":"ExteraTerrestrial","reqId":"req-9","req":{"method":"GET","url":"/api/payments/config","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":17818},"msg":"incoming request"}
+{"level":30,"time":1786882377476,"pid":7752,"hostname":"ExteraTerrestrial","reqId":"req-9","res":{"statusCode":404},"responseTime":0.4209999999948195,"msg":"request completed"}
+Restarting 'src/index.js'
+{"level":50,"time":1786882532927,"pid":20324,"hostname":"ExteraTerrestrial","err":{"type":"Error","message":"listen EADDRINUSE: address already in use 0.0.0.0:4000","stack":"Error: listen EADDRINUSE: address already in use 0.0.0.0:4000\n    at Server.setupListenHandle [as _listen2] (node:net:1940:16)\n    at listenInCluster (node:net:1997:12)\n    at node:net:2206:7\n    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)","code":"EADDRINUSE","errno":-4091,"syscall":"listen","address":"0.0.0.0","port":4000},"msg":"listen EADDRINUSE: address already in use 0.0.0.0:4000"}
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+Restarting 'src/index.js'
+{"level":50,"time":1786882544273,"pid":5868,"hostname":"ExteraTerrestrial","err":{"type":"Error","message":"listen EADDRINUSE: address already in use 0.0.0.0:4000","stack":"Error: listen EADDRINUSE: address already in use 0.0.0.0:4000\n    at Server.setupListenHandle [as _listen2] (node:net:1940:16)\n    at listenInCluster (node:net:1997:12)\n    at node:net:2206:7\n    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)","code":"EADDRINUSE","errno":-4091,"syscall":"listen","address":"0.0.0.0","port":4000},"msg":"listen EADDRINUSE: address already in use 0.0.0.0:4000"}
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+Restarting 'src/index.js'
+{"level":30,"time":1786882553082,"pid":24024,"hostname":"ExteraTerrestrial","msg":"Server listening at http://127.0.0.1:4000"}
+{"level":30,"time":1786882553082,"pid":24024,"hostname":"ExteraTerrestrial","msg":"Server listening at http://192.168.56.1:4000"}
+{"level":30,"time":1786882553083,"pid":24024,"hostname":"ExteraTerrestrial","msg":"Server listening at http://192.168.1.6:4000"}
+{"level":30,"time":1786882553083,"pid":24024,"hostname":"ExteraTerrestrial","msg":"Server listening at http://172.17.176.1:4000"}
+[mail] (not configured) to=itest-1786882610968-4ot0gd@test.dev subject="Codetern — payment received"
+{"level":30,"time":1786882616960,"pid":24024,"hostname":"ExteraTerrestrial","reqId":"req-1","req":{"method":"GET","url":"/api/payments/config","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":20656},"msg":"incoming request"}
+{"level":30,"time":1786882616965,"pid":24024,"hostname":"ExteraTerrestrial","reqId":"req-1","res":{"statusCode":404},"responseTime":3.889600000002247,"msg":"request completed"}
+{"level":30,"time":1786882625220,"pid":24024,"hostname":"ExteraTerrestrial","reqId":"req-2","req":{"method":"GET","url":"/api/payments/config","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":33533},"msg":"incoming request"}
+{"level":30,"time":1786882625221,"pid":24024,"hostname":"ExteraTerrestrial","reqId":"req-2","res":{"statusCode":404},"responseTime":0.6877999999996973,"msg":"request completed"}
+{"level":30,"time":1786882633445,"pid":24024,"hostname":"ExteraTerrestrial","reqId":"req-3","req":{"method":"GET","url":"/api/payments/config","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":33535},"msg":"incoming request"}
+{"level":30,"time":1786882633446,"pid":24024,"hostname":"ExteraTerrestrial","reqId":"req-3","res":{"statusCode":404},"responseTime":0.3629999999975553,"msg":"request completed"}
+{"level":30,"time":1786882641678,"pid":24024,"hostname":"ExteraTerrestrial","reqId":"req-4","req":{"method":"GET","url":"/api/payments/config","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":33537},"msg":"incoming request"}
+{"level":30,"time":1786882641679,"pid":24024,"hostname":"ExteraTerrestrial","reqId":"req-4","res":{"statusCode":404},"responseTime":0.5135000000009313,"msg":"request completed"}
+{"level":30,"time":1786882649904,"pid":24024,"hostname":"ExteraTerrestrial","reqId":"req-5","req":{"method":"GET","url":"/api/payments/config","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":33539},"msg":"incoming request"}
+{"level":30,"time":1786882649904,"pid":24024,"hostname":"ExteraTerrestrial","reqId":"req-5","res":{"statusCode":404},"responseTime":0.3738000000012107,"msg":"request completed"}
+{"level":30,"time":1786882658130,"pid":24024,"hostname":"ExteraTerrestrial","reqId":"req-6","req":{"method":"GET","url":"/api/payments/config","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":2289},"msg":"incoming request"}
+{"level":30,"time":1786882658131,"pid":24024,"hostname":"ExteraTerrestrial","reqId":"req-6","res":{"statusCode":404},"responseTime":0.37239999999292195,"msg":"request completed"}
+{"level":30,"time":1786882666349,"pid":24024,"hostname":"ExteraTerrestrial","reqId":"req-7","req":{"method":"GET","url":"/api/payments/config","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":58165},"msg":"incoming request"}
+{"level":30,"time":1786882666350,"pid":24024,"hostname":"ExteraTerrestrial","reqId":"req-7","res":{"statusCode":404},"responseTime":0.43809999999939464,"msg":"request completed"}
+Restarting 'src/index.js'
+{"level":30,"time":1786882671471,"pid":10924,"hostname":"ExteraTerrestrial","msg":"Server listening at http://127.0.0.1:4000"}
+{"level":30,"time":1786882671472,"pid":10924,"hostname":"ExteraTerrestrial","msg":"Server listening at http://192.168.56.1:4000"}
+{"level":30,"time":1786882671472,"pid":10924,"hostname":"ExteraTerrestrial","msg":"Server listening at http://192.168.1.6:4000"}
+{"level":30,"time":1786882671472,"pid":10924,"hostname":"ExteraTerrestrial","msg":"Server listening at http://172.17.176.1:4000"}
+{"level":30,"time":1786882674592,"pid":10924,"hostname":"ExteraTerrestrial","reqId":"req-1","req":{"method":"GET","url":"/api/payments/config","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":40696},"msg":"incoming request"}
+{"level":30,"time":1786882674601,"pid":10924,"hostname":"ExteraTerrestrial","reqId":"req-1","res":{"statusCode":404},"responseTime":7.108000000000175,"msg":"request completed"}
+Restarting 'src/index.js'
+{"level":50,"time":1786882676594,"pid":10960,"hostname":"ExteraTerrestrial","err":{"type":"Error","message":"listen EADDRINUSE: address already in use 0.0.0.0:4000","stack":"Error: listen EADDRINUSE: address already in use 0.0.0.0:4000\n    at Server.setupListenHandle [as _listen2] (node:net:1940:16)\n    at listenInCluster (node:net:1997:12)\n    at node:net:2206:7\n    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)","code":"EADDRINUSE","errno":-4091,"syscall":"listen","address":"0.0.0.0","port":4000},"msg":"listen EADDRINUSE: address already in use 0.0.0.0:4000"}
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+Restarting 'src/index.js'
+Restarting 'src/index.js'
+{"level":50,"time":1786882845700,"pid":6400,"hostname":"ExteraTerrestrial","err":{"type":"Error","message":"listen EADDRINUSE: address already in use 0.0.0.0:4000","stack":"Error: listen EADDRINUSE: address already in use 0.0.0.0:4000\n    at Server.setupListenHandle [as _listen2] (node:net:1940:16)\n    at listenInCluster (node:net:1997:12)\n    at node:net:2206:7\n    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)","code":"EADDRINUSE","errno":-4091,"syscall":"listen","address":"0.0.0.0","port":4000},"msg":"listen EADDRINUSE: address already in use 0.0.0.0:4000"}
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+Restarting 'src/index.js'
+{"level":30,"time":1786882849467,"pid":6652,"hostname":"ExteraTerrestrial","msg":"Server listening at http://127.0.0.1:4000"}
+{"level":30,"time":1786882849467,"pid":6652,"hostname":"ExteraTerrestrial","msg":"Server listening at http://192.168.56.1:4000"}
+{"level":30,"time":1786882849467,"pid":6652,"hostname":"ExteraTerrestrial","msg":"Server listening at http://192.168.1.6:4000"}
+{"level":30,"time":1786882849467,"pid":6652,"hostname":"ExteraTerrestrial","msg":"Server listening at http://172.17.176.1:4000"}
+Restarting 'src/index.js'
+{"level":30,"time":1786882973822,"pid":14772,"hostname":"ExteraTerrestrial","msg":"Server listening at http://127.0.0.1:4000"}
+{"level":30,"time":1786882973822,"pid":14772,"hostname":"ExteraTerrestrial","msg":"Server listening at http://192.168.56.1:4000"}
+{"level":30,"time":1786882973822,"pid":14772,"hostname":"ExteraTerrestrial","msg":"Server listening at http://192.168.1.6:4000"}
+{"level":30,"time":1786882973822,"pid":14772,"hostname":"ExteraTerrestrial","msg":"Server listening at http://172.17.176.1:4000"}
+Restarting 'src/index.js'
+{"level":50,"time":1786883278328,"pid":20500,"hostname":"ExteraTerrestrial","err":{"type":"Error","message":"listen EADDRINUSE: address already in use 0.0.0.0:4000","stack":"Error: listen EADDRINUSE: address already in use 0.0.0.0:4000\n    at Server.setupListenHandle [as _listen2] (node:net:1940:16)\n    at listenInCluster (node:net:1997:12)\n    at node:net:2206:7\n    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)","code":"EADDRINUSE","errno":-4091,"syscall":"listen","address":"0.0.0.0","port":4000},"msg":"listen EADDRINUSE: address already in use 0.0.0.0:4000"}
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+Restarting 'src/index.js'
+{"level":30,"time":1786883387523,"pid":24744,"hostname":"ExteraTerrestrial","msg":"Server listening at http://127.0.0.1:4000"}
+{"level":30,"time":1786883387524,"pid":24744,"hostname":"ExteraTerrestrial","msg":"Server listening at http://192.168.56.1:4000"}
+{"level":30,"time":1786883387524,"pid":24744,"hostname":"ExteraTerrestrial","msg":"Server listening at http://192.168.1.6:4000"}
+{"level":30,"time":1786883387524,"pid":24744,"hostname":"ExteraTerrestrial","msg":"Server listening at http://172.17.176.1:4000"}
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+Restarting 'src/index.js'
+{"level":50,"time":1786884412557,"pid":15148,"hostname":"ExteraTerrestrial","err":{"type":"Error","message":"listen EADDRINUSE: address already in use 0.0.0.0:4000","stack":"Error: listen EADDRINUSE: address already in use 0.0.0.0:4000\n    at Server.setupListenHandle [as _listen2] (node:net:1940:16)\n    at listenInCluster (node:net:1997:12)\n    at node:net:2206:7\n    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)","code":"EADDRINUSE","errno":-4091,"syscall":"listen","address":"0.0.0.0","port":4000},"msg":"listen EADDRINUSE: address already in use 0.0.0.0:4000"}
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+Restarting 'src/index.js'
+{"level":30,"time":1786884435292,"pid":19488,"hostname":"ExteraTerrestrial","msg":"Server listening at http://127.0.0.1:4000"}
+{"level":30,"time":1786884435293,"pid":19488,"hostname":"ExteraTerrestrial","msg":"Server listening at http://192.168.56.1:4000"}
+{"level":30,"time":1786884435293,"pid":19488,"hostname":"ExteraTerrestrial","msg":"Server listening at http://192.168.1.6:4000"}
+{"level":30,"time":1786884435293,"pid":19488,"hostname":"ExteraTerrestrial","msg":"Server listening at http://172.17.176.1:4000"}
+Restarting 'src/index.js'
+{"level":50,"time":1786884451361,"pid":25288,"hostname":"ExteraTerrestrial","err":{"type":"Error","message":"listen EADDRINUSE: address already in use 0.0.0.0:4000","stack":"Error: listen EADDRINUSE: address already in use 0.0.0.0:4000\n    at Server.setupListenHandle [as _listen2] (node:net:1940:16)\n    at listenInCluster (node:net:1997:12)\n    at node:net:2206:7\n    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)","code":"EADDRINUSE","errno":-4091,"syscall":"listen","address":"0.0.0.0","port":4000},"msg":"listen EADDRINUSE: address already in use 0.0.0.0:4000"}
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+Restarting 'src/index.js'
+{"level":30,"time":1786884519947,"pid":3468,"hostname":"ExteraTerrestrial","msg":"Server listening at http://127.0.0.1:4000"}
+{"level":30,"time":1786884519947,"pid":3468,"hostname":"ExteraTerrestrial","msg":"Server listening at http://192.168.56.1:4000"}
+{"level":30,"time":1786884519947,"pid":3468,"hostname":"ExteraTerrestrial","msg":"Server listening at http://192.168.1.6:4000"}
+{"level":30,"time":1786884519947,"pid":3468,"hostname":"ExteraTerrestrial","msg":"Server listening at http://172.17.176.1:4000"}
+Restarting 'src/index.js'
+{"level":50,"time":1786884529300,"pid":20024,"hostname":"ExteraTerrestrial","err":{"type":"Error","message":"listen EADDRINUSE: address already in use 0.0.0.0:4000","stack":"Error: listen EADDRINUSE: address already in use 0.0.0.0:4000\n    at Server.setupListenHandle [as _listen2] (node:net:1940:16)\n    at listenInCluster (node:net:1997:12)\n    at node:net:2206:7\n    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)","code":"EADDRINUSE","errno":-4091,"syscall":"listen","address":"0.0.0.0","port":4000},"msg":"listen EADDRINUSE: address already in use 0.0.0.0:4000"}
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+Restarting 'src/index.js'
+{"level":30,"time":1786884598831,"pid":14504,"hostname":"ExteraTerrestrial","msg":"Server listening at http://127.0.0.1:4000"}
+{"level":30,"time":1786884598832,"pid":14504,"hostname":"ExteraTerrestrial","msg":"Server listening at http://192.168.56.1:4000"}
+{"level":30,"time":1786884598832,"pid":14504,"hostname":"ExteraTerrestrial","msg":"Server listening at http://192.168.1.6:4000"}
+{"level":30,"time":1786884598832,"pid":14504,"hostname":"ExteraTerrestrial","msg":"Server listening at http://172.17.176.1:4000"}
+[mail] (not configured) to=itest-1786884758595-ubjyzz@test.dev subject="Codetern — payment received"
+{"level":30,"time":1786884849857,"pid":14504,"hostname":"ExteraTerrestrial","reqId":"req-1","req":{"method":"GET","url":"/files/msvt3q9n-148fabc9dab3.png","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":63886},"msg":"incoming request"}
+{"level":30,"time":1786884849871,"pid":14504,"hostname":"ExteraTerrestrial","reqId":"req-1","res":{"statusCode":200},"responseTime":12.153499999985797,"msg":"request completed"}
+{"level":30,"time":1786884932810,"pid":14504,"hostname":"ExteraTerrestrial","reqId":"req-2","req":{"method":"GET","url":"/files/msvt5i9y-ce9f8c5fba72.png","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":9972},"msg":"incoming request"}
+{"level":30,"time":1786884932815,"pid":14504,"hostname":"ExteraTerrestrial","reqId":"req-2","res":{"statusCode":200},"responseTime":4.131200000003446,"msg":"request completed"}
+{"level":30,"time":1786885105063,"pid":14504,"hostname":"ExteraTerrestrial","reqId":"req-3","req":{"method":"GET","url":"/files/msvt976i-5338e79d981c.png","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":63889},"msg":"incoming request"}
+{"level":30,"time":1786885105074,"pid":14504,"hostname":"ExteraTerrestrial","reqId":"req-3","res":{"statusCode":200},"responseTime":10.36079999996582,"msg":"request completed"}
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+Restarting 'src/index.js'
+{"level":30,"time":1786885240848,"pid":13788,"hostname":"ExteraTerrestrial","msg":"Server listening at http://127.0.0.1:4000"}
+{"level":30,"time":1786885240849,"pid":13788,"hostname":"ExteraTerrestrial","msg":"Server listening at http://192.168.56.1:4000"}
+{"level":30,"time":1786885240849,"pid":13788,"hostname":"ExteraTerrestrial","msg":"Server listening at http://192.168.1.6:4000"}
+{"level":30,"time":1786885240849,"pid":13788,"hostname":"ExteraTerrestrial","msg":"Server listening at http://172.17.176.1:4000"}
+Restarting 'src/index.js'
+{"level":50,"time":1786885331017,"pid":24892,"hostname":"ExteraTerrestrial","err":{"type":"Error","message":"listen EADDRINUSE: address already in use 0.0.0.0:4000","stack":"Error: listen EADDRINUSE: address already in use 0.0.0.0:4000\n    at Server.setupListenHandle [as _listen2] (node:net:1940:16)\n    at listenInCluster (node:net:1997:12)\n    at node:net:2206:7\n    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)","code":"EADDRINUSE","errno":-4091,"syscall":"listen","address":"0.0.0.0","port":4000},"msg":"listen EADDRINUSE: address already in use 0.0.0.0:4000"}
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+Restarting 'src/index.js'
+{"level":30,"time":1786885576835,"pid":22460,"hostname":"ExteraTerrestrial","msg":"Server listening at http://127.0.0.1:4000"}
+{"level":30,"time":1786885576835,"pid":22460,"hostname":"ExteraTerrestrial","msg":"Server listening at http://192.168.56.1:4000"}
+{"level":30,"time":1786885576835,"pid":22460,"hostname":"ExteraTerrestrial","msg":"Server listening at http://192.168.1.6:4000"}
+{"level":30,"time":1786885576835,"pid":22460,"hostname":"ExteraTerrestrial","msg":"Server listening at http://172.17.176.1:4000"}
+[mail] (not configured) to=itest-1786885729380-1xs21x@test.dev subject="Codetern — payment received"
+{"level":30,"time":1786885820386,"pid":22460,"hostname":"ExteraTerrestrial","reqId":"req-1","req":{"method":"GET","url":"/files/msvtoj4s-4ce49395f885.png","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":39042},"msg":"incoming request"}
+{"level":30,"time":1786885820398,"pid":22460,"hostname":"ExteraTerrestrial","reqId":"req-1","res":{"statusCode":200},"responseTime":10.966999999975087,"msg":"request completed"}
+Restarting 'src/index.js'
+{"level":50,"time":1786885907579,"pid":17488,"hostname":"ExteraTerrestrial","err":{"type":"Error","message":"listen EADDRINUSE: address already in use 0.0.0.0:4000","stack":"Error: listen EADDRINUSE: address already in use 0.0.0.0:4000\n    at Server.setupListenHandle [as _listen2] (node:net:1940:16)\n    at listenInCluster (node:net:1997:12)\n    at node:net:2206:7\n    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)","code":"EADDRINUSE","errno":-4091,"syscall":"listen","address":"0.0.0.0","port":4000},"msg":"listen EADDRINUSE: address already in use 0.0.0.0:4000"}
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+Restarting 'src/index.js'
+{"level":30,"time":1786885977241,"pid":17800,"hostname":"ExteraTerrestrial","msg":"Server listening at http://127.0.0.1:4000"}
+{"level":30,"time":1786885977242,"pid":17800,"hostname":"ExteraTerrestrial","msg":"Server listening at http://192.168.56.1:4000"}
+{"level":30,"time":1786885977242,"pid":17800,"hostname":"ExteraTerrestrial","msg":"Server listening at http://192.168.1.6:4000"}
+{"level":30,"time":1786885977242,"pid":17800,"hostname":"ExteraTerrestrial","msg":"Server listening at http://172.17.176.1:4000"}
+{"level":30,"time":1786886067245,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-1","req":{"method":"GET","url":"/files/msvtttlx-49537132d8b4.png","host":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":18230},"msg":"incoming request"}
+{"level":30,"time":1786886067258,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-1","res":{"statusCode":200},"responseTime":11.882100000002538,"msg":"request completed"}
+{"level":30,"time":1786886166927,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-2","req":{"method":"POST","url":"/api/auth/login","host":"127.0.0.1:4000","remoteAddress":"127.0.0.1","remotePort":34834},"msg":"incoming request"}
+{"level":30,"time":1786886167033,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-2","res":{"statusCode":200},"responseTime":105.76680000001215,"msg":"request completed"}
+{"level":30,"time":1786886167040,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-3","req":{"method":"POST","url":"/api/auth/signup","host":"127.0.0.1:4000","remoteAddress":"127.0.0.1","remotePort":34835},"msg":"incoming request"}
+{"level":30,"time":1786886167132,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-3","res":{"statusCode":201},"responseTime":91.67439999998896,"msg":"request completed"}
+{"level":30,"time":1786886167134,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-4","req":{"method":"POST","url":"/api/uploads","host":"127.0.0.1:4000","remoteAddress":"127.0.0.1","remotePort":34834},"msg":"incoming request"}
+{"level":20,"time":1786886167138,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-4","msg":"starting multipart parsing"}
+{"level":30,"time":1786886167143,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-4","res":{"statusCode":201},"responseTime":8.563899999979185,"msg":"request completed"}
+{"level":30,"time":1786886167145,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-5","req":{"method":"POST","url":"/api/uploads","host":"127.0.0.1:4000","remoteAddress":"127.0.0.1","remotePort":34835},"msg":"incoming request"}
+{"level":30,"time":1786886167148,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-5","res":{"statusCode":403},"responseTime":3.00889999998617,"msg":"request completed"}
+{"level":30,"time":1786886167150,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-6","req":{"method":"POST","url":"/api/uploads","host":"127.0.0.1:4000","remoteAddress":"127.0.0.1","remotePort":34834},"msg":"incoming request"}
+{"level":20,"time":1786886167152,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-6","msg":"starting multipart parsing"}
+{"level":30,"time":1786886167153,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-6","res":{"statusCode":400},"responseTime":3.2679000000061933,"msg":"request completed"}
+{"level":30,"time":1786886167154,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-7","req":{"method":"POST","url":"/api/uploads","host":"127.0.0.1:4000","remoteAddress":"127.0.0.1","remotePort":34835},"msg":"incoming request"}
+{"level":20,"time":1786886167157,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-7","msg":"starting multipart parsing"}
+{"level":30,"time":1786886167158,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-7","res":{"statusCode":400},"responseTime":3.79660000000149,"msg":"request completed"}
+{"level":30,"time":1786886167159,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-8","req":{"method":"POST","url":"/api/uploads","host":"127.0.0.1:4000","remoteAddress":"127.0.0.1","remotePort":34834},"msg":"incoming request"}
+{"level":20,"time":1786886167162,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-8","msg":"starting multipart parsing"}
+{"level":30,"time":1786886167163,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-8","res":{"statusCode":400},"responseTime":3.3073000000149477,"msg":"request completed"}
+{"level":30,"time":1786886167168,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-9","req":{"method":"POST","url":"/api/uploads","host":"127.0.0.1:4000","remoteAddress":"127.0.0.1","remotePort":34835},"msg":"incoming request"}
+{"level":20,"time":1786886167170,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-9","msg":"starting multipart parsing"}
+{"level":30,"time":1786886167243,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-9","res":{"statusCode":413},"responseTime":74.9600999999966,"msg":"request completed"}
+{"level":30,"time":1786886167246,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-a","req":{"method":"GET","url":"/files/msvtvyp1-234e7b8ae6e4.png","host":"127.0.0.1:4000","remoteAddress":"127.0.0.1","remotePort":34834},"msg":"incoming request"}
+{"level":30,"time":1786886167251,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-a","res":{"statusCode":200},"responseTime":4.642200000002049,"msg":"request completed"}
+{"level":30,"time":1786886167252,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-b","req":{"method":"GET","url":"/files/msvtvyp1-234e7b8ae6e4.png","host":"127.0.0.1:4000","remoteAddress":"127.0.0.1","remotePort":34835},"msg":"incoming request"}
+{"level":30,"time":1786886167256,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-b","res":{"statusCode":200},"responseTime":3.239900000015041,"msg":"request completed"}
+{"level":30,"time":1786886167257,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-c","req":{"method":"HEAD","url":"/files/msvtvyp1-234e7b8ae6e4.png","host":"127.0.0.1:4000","remoteAddress":"127.0.0.1","remotePort":34834},"msg":"incoming request"}
+{"level":30,"time":1786886167259,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-c","res":{"statusCode":200},"responseTime":2.455099999991944,"msg":"request completed"}
+{"level":30,"time":1786886167261,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-d","req":{"method":"GET","url":"/api/files/msvtvyp1-234e7b8ae6e4.png","host":"127.0.0.1:4000","remoteAddress":"127.0.0.1","remotePort":34835},"msg":"incoming request"}
+{"level":30,"time":1786886167263,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-d","res":{"statusCode":401},"responseTime":1.6986000000033528,"msg":"request completed"}
+{"level":30,"time":1786886167265,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-e","req":{"method":"GET","url":"/api/files/msvtvyp1-234e7b8ae6e4.png","host":"127.0.0.1:4000","remoteAddress":"127.0.0.1","remotePort":34836},"msg":"incoming request"}
+{"level":30,"time":1786886167269,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-e","res":{"statusCode":200},"responseTime":4.403599999990547,"msg":"request completed"}
+{"level":30,"time":1786886167270,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-f","req":{"method":"POST","url":"/api/uploads","host":"127.0.0.1:4000","remoteAddress":"127.0.0.1","remotePort":34835},"msg":"incoming request"}
+{"level":20,"time":1786886167273,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-f","msg":"starting multipart parsing"}
+{"level":30,"time":1786886167275,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-f","res":{"statusCode":201},"responseTime":4.368500000011409,"msg":"request completed"}
+{"level":30,"time":1786886167275,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-g","req":{"method":"GET","url":"/files/msvtvysq-50287e9a9032.txt","host":"127.0.0.1:4000","remoteAddress":"127.0.0.1","remotePort":34836},"msg":"incoming request"}
+{"level":30,"time":1786886167278,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-g","res":{"statusCode":200},"responseTime":2.3414999999804422,"msg":"request completed"}
+{"level":30,"time":1786886167279,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-h","req":{"method":"POST","url":"/api/uploads/media","host":"127.0.0.1:4000","remoteAddress":"127.0.0.1","remotePort":34835},"msg":"incoming request"}
+{"level":20,"time":1786886167282,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-h","msg":"starting multipart parsing"}
+{"level":30,"time":1786886167289,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-h","res":{"statusCode":201},"responseTime":9.994600000005448,"msg":"request completed"}
+{"level":30,"time":1786886167290,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-i","req":{"method":"GET","url":"/files/msvtvyt0-1e2aa5862cb5.png","host":"127.0.0.1:4000","remoteAddress":"127.0.0.1","remotePort":34836},"msg":"incoming request"}
+{"level":30,"time":1786886167293,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-i","res":{"statusCode":200},"responseTime":2.9029000000155065,"msg":"request completed"}
+{"level":30,"time":1786886167294,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-j","req":{"method":"GET","url":"/files/does-not-exist.png","host":"127.0.0.1:4000","remoteAddress":"127.0.0.1","remotePort":34835},"msg":"incoming request"}
+{"level":30,"time":1786886167296,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-j","res":{"statusCode":404},"responseTime":1.7958999999973457,"msg":"request completed"}
+{"level":30,"time":1786886167297,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-k","req":{"method":"GET","url":"/files/.env","host":"127.0.0.1:4000","remoteAddress":"127.0.0.1","remotePort":34836},"msg":"incoming request"}
+{"level":30,"time":1786886167298,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-k","res":{"statusCode":404},"responseTime":1.614000000001397,"msg":"request completed"}
+{"level":30,"time":1786886167299,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-l","req":{"method":"GET","url":"/files/","host":"127.0.0.1:4000","remoteAddress":"127.0.0.1","remotePort":34835},"msg":"incoming request"}
+{"level":30,"time":1786886167301,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-l","res":{"statusCode":404},"responseTime":1.4371000000101048,"msg":"request completed"}
+{"level":30,"time":1786886167302,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-m","req":{"method":"GET","url":"/files/","host":"127.0.0.1:4000","remoteAddress":"127.0.0.1","remotePort":34836},"msg":"incoming request"}
+{"level":30,"time":1786886167303,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-m","res":{"statusCode":404},"responseTime":1.1370999999926426,"msg":"request completed"}
+{"level":30,"time":1786886167304,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-n","req":{"method":"GET","url":"/files/%2e%2e%2fpackage.json","host":"127.0.0.1:4000","remoteAddress":"127.0.0.1","remotePort":34835},"msg":"incoming request"}
+{"level":30,"time":1786886167305,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-n","res":{"statusCode":400},"responseTime":1.4407000000064727,"msg":"request completed"}
+{"level":30,"time":1786886167306,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-o","req":{"method":"GET","url":"/files/..%2fpackage.json","host":"127.0.0.1:4000","remoteAddress":"127.0.0.1","remotePort":34836},"msg":"incoming request"}
+{"level":30,"time":1786886167307,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-o","res":{"statusCode":400},"responseTime":1.3937000000150874,"msg":"request completed"}
+{"level":30,"time":1786886167309,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-p","req":{"method":"GET","url":"/package.json","host":"127.0.0.1:4000","remoteAddress":"127.0.0.1","remotePort":34835},"msg":"incoming request"}
+{"level":30,"time":1786886167309,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-p","res":{"statusCode":404},"responseTime":0.46770000000833534,"msg":"request completed"}
+{"level":30,"time":1786886167310,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-q","req":{"method":"GET","url":"/files/msvtvyp1-234e7b8ae6e4.png/","host":"127.0.0.1:4000","remoteAddress":"127.0.0.1","remotePort":34836},"msg":"incoming request"}
+{"level":30,"time":1786886167310,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-q","res":{"statusCode":404},"responseTime":0.26980000000912696,"msg":"request completed"}
+{"level":30,"time":1786886167311,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-r","req":{"method":"GET","url":"/api/files/does-not-exist.png","host":"127.0.0.1:4000","remoteAddress":"127.0.0.1","remotePort":34835},"msg":"incoming request"}
+{"level":30,"time":1786886167314,"pid":17800,"hostname":"ExteraTerrestrial","reqId":"req-r","res":{"statusCode":404},"responseTime":2.797099999996135,"msg":"request completed"}
+Restarting 'src/index.js'
+{"level":30,"time":1786886364386,"pid":9088,"hostname":"ExteraTerrestrial","msg":"Server listening at http://127.0.0.1:4000"}
+{"level":30,"time":1786886364387,"pid":9088,"hostname":"ExteraTerrestrial","msg":"Server listening at http://192.168.56.1:4000"}
+{"level":30,"time":1786886364387,"pid":9088,"hostname":"ExteraTerrestrial","msg":"Server listening at http://192.168.1.6:4000"}
+{"level":30,"time":1786886364387,"pid":9088,"hostname":"ExteraTerrestrial","msg":"Server listening at http://172.17.176.1:4000"}
+Restarting 'src/index.js'
+{"level":50,"time":1786886518011,"pid":19932,"hostname":"ExteraTerrestrial","err":{"type":"Error","message":"listen EADDRINUSE: address already in use 0.0.0.0:4000","stack":"Error: listen EADDRINUSE: address already in use 0.0.0.0:4000\n    at Server.setupListenHandle [as _listen2] (node:net:1940:16)\n    at listenInCluster (node:net:1997:12)\n    at node:net:2206:7\n    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)","code":"EADDRINUSE","errno":-4091,"syscall":"listen","address":"0.0.0.0","port":4000},"msg":"listen EADDRINUSE: address already in use 0.0.0.0:4000"}
+Failed running 'src/index.js'. Waiting for file changes before restarting...
+Restarting 'src/index.js'
+Restarting 'src/index.js'
+{"level":30,"time":1786886682323,"pid":22328,"hostname":"ExteraTerrestrial","msg":"Server listening at http://127.0.0.1:4000"}
+{"level":30,"time":1786886682323,"pid":22328,"hostname":"ExteraTerrestrial","msg":"Server listening at http://192.168.56.1:4000"}
+{"level":30,"time":1786886682323,"pid":22328,"hostname":"ExteraTerrestrial","msg":"Server listening at http://192.168.1.6:4000"}
+{"level":30,"time":1786886682323,"pid":22328,"hostname":"ExteraTerrestrial","msg":"Server listening at http://172.17.176.1:4000"}
+[mail] (not configured) to=itest-1786886816336-344rk5@test.dev subject="Codetern — payment received"
+Restarting 'src/index.js'
+{"level":50,"time":1786886907637,"pid":22180,"hostname":"ExteraTerrestrial","err":{"type":"Error","message":"listen EADDRINUSE: address already in use 0.0.0.0:4000","stack":"Error: listen EADDRINUSE: address already in use 0.0.0.0:4000\n    at Server.setupListenHandle [as _listen2] (node:net:1940:16)\n    at listenInCluster (node:net:1997:12)\n    at node:net:2206:7\n    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)","code":"EADDRINUSE","errno":-4091,"syscall":"listen","address":"0.0.0.0","port":4000},"msg":"listen EADDRINUSE: address already in use 0.0.0.0:4000"}
+Failed running 'src/index.js'. Waiting for file changes before restarting...

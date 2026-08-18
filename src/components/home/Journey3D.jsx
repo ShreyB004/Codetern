@@ -117,7 +117,6 @@ export function Journey3D() {
       gsap.ticker.remove(ticker)
       st.kill()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reduced])
 
   // center label swap animation

@@ -5,6 +5,7 @@ import { getProgramme } from '../data/programmes.js'
 import { QUIZ_BANKS } from '../data/quizData.js'
 import { WORKSPACE_TASKS, DEFAULT_WORKSPACE } from '../data/workspace.js'
 import { load, save, uid } from '../lib/store.js'
+import { api, ApiError, setAccessToken, onAuthExpired } from '../lib/api.js'
 
 const AppCtx = createContext(null)
 
@@ -24,17 +25,40 @@ function ensureAdmin(users) {
   return users.some((u) => u.email === SEED_USER.email) ? users : [SEED_USER, ...users]
 }
 
-function makeReferralCode(name = '') {
-  const base = name
-    .trim()
-    .replace(/[^a-zA-Z]/g, '')
-    .slice(0, 4)
-    .toUpperCase() || 'CDT'
-  return `${base}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`
+// Server candidate rows (snake_case) → the local camelCase shape the UI expects.
+function toLocalCandidate(row, wallet = null) {
+  return {
+    id: row.id,
+    name: row.name,
+    email: row.email,
+    domain: row.domain ?? null,
+    domainTitle: row.domain_title ?? null,
+    step: row.step ?? 1,
+    status: row.status ?? 'pending',
+    appliedAt: row.applied_at ? String(row.applied_at).slice(0, 10) : null,
+    quizScore: row.quiz_score ?? null,
+    quizPassed: Boolean(row.quiz_passed),
+    interviewScore: row.interview_score ?? null,
+    profile: row.profile ?? null,
+    booking: row.booking ?? null,
+    quiz: row.quiz ?? null,
+    interview: row.interview ?? null,
+    cert: row.cert ?? null,
+    lor: row.lor ?? null,
+    payment: row.payment ?? null,
+    workspace: row.workspace ?? null,
+    history: row.history ?? [],
+    referralCode: row.referral_code ?? null,
+    referredBy: row.referred_by ?? null,
+    wallet: {
+      balance: row.wallet_balance ?? 0,
+      transactions: wallet?.transactions ?? [],
+    },
+  }
 }
 
 export function AppProvider({ children }) {
-  const [users, setUsers] = useState(() => ensureAdmin(load('users:v2', null) || []))
+  const [users] = useState(() => ensureAdmin(load('users:v2', null) || []))
   const [currentUserId, setCurrentUserId] = useState(() => load('current:v2', null))
   const [candidates, setCandidates] = useState(() => load('candidates:v2', null) || buildCandidateSeed())
   const [programmes, setProgrammes] = useState(() => load('programmes:v1', null) || PROGRAMMES)
@@ -44,6 +68,12 @@ export function AppProvider({ children }) {
     () => load('workspacedefaults:v1', null) || { ...WORKSPACE_TASKS, default: DEFAULT_WORKSPACE },
   )
 
+  // Server-backed session state. The localStorage mirror below is only a
+  // bootstrap/offline fallback; once /api/auth/me answers, the server wins.
+  const [serverUser, setServerUser] = useState(null)
+  const [serverCandidate, setServerCandidate] = useState(null)
+  const [hydrated, setHydrated] = useState(false)
+
   useEffect(() => save('users:v2', users), [users])
   useEffect(() => save('current:v2', currentUserId), [currentUserId])
   useEffect(() => save('candidates:v2', candidates), [candidates])
@@ -52,68 +82,120 @@ export function AppProvider({ children }) {
   useEffect(() => save('quizbanks:v1', quizBanks), [quizBanks])
   useEffect(() => save('workspacedefaults:v1', workspaceDefaults), [workspaceDefaults])
 
-  const currentUser = users.find((u) => u.id === currentUserId) || null
+  const currentUser = serverUser ?? (users.find((u) => u.id === currentUserId) || null)
   const isAdmin = currentUser?.role === 'admin'
-  const candidate = useMemo(
-    () => (currentUser && !isAdmin ? candidates.find((c) => c.id === currentUser.id) || null : null),
-    [currentUser, isAdmin, candidates],
-  )
 
-  // ── auth ────────────────────────────────────────────────
-  const signup = useCallback(
-    (name, email, password, referralCode = null) => {
-      const clean = email.trim().toLowerCase()
-      if (users.some((u) => u.email === clean)) return { error: 'An account with this email already exists.' }
-      const id = uid('u')
-      const now = new Date().toISOString().slice(0, 10)
-      const code = makeReferralCode(name)
-      const referred = referralCode ? candidates.find((c) => c.referralCode === referralCode.toUpperCase()) : null
-      const newUser = { id, name, email: clean, password, role: 'student', createdAt: now, referralCode: code }
-      const newCandidate = {
-        id,
-        name,
-        email: clean,
-        domain: null,
-        domainTitle: null,
-        step: 1,
-        quizScore: null,
-        quizPassed: false,
-        interviewScore: null,
-        appliedAt: now,
-        status: 'pending',
-        profile: null,
-        quiz: null,
-        interview: null,
-        booking: null,
-        cert: null,
-        lor: null,
-        payment: null,
-        history: [],
-        workspace: null,
-        referralCode: code,
-        referredBy: referred ? referred.id : null,
-        wallet: { balance: 0, transactions: [] },
+  // Adopt a server session: keep the user object, mirror the candidate row
+  // into the local store so every journey-step helper keeps working.
+  const adoptServerSession = useCallback(async (user) => {
+    setServerUser(user)
+    setCurrentUserId(user.id)
+    if (user.role === 'admin') return
+    try {
+      const [full, wallet] = await Promise.all([api.get('/me/candidate'), api.get('/me/wallet')])
+      const local = toLocalCandidate(full?.candidate, wallet)
+      setServerCandidate(local)
+      setCandidates((prev) => [local, ...prev.filter((c) => c.id !== local.id)])
+    } catch {
+      // API hiccup — the localStorage mirror covers the screen until retry.
+    }
+  }, [])
+
+  // Re-read /auth/me + full candidate + wallet from the server (used after
+  // payment settles and whenever the dashboard needs fresh progress).
+  const refreshMe = useCallback(async () => {
+    const u = currentUser
+    if (!u) return null
+    try {
+      const me = await api.get('/auth/me')
+      setServerUser(me.user)
+      if (me.isAdmin) return me
+      const [full, wallet] = await Promise.all([api.get('/me/candidate'), api.get('/me/wallet')])
+      const local = toLocalCandidate(full?.candidate, wallet)
+      setServerCandidate(local)
+      setCandidates((prev) => [local, ...prev.filter((c) => c.id !== local.id)])
+      return local
+    } catch {
+      return null
+    }
+  }, [currentUser])
+
+  // On boot: probe the real session (refresh cookie) and hydrate when valid.
+  useEffect(() => {
+    let cancelled = false
+    const clearSession = () => {
+      setServerUser(null)
+      setServerCandidate(null)
+      setCurrentUserId(null)
+    }
+    const unsub = onAuthExpired(() => {
+      if (!cancelled) clearSession()
+    })
+
+    ;(async () => {
+      try {
+        const me = await api.get('/auth/me')
+        if (cancelled) return
+        await adoptServerSession(me.user)
+      } catch (err) {
+        // A definitive 401 means the session is gone — drop the mirror too.
+        if (!cancelled && err instanceof ApiError && err.code === 'unauthorized') clearSession()
+        // Network errors keep the local mirror (offline-first, never crash).
+      } finally {
+        if (!cancelled) setHydrated(true)
       }
-      setUsers((prev) => [...ensureAdmin(prev), newUser])
-      setCandidates((prev) => [...prev, newCandidate])
-      setCurrentUserId(id)
-      return { ok: true, referred: !!referred }
+    })()
+
+    return () => {
+      cancelled = true
+      unsub()
+    }
+  }, [adoptServerSession])
+
+  const candidate = useMemo(() => {
+    if (serverCandidate) return serverCandidate
+    return currentUser && !isAdmin ? candidates.find((c) => c.id === currentUser.id) || null : null
+  }, [serverCandidate, currentUser, isAdmin, candidates])
+
+  // ── auth ────────────────────────────────────────────────────────────────
+  const signup = useCallback(
+    async (name, email, password, referralCode = null) => {
+      try {
+        const data = await api.post('/auth/signup', {
+          name: name.trim(),
+          email: email.trim().toLowerCase(),
+          password,
+          referralCode: referralCode || undefined,
+        })
+        setAccessToken(data.access)
+        await adoptServerSession(data.user)
+        return { ok: true, referred: Boolean(data.referred) }
+      } catch (err) {
+        return { error: err.message }
+      }
     },
-    [users, candidates],
+    [adoptServerSession],
   )
 
   const login = useCallback(
-    (email, password) => {
-      const clean = email.trim().toLowerCase()
-      const found = users.find((u) => u.email === clean && u.password === password)
-      if (!found) return { error: 'Invalid email or password.' }
-      setCurrentUserId(found.id)
-      return { ok: true }
+    async (email, password) => {
+      try {
+        const data = await api.post('/auth/login', { email: email.trim().toLowerCase(), password })
+        setAccessToken(data.access)
+        await adoptServerSession(data.user)
+        return { ok: true }
+      } catch (err) {
+        return { error: err.message }
+      }
     },
-    [users],
+    [adoptServerSession],
   )
 
   const logout = useCallback(() => {
+    api.post('/auth/logout').catch(() => {})
+    setAccessToken(null)
+    setServerUser(null)
+    setServerCandidate(null)
     setCurrentUserId(null)
   }, [])
 
@@ -172,6 +254,26 @@ export function AppProvider({ children }) {
         appliedAt: candidate.appliedAt,
         status: 'active',
       })
+      // Best-effort server sync — the local update wins instantly, the server
+      // row is refreshed in the background so a reload keeps the same state.
+      api
+        .put('/me/profile', {
+          name: profile.name,
+          email: profile.email,
+          linkedin: profile.linkedin,
+          github: profile.github,
+          bio: profile.bio,
+          mobile: profile.phone || profile.mobile,
+          domain: profile.domain,
+        })
+        .then((r) => {
+          if (r?.candidate) {
+            const local = toLocalCandidate(r.candidate, candidate.wallet)
+            setServerCandidate(local)
+            setCandidates((prev) => prev.map((c) => (c.id === local.id ? local : c)))
+          }
+        })
+        .catch(() => {})
     },
     [candidate, updateCandidate],
   )
@@ -378,6 +480,8 @@ export function AppProvider({ children }) {
       isAuthenticated: !!currentUser,
       isAdmin,
       candidate,
+      hydrated,
+      refreshMe,
       signup,
       login,
       logout,
@@ -419,6 +523,8 @@ export function AppProvider({ children }) {
       currentUser,
       isAdmin,
       candidate,
+      hydrated,
+      refreshMe,
       signup,
       login,
       logout,

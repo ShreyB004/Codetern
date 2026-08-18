@@ -2,10 +2,10 @@ import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { ArrowLeft, ArrowRight, BadgeCheck, CreditCard, Landmark, Loader2, Lock, QrCode, ShieldCheck, Wallet } from 'lucide-react'
 import { useApp } from '../context/AppContext.jsx'
-import { useSeats } from '../context/SeatsContext.jsx'
 import { useToast } from '../context/ToastContext.jsx'
 import { getProgramme, DOMAIN_COLORS } from '../data/programmes.js'
 import { batchPrice } from '../data/plans.js'
+import { api, waitForPaidOrder } from '../lib/api.js'
 import { Button } from '../components/ui/Button.jsx'
 import { DomainIcon } from '../components/ui/Icon.jsx'
 import { cn } from '../lib/utils.js'
@@ -16,9 +16,27 @@ const METHODS = [
   { id: 'qr', label: 'QR', hint: 'Scan & pay', Icon: QrCode },
 ]
 
+let razorpayPromise = null
+function loadRazorpay() {
+  if (typeof window !== 'undefined' && window.Razorpay) return Promise.resolve()
+  if (!razorpayPromise) {
+    razorpayPromise = new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js'
+      script.async = true
+      script.onload = () => resolve()
+      script.onerror = () => {
+        razorpayPromise = null
+        reject(new Error('Could not load the Razorpay checkout library.'))
+      }
+      document.head.appendChild(script)
+    })
+  }
+  return razorpayPromise
+}
+
 export default function CheckoutPage() {
-  const { candidate, bookingDraft, setBookingDraft, saveBooking, creditWallet } = useApp()
-  const { bookSeat } = useSeats()
+  const { candidate, bookingDraft, setBookingDraft, saveBooking, refreshMe } = useApp()
   const { push } = useToast()
   const navigate = useNavigate()
   const [params] = useSearchParams()
@@ -51,30 +69,94 @@ export default function CheckoutPage() {
     )
   }
 
-  const pay = () => {
+  const cancelOrder = (id) => {
+    if (!id) return
+    api.post(`/booking/${id}/cancel`).catch(() => {})
+  }
+
+  const finalize = async (id) => {
+    // Pull the settled candidate + wallet from the server.
+    const fresh = await refreshMe()
+    const payment = fresh?.booking?.payment || {}
+    saveBooking(domain, duration, {
+      name: draftForm.name || candidate.name,
+      email: draftForm.email || candidate.email,
+      phone: draftForm.phone || '',
+      college: draftForm.college || '',
+      start: draftForm.start || '',
+      payment: {
+        method: payment.method || 'mock',
+        amount: payment.amount ?? payable,
+        txId: payment.txId || id,
+        orderId: id,
+        at: payment.at || new Date().toISOString(),
+      },
+    })
+    setPaying(false)
+    setDone(true)
+    setBookingDraft(null)
+    push(`Payment successful — ${p.title} seat locked`, 'success')
+  }
+
+  const pay = async () => {
     if (paying) return
     setPaying(true)
-    setTimeout(() => {
-      const ok = bookSeat(domain, duration)
-      if (!ok) {
-        setPaying(false)
-        return push('Seats sold out for that batch — go back and pick another duration.', 'error')
+    let id = null
+    try {
+      // 1. create the order — the server atomically holds the seat and
+      //    answers with the gateway mode (razorpay | mock) it will use.
+      const created = await api.post('/booking/order', { domain, duration })
+      id = created?.order?.id
+      if (!id) throw new Error('The server did not return an order.')
+
+      if (created?.order?.mode === 'razorpay') {
+        // 2a. live Razorpay: open the hosted checkout, verify the gateway
+        // signature via /booking/:orderId/verify, then wait for the settled order.
+        const key = import.meta.env.VITE_RAZORPAY_KEY
+        if (!key) throw new Error('Razorpay checkout is not configured on this frontend (VITE_RAZORPAY_KEY).')
+        await loadRazorpay()
+        const rzp = new window.Razorpay({
+          key,
+          order_id: id,
+          name: 'Codetern',
+          description: `${p.title} · ${duration}-month batch`,
+          currency: 'INR',
+          handler: async (res) => {
+            setPaying(true)
+            try {
+              await api.post(`/booking/${id}/verify`, {
+                razorpay_payment_id: res.razorpay_payment_id,
+                razorpay_signature: res.razorpay_signature,
+              })
+              await waitForPaidOrder(id)
+              await finalize(id)
+            } catch (err) {
+              cancelOrder(id)
+              setPaying(false)
+              push(err.message, 'error')
+            }
+          },
+          modal: {
+            ondismiss: () => {
+              cancelOrder(id)
+              setPaying(false)
+              push('Payment cancelled — your hold was released.', 'info')
+            },
+          },
+        })
+        rzp.open()
+      } else {
+        // 2b. mock mode (dev server): settle the hold-order, then wait for the
+        // paid status to land in the DB.
+        await api.post('/booking/pay-mock', { orderId: id })
+        await waitForPaidOrder(id)
+        await finalize(id)
       }
-      const txId = `TXN${Date.now().toString().slice(-8)}`
-      saveBooking(domain, duration, {
-        name: draftForm.name || candidate.name,
-        email: draftForm.email || candidate.email,
-        phone: draftForm.phone || '',
-        college: draftForm.college || '',
-        start: draftForm.start || '',
-        payment: { method, amount: payable, wallet: walletApplied, txId, at: new Date().toISOString() },
-      })
-      if (walletApplied > 0) creditWallet(candidate.id, -walletApplied, `Paid toward ${p.title} seat (${duration}mo)`)
+    } catch (err) {
+      cancelOrder(id)
       setPaying(false)
-      setDone(true)
-      setBookingDraft(null)
-      push(`Payment successful — ${p.title} seat locked`, 'success')
-    }, 1400)
+      push(err.message || 'Payment failed — please try again.', 'error')
+    }
   }
 
   const color = DOMAIN_COLORS[p.color]

@@ -6,7 +6,12 @@ const emailSchema = z.string().trim().toLowerCase().email()
 export const signupSchema = z.object({
   name: z.string().trim().min(2, 'Name must be at least 2 characters.').max(80),
   email: emailSchema,
-  password: z.string().min(8, 'Password must be at least 8 characters.').max(128),
+  password: z
+    .string()
+    .min(8, 'Password must be at least 8 characters.')
+    .max(128)
+    .regex(/[a-zA-Z]/, 'Password must include at least one letter.')
+    .regex(/[0-9]/, 'Password must include at least one number.'),
   referralCode: z.string().trim().toUpperCase().optional().nullable(),
 })
 

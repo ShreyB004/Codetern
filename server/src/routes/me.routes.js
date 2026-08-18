@@ -7,8 +7,11 @@ import { scoreInterview, fetchInterviewQuestions } from '../lib/interview.js'
 import { certId, lorId } from '../lib/ids.js'
 import { getSeat } from '../lib/seats.js'
 import { getWallet } from '../lib/wallet.js'
+import { z } from 'zod'
 
 const LOR_UNLOCK_MS = 24 * 60 * 60 * 1000
+
+const seatRefSchema = z.object({ domain: z.string().trim().min(1).max(40), duration: z.coerce.number().int().min(1).max(6) })
 
 async function domainTitle(domain) {
   if (!domain) return null
@@ -173,25 +176,23 @@ export async function meRoutes(app) {
 
   // ── seat hold / release (pre-payment reservation) ─────────────────
   app.post('/me/seats/hold', async (request) => {
-    const { domain, duration } = request.body || {}
-    if (!domain || !duration) throw badRequest('domain and duration are required.')
-    const seat = await getSeat(domain, Number(duration))
+    const { domain, duration } = parse(seatRefSchema, request.body || {})
+    const seat = await getSeat(domain, duration)
     if (!seat) throw notFound('No such seat cell.')
     if (seat.remaining <= 0) throw badRequest('No seats available for this domain and duration.')
 
     // Enforced at payment time; a hold simply records intent w/ TTL in Redis.
     const { rows } = await query(
       `UPDATE seats SET held = held + 1 WHERE programme_id = $1 AND duration = $2 AND total - sold - held > 0 RETURNING *`,
-      [domain, Number(duration)],
+      [domain, duration],
     )
     if (!rows[0]) throw badRequest('No seats available for this domain and duration.')
     return { hold: { domain, duration, remaining: rows[0].total - rows[0].sold - rows[0].held } }
   })
 
   app.post('/me/seats/release', async (request) => {
-    const { domain, duration } = request.body || {}
-    if (!domain || !duration) throw badRequest('domain and duration are required.')
-    await query('UPDATE seats SET held = GREATEST(held - 1, 0) WHERE programme_id = $1 AND duration = $2 AND held > 0', [domain, Number(duration)])
+    const { domain, duration } = parse(seatRefSchema, request.body || {})
+    await query('UPDATE seats SET held = GREATEST(held - 1, 0) WHERE programme_id = $1 AND duration = $2 AND held > 0', [domain, duration])
     return { ok: true }
   })
 }

@@ -1,0 +1,12 @@
+# Secrets and local state must never reach the image build context.
+.env
+.env.*
+!.env.example
+node_modules
+test
+uploads
+logs
+*.log
+.git
+.gitignore
+npm-debug.log*

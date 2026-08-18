@@ -153,6 +153,7 @@ function LoginSignupModal({ mode, onClose }) {
   const [dir, setDir] = useState(0)
   const [showPw, setShowPw] = useState(false)
   const [error, setError] = useState('')
+  const [submitting, setSubmitting] = useState(false)
   const [form, setForm] = useState({ name: '', email: '', password: '' })
   const { login, signup } = useAuth()
   const { push } = useToast()
@@ -169,21 +170,33 @@ function LoginSignupModal({ mode, onClose }) {
     setError('')
   }
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault()
+    if (submitting) return
     setError('')
     const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())
     if (!emailOk) return setError('Enter a valid email address.')
-    if (tab === 'signup' && form.password.length < 6) return setError('Password must be at least 6 characters.')
-    const res = tab === 'login' ? login(form.email, form.password) : signup(form.name, form.email, form.password, refCode)
-    if (res.error) return setError(res.error)
-    if (tab === 'signup' && refCode) {
-      push(res.referred ? 'Referral applied — share your link and earn ₹50 per friend!' : 'Account created — let’s build', 'success')
-    } else {
-      push(tab === 'login' ? 'Welcome back to Codetern' : 'Account created — let’s build', 'success')
+    if (tab === 'signup') {
+      // Mirrors the server's signup validation so errors surface inline.
+      if (form.password.length < 8) return setError('Password must be at least 8 characters.')
+      if (!/[a-zA-Z]/.test(form.password) || !/[0-9]/.test(form.password)) {
+        return setError('Password must include at least one letter and one number.')
+      }
     }
-    onClose()
-    navigate(preselect ? `/dashboard?d=${preselect}` : '/dashboard')
+    setSubmitting(true)
+    try {
+      const res = tab === 'login' ? await login(form.email, form.password) : await signup(form.name, form.email, form.password, refCode)
+      if (res.error) return setError(res.error)
+      if (tab === 'signup' && refCode) {
+        push(res.referred ? 'Referral applied — share your link and earn ₹50 per friend!' : 'Account created — let’s build', 'success')
+      } else {
+        push(tab === 'login' ? 'Welcome back to Codetern' : 'Account created — let’s build', 'success')
+      }
+      onClose()
+      navigate(preselect ? `/dashboard?d=${preselect}` : '/dashboard')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -457,14 +470,15 @@ function LoginSignupModal({ mode, onClose }) {
                     type="submit"
                     variant="white"
                     size="lg"
-                    className="group/btn relative w-full whitespace-nowrap overflow-hidden rounded-2xl px-7 py-[1.15rem] bg-gradient-to-r from-cyan-snap via-violet-deep to-cyan-snap bg-[length:200%_100%] bg-left text-ink shadow-card transition-[background-position] duration-500 hover:bg-right hover:shadow-float"
+                    disabled={submitting}
+                    className="group/btn relative w-full whitespace-nowrap overflow-hidden rounded-2xl px-7 py-[1.15rem] bg-gradient-to-r from-cyan-snap via-violet-deep to-cyan-snap bg-[length:200%_100%] bg-left text-ink shadow-card transition-[background-position] duration-500 hover:bg-right hover:shadow-float disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     <span
                       aria-hidden
                       className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/3 -skew-x-12 bg-white/40 opacity-0 blur-sm transition-all duration-700 ease-out group-hover/btn:left-[120%] group-hover/btn:opacity-100"
                     />
                     <span className="min-w-[1.5rem]" aria-hidden />
-                    {m === 'login' ? 'Sign in' : 'Create free account'}
+                    {submitting ? 'One moment…' : m === 'login' ? 'Sign in' : 'Create free account'}
                     <ArrowRight size={16} />
                     <span className="min-w-[1.5rem]" aria-hidden />
                   </Button>

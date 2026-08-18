@@ -1,4 +1,4 @@
-{
+﻿{
   "name": "codetern-server",
   "private": true,
   "version": "1.0.0",
@@ -11,7 +11,8 @@
     "start": "node src/index.js",
     "migrate": "node db/migrate.js",
     "seed": "node db/seed.js",
-    "smoke": "node scripts/smoke.mjs"
+    "smoke": "node scripts/smoke.mjs",
+    "test": "node test/run-all.mjs"
   },
   "dependencies": {
     "@fastify/cookie": "^11.0.2",

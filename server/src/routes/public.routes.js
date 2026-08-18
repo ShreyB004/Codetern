@@ -2,6 +2,10 @@ import { query } from '../db/pool.js'
 import { getSeatMap } from '../lib/seats.js'
 import { optionalAuth } from '../auth/guards.js'
 import { notFound } from '../lib/errors.js'
+import { parse, idParamSchema } from '../lib/validate.js'
+import { z } from 'zod'
+
+const domainParamSchema = z.object({ domain: z.string().trim().min(1).max(40) })
 
 export async function publicRoutes(app) {
   app.get('/programmes', async () => {
@@ -25,7 +29,8 @@ export async function publicRoutes(app) {
   })
 
   app.get('/programmes/:id', async (request) => {
-    const { rows } = await query('SELECT * FROM programmes WHERE id = $1', [request.params.id])
+    const { id } = parse(idParamSchema, request.params)
+    const { rows } = await query('SELECT * FROM programmes WHERE id = $1', [id])
     if (!rows[0]) throw notFound('Programme not found.')
     const seats = await getSeatMap()
     return { programme: { ...rows[0], seats: seats[rows[0].id] || {} } }
@@ -36,12 +41,13 @@ export async function publicRoutes(app) {
   // Quiz questions for the student UI — answers and explanations are NEVER
   // exposed publicly; the server scores submissions.
   app.get('/quiz/:domain', async (request) => {
-    const { rows } = await query('SELECT minutes, questions FROM quiz_banks WHERE domain = $1', [request.params.domain])
+    const { domain } = parse(domainParamSchema, request.params)
+    const { rows } = await query('SELECT minutes, questions FROM quiz_banks WHERE domain = $1', [domain])
     if (!rows[0]) throw notFound('No question bank exists for this domain.')
     const questions = rows[0].questions
       .filter((q) => q.enabled !== false)
       .map(({ answer, why, enabled, ...q }) => q)
-    return { domain: request.params.domain, minutes: rows[0].minutes, questions }
+    return { domain, minutes: rows[0].minutes, questions }
   })
 
   // Full candidate JSON (used after login to hydrate the dashboard)

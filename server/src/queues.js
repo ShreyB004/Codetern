@@ -1,7 +1,7 @@
 import { Queue, Worker } from 'bullmq'
 import redis from './db/redis.js'
 import { releaseHold, settleSeat } from './lib/seats.js'
-import { query, tx } from './db/pool.js'
+import { tx } from './db/pool.js'
 import { mailer } from './lib/mailer.js'
 import { applyReferralReward } from './lib/wallet.js'
 
@@ -60,47 +60,93 @@ export const emailWorker = new Worker(
 
 emailWorker.on('failed', (job, err) => console.error('[email] send failed:', job?.id, err?.message))
 
-export async function settlePayment(orderId, { paymentId, method, status }) {
+// ── settlement ─────────────────────────────────────────────────────────
+// Settlement is idempotent (only 'created' orders settle) — a retried
+// webhook, a second /verify call, or a pay-mock replay all no-op safely.
+// Pass a transaction client to join the caller's transaction (webhook ledger
+// writes settle atomically); without one, a transaction is opened here.
+export async function settlePayment(orderId, { paymentId, method, status }, client = null) {
+  if (client) return settlePaymentTx(client, orderId, { paymentId, method, status })
+  return tx((c) => settlePaymentTx(c, orderId, { paymentId, method, status }))
+}
+
+export async function settlePaymentTx(client, orderId, { paymentId, method, status }) {
+  const { rows } = await client.query('SELECT * FROM payments WHERE order_id = $1 FOR UPDATE', [orderId])
+  const payment = rows[0]
+  if (!payment || payment.status !== 'created') return { skipped: true, credited: false } // idempotent re-delivery
+
+  await client.query(
+    `UPDATE payments SET status = 'paid', method = $2, razorpay_payment_id = $3, tx_id = $4, paid_at = now(), updated_at = now()
+     WHERE order_id = $1`,
+    [orderId, method, paymentId, paymentId],
+  )
+  const seat = await settleSeat(payment.programme_id, payment.duration)
+
+  const { rows: candRows } = await client.query('SELECT * FROM candidates WHERE id = $1 FOR UPDATE', [payment.candidate_id])
+  const cand = candRows[0]
+  if (!cand) throw new Error(`candidate ${payment.candidate_id} missing for order ${orderId}`)
+
+  const firstBooking = !cand.booking
+  await client.query(
+    `UPDATE candidates SET
+       domain = $2, domain_title = $3,
+       booking = $4::jsonb, payment = $5::jsonb, status = 'active',
+       step = GREATEST(step, 1), wallet_balance = wallet_balance
+     WHERE id = $1`,
+    [
+      cand.id,
+      payment.programme_id,
+      cand.domain_title,
+      JSON.stringify({ domain: payment.programme_id, duration: payment.duration, at: new Date().toISOString(), payment: { method, amount: payment.amount, txId: paymentId, at: new Date().toISOString() } }),
+      JSON.stringify({ orderId, method, amount: payment.amount, status: 'paid', at: new Date().toISOString() }),
+    ],
+  )
+
+  // Referral reward: first successful booking credits the referrer once.
   let credited = false
+  if (firstBooking && cand.referred_by) {
+    credited = await applyReferralReward(client, cand.id, orderId)
+  }
+  return { skipped: false, credited }
+}
+
+// ── order expiry sweeper ────────────────────────────────────────────────
+// DB-backed fallback for the in-Redis 10-minute expiry job: marks stale
+// 'created' orders EXPIRED and releases their seat hold once they pass 30
+// minutes. Crash-safe — state is derived from payments.created_at, not from
+// an in-memory timer, so a restart never leaks holds forever.
+export const ORDER_EXPIRE_MS = 30 * 60 * 1000
+
+export async function sweepExpiredOrders(now = Date.now()) {
+  const cutoff = new Date(now - ORDER_EXPIRE_MS).toISOString()
+  let expired = 0
   await tx(async (client) => {
-    const { rows } = await client.query('SELECT * FROM payments WHERE order_id = $1 FOR UPDATE', [orderId])
-    const payment = rows[0]
-    if (!payment || payment.status !== 'created') return // idempotent re-delivery
-
-    await client.query(
-      `UPDATE payments SET status = 'paid', method = $2, razorpay_payment_id = $3, tx_id = $4, updated_at = now()
-       WHERE order_id = $1`,
-      [orderId, method, paymentId, paymentId],
+    const { rows } = await client.query(
+      `SELECT * FROM payments WHERE status = 'created' AND created_at < $1 FOR UPDATE`,
+      [cutoff],
     )
-    const seat = await settleSeat(payment.programme_id, payment.duration)
-
-    const { rows: candRows } = await client.query('SELECT * FROM candidates WHERE id = $1 FOR UPDATE', [payment.candidate_id])
-    const cand = candRows[0]
-    if (!cand) throw new Error(`candidate ${payment.candidate_id} missing for order ${orderId}`)
-
-    const firstBooking = !cand.booking
-    await client.query(
-      `UPDATE candidates SET
-         domain = $2, domain_title = $3,
-         booking = $4::jsonb, payment = $5::jsonb, status = 'active',
-         step = GREATEST(step, 1), wallet_balance = wallet_balance
-       WHERE id = $1`,
-      [
-        cand.id,
-        payment.programme_id,
-        cand.domain_title,
-        JSON.stringify({ domain: payment.programme_id, duration: payment.duration, at: new Date().toISOString(), payment: { method, amount: payment.amount, txId: paymentId, at: new Date().toISOString() } }),
-        JSON.stringify({ orderId, method, amount: payment.amount, status: 'paid', at: new Date().toISOString() }),
-      ],
-    )
-
-    // Referral reward: first successful booking credits the referrer once.
-    if (firstBooking && cand.referred_by) {
-      credited = await applyReferralReward(client, cand.id, orderId)
+    for (const p of rows) {
+      await client.query(`UPDATE payments SET status = 'expired', updated_at = now() WHERE order_id = $1`, [p.order_id])
+      await releaseHold(p.programme_id, p.duration) // idempotent (guarded below zero)
+      expired += 1
     }
   })
-  return { credited }
+  if (expired > 0) console.log(`[sweep] expired ${expired} stale order(s)`)
+  return expired
 }
+
+let sweeperTimer = null
+export function startOrderSweeper(intervalMs = 60_000) {
+  if (sweeperTimer) return sweeperTimer
+  sweeperTimer = setInterval(() => {
+    sweepExpiredOrders().catch((err) => console.error('[sweep] pass failed:', err?.message))
+  }, intervalMs)
+  if (typeof sweeperTimer.unref === 'function') sweeperTimer.unref()
+  return sweeperTimer
+}
+
+// One in-process loop per import (ESM module cache) → one per server process.
+startOrderSweeper()
 
 export async function enqueueReceiptEmail(candidate, orderId, amount, domainTitle) {
   await emailQueue.add('receipt', {
