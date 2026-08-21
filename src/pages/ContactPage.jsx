@@ -16,10 +16,8 @@ const TOPICS = [
 ]
 
 const CHANNELS = [
-  { icon: Mail, title: 'Email us', value: 'hello@codetern.dev', hint: 'Replies within 24h', tone: 'text-cyan-deep bg-cyan-deep/10 dark:text-cyan-snap dark:bg-cyan-snap/10' },
   { icon: MessageCircle, title: 'Mentor office hours', value: 'Mon–Fri · 6–9 PM IST', hint: 'Live 1:1 calls', tone: 'text-mint-deep bg-mint-deep/10 dark:text-mint dark:bg-mint/10' },
   { icon: Phone, title: 'Calls', value: 'Book via dashboard', hint: 'Seat-holders only', tone: 'text-violet-ink bg-violet-ink/10 dark:text-violet-deep dark:bg-violet-deep/10' },
-  { icon: MapPin, title: 'Bangalore HQ', value: 'Innovation Campus, Koramangala', hint: 'Visits by invite', tone: 'text-coral-deep bg-coral-deep/10 dark:text-coral dark:bg-coral/10' },
 ]
 
 const FAQS = [
