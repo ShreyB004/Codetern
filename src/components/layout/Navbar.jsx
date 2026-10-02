@@ -3,6 +3,7 @@ import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { ArrowRight, ArrowUpRight, BookOpen, Home, Info, Mail, Tag, User, LayoutDashboard, MessagesSquare, LogOut } from 'lucide-react'
 import { cn } from '../../lib/utils.js'
 import { Button } from '../ui/Button.jsx'
+import { Avatar } from '../ui/Avatar.jsx'
 import { ThemeToggle } from '../ui/ThemeToggle.jsx'
 import { useAuth } from '../../context/AuthContext.jsx'
 
@@ -93,16 +94,14 @@ function AuthButtons({ mobile = false }) {
         title={user.email || ''}
         className="grid h-9 w-9 shrink-0 place-items-center overflow-hidden rounded-full border border-ink/10 bg-white text-sm font-bold transition hover:scale-105 dark:border-paper/15 dark:bg-ink-soft"
       >
-        {user.photoURL ? <img src={user.photoURL} alt="" className="h-full w-full object-cover" /> : (user.displayName || user.email || 'S').slice(0, 1).toUpperCase()}
+        <Avatar name={user.displayName || user.email} photo={user.photoURL} size="sm" className="h-9 w-9 border-0" />
       </button>
       <div className={cn(
         'absolute right-0 top-full z-50 mt-2 w-60 origin-top-right overflow-hidden rounded-2xl border border-ink/10 bg-white p-1.5 shadow-float transition-all duration-200 dark:border-paper/15 dark:bg-ink-soft',
         menu ? 'visible scale-100 opacity-100' : 'invisible scale-95 opacity-0',
       )}>
         <div className="flex items-center gap-2.5 rounded-xl bg-paper px-3 py-2.5 dark:bg-ink">
-          <span className="grid h-9 w-9 shrink-0 place-items-center overflow-hidden rounded-full bg-ink text-sm font-bold text-white dark:bg-paper dark:text-ink">
-            {user.photoURL ? <img src={user.photoURL} alt="" className="h-full w-full object-cover" /> : (user.displayName || 'S').slice(0, 1).toUpperCase()}
-          </span>
+          <Avatar name={user.displayName || user.email} photo={user.photoURL} size="sm" className="h-9 w-9 shrink-0" />
           <span className="min-w-0">
             <span className="block truncate text-sm font-bold">{user.displayName || 'Student'}</span>
             <span className="block truncate text-[11px] opacity-50">{user.email}</span>

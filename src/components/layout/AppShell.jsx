@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { LayoutDashboard, BookOpen, ListChecks, CalendarCheck, GitPullRequest, MessagesSquare, LogOut, ShieldCheck, Users, ClipboardCheck, Inbox, User } from 'lucide-react'
+import { Avatar } from '../ui/Avatar.jsx'
 import { useAuth } from '../../context/AuthContext.jsx'
 import { useRtdbList } from '../../hooks/useRtdbList.js'
 import { useRead } from '../../lib/readState.js'
@@ -126,11 +127,7 @@ function Shell({ title, sub, links, dark, children }) {
           ))}
         </nav>
         <div className="mt-6 flex items-center gap-2.5 rounded-2xl bg-black/5 p-3 dark:bg-white/5">
-          <span className="grid h-9 w-9 shrink-0 place-items-center overflow-hidden rounded-full bg-ink font-bold text-white dark:bg-paper dark:text-ink">
-            {user?.photoURL
-              ? <img src={user.photoURL} alt="" className="h-full w-full object-cover" />
-              : (user?.displayName || user?.email || 'S').slice(0, 1).toUpperCase()}
-          </span>
+          <Avatar name={user?.displayName || user?.email} photo={user?.photoURL} size="sm" className="h-9 w-9 shrink-0" />
           <span className="min-w-0 flex-1">
             <span className="block truncate text-xs font-bold">{user?.displayName || 'Student'}</span>
             <button onClick={() => signOut().then(() => navigate('/'))} className="flex items-center gap-1 text-[11px] font-bold opacity-60 underline hover:opacity-100"><LogOut size={11} /> Sign out</button>

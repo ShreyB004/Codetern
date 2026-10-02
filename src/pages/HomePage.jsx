@@ -4,7 +4,7 @@ import { ArrowRight, Ban, MessageSquareQuote, MousePointerClick, CalendarCheck, 
 import { Page } from '../components/layout/Page.jsx'
 import { JoinForm } from '../components/home/JoinForm.jsx'
 import { Modal } from '../components/ui/Modal.jsx'
-import { Pill, FloatPill } from '../components/ui/Pill.jsx'
+import { Pill } from '../components/ui/Pill.jsx'
 import { Divider } from '../components/ui/Divider.jsx'
 import { Button } from '../components/ui/Button.jsx'
 import { Reveal } from '../components/ui/Reveal.jsx'
@@ -89,12 +89,17 @@ export default function HomePage() {
       {/* ── hero ── */}
       <section className="relative overflow-hidden bg-paper pb-16 pt-28 dark:bg-ink">
         <div className="dot-grid pointer-events-none absolute inset-0 opacity-50" />
-        <div className="cdt-blob pointer-events-none absolute -left-24 top-10 h-72 w-72 rounded-full bg-cyan-snap/15 blur-[100px] dark:bg-cyan-snap/10" />
-        <div className="cdt-blob pointer-events-none absolute -right-24 top-40 h-72 w-72 rounded-full bg-neon/20 blur-[100px] dark:bg-neon/10" style={{ animationDelay: '-8s' }} />
-        <div className="cdt-drift pointer-events-none absolute left-1/2 top-64 h-40 w-40 rounded-full bg-violet-deep/10 blur-[90px] dark:bg-violet-deep/20" />
-        <FloatPill className="left-[6%] top-36" tone="neon" delay="-3s">Reviews in 24h</FloatPill>
-        <FloatPill className="right-[7%] top-48" tone="cyan" delay="-7s">Deploy Fridays</FloatPill>
-        <FloatPill className="left-[15%] top-24" tone="violet" delay="-11s">Team pods of 4–5</FloatPill>
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              'radial-gradient(36rem 22rem at 8% 12%, rgb(34 211 238 / 0.14), transparent 65%), radial-gradient(38rem 24rem at 94% 30%, rgb(180 255 57 / 0.16), transparent 65%), radial-gradient(24rem 18rem at 50% 85%, rgb(124 92 255 / 0.10), transparent 65%)',
+          }}
+        />
+        <span className="absolute left-[6%] top-36 hidden sm:inline-flex"><Pill tone="neon" dot>Reviews in 24h</Pill></span>
+        <span className="absolute right-[7%] top-48 hidden sm:inline-flex"><Pill tone="cyan" dot>Deploy Fridays</Pill></span>
+        <span className="absolute left-[15%] top-24 hidden sm:inline-flex"><Pill tone="violet" dot>Team pods of 4–5</Pill></span>
 
         <div className="relative mx-auto max-w-6xl px-5 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
@@ -117,7 +122,7 @@ export default function HomePage() {
           {site.showStats && (
             <Reveal className="mx-auto mt-10 grid max-w-3xl grid-cols-2 gap-2.5 sm:grid-cols-4">
               {(site.stats?.items || STATS).map(([v, l]) => (
-                <div key={l} className="rounded-2xl border border-ink/10 bg-white/80 px-4 py-3.5 text-center backdrop-blur transition hover:-translate-y-1 hover:shadow-card dark:border-paper/10 dark:bg-ink-soft/80">
+                <div key={l} className="rounded-2xl border border-ink/10 bg-white px-4 py-3.5 text-center transition hover:-translate-y-1 hover:shadow-card dark:border-paper/10 dark:bg-ink-soft">
                   <p className="font-display text-3xl font-extrabold">{v}</p>
                   <p className="text-[11px] font-bold uppercase tracking-wider opacity-50">{l}</p>
                 </div>
@@ -237,8 +242,14 @@ export default function HomePage() {
       {site.showCta && (
         <section className="cv-auto mx-auto max-w-5xl px-5 pb-24 lg:px-8">
           <Reveal className="relative overflow-hidden rounded-[2.5rem] bg-ink p-10 text-center text-white sm:p-14 dark:bg-ink-soft">
-            <div className="pointer-events-none absolute -left-16 -top-16 h-56 w-56 rounded-full bg-neon/15 blur-[100px]" />
-            <div className="pointer-events-none absolute -bottom-16 -right-16 h-56 w-56 rounded-full bg-cyan-snap/15 blur-[100px]" />
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0"
+              style={{
+                background:
+                  'radial-gradient(28rem 18rem at 0% 0%, rgb(180 255 57 / 0.14), transparent 60%), radial-gradient(28rem 18rem at 100% 100%, rgb(34 211 238 / 0.14), transparent 60%)',
+              }}
+            />
             <h2 className="relative mx-auto max-w-xl font-display text-3xl font-extrabold sm:text-4xl">{cta.title}</h2>
             <p className="relative mx-auto mt-3 max-w-md text-sm leading-relaxed text-white/60">{cta.sub}</p>
             <div className="relative mt-7 flex flex-wrap justify-center gap-3">
