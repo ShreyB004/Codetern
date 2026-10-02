@@ -1,5 +1,8 @@
 import { createContext, useCallback, useContext, useMemo, useRef, useState } from 'react'
+import { CheckCircle2, AlertCircle, Info } from 'lucide-react'
 import { uid } from '../lib/store.js'
+
+const TONE_ICON = { success: CheckCircle2, error: AlertCircle, info: Info }
 
 const ToastCtx = createContext(null)
 
@@ -19,25 +22,29 @@ export function ToastProvider({ children }) {
   return (
     <ToastCtx.Provider value={value}>
       {children}
-      <div className="pointer-events-none fixed inset-x-0 bottom-6 z-[120] flex flex-col items-center gap-3 px-4">
-        {toasts.map((t) => (
-          <div
-            key={t.id}
-            role="status"
-            data-toast
-            className={`pointer-events-auto w-full max-w-sm rounded-2xl border px-4 py-3 text-sm font-medium shadow-float backdrop-blur-md ${
-              t.tone === 'success'
-                ? 'border-mint/40 bg-ink/90 text-mint'
-                : t.tone === 'error'
-                  ? 'border-coral/40 bg-ink/90 text-coral'
-                  : t.tone === 'info'
-                    ? 'border-cyan-snap/40 bg-ink/90 text-cyan-snap'
-                    : 'border-white/15 bg-ink/90 text-white'
-            }`}
-          >
-            {t.message}
-          </div>
-        ))}
+      <div className="pointer-events-none fixed inset-x-0 bottom-6 z-[120] flex flex-col items-center gap-2.5 px-4">
+        {toasts.map((t) => {
+          const Icon = TONE_ICON[t.tone] || Info
+          return (
+            <div
+              key={t.id}
+              role="status"
+              data-toast
+              className={`animate-in pointer-events-auto flex w-full max-w-sm items-center gap-2.5 rounded-2xl border px-4 py-3 text-sm font-semibold shadow-float backdrop-blur-md ${
+                t.tone === 'success'
+                  ? 'border-emerald-400/50 bg-ink/95 text-emerald-300'
+                  : t.tone === 'error'
+                    ? 'border-rose-400/50 bg-ink/95 text-rose-300'
+                    : t.tone === 'info'
+                      ? 'border-cyan-300/50 bg-ink/95 text-cyan-300'
+                      : 'border-white/15 bg-ink/95 text-white'
+              }`}
+            >
+              <Icon size={17} className="shrink-0" />
+              <span>{t.message}</span>
+            </div>
+          )
+        })}
       </div>
     </ToastCtx.Provider>
   )

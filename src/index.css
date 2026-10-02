@@ -686,3 +686,159 @@ input:focus-visible:not(.focus-ring):not(.focus-ring-dark) {
     transform: none;
   }
 }
+
+/* ── rich text (task descriptions) ───────────────────────── */
+.cdt-rich h1,
+.cdt-rich h2,
+.cdt-rich h3 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  margin: 0.6em 0 0.3em;
+  line-height: 1.25;
+}
+.cdt-rich h1 {
+  font-size: 1.4rem;
+}
+.cdt-rich h2 {
+  font-size: 1.2rem;
+}
+.cdt-rich h3 {
+  font-size: 1.05rem;
+}
+.cdt-rich p {
+  margin: 0.4em 0;
+}
+.cdt-rich ul {
+  list-style: disc;
+  padding-left: 1.4em;
+  margin: 0.4em 0;
+}
+.cdt-rich ol {
+  list-style: decimal;
+  padding-left: 1.4em;
+  margin: 0.4em 0;
+}
+.cdt-rich li {
+  margin: 0.2em 0;
+}
+.cdt-rich b,
+.cdt-rich strong {
+  font-weight: 800;
+}
+.cdt-rich a {
+  text-decoration: underline;
+}
+
+/* ── scroll performance ──────────────────────────────────── */
+/* While the user is actively scrolling, freeze expensive background
+   animations so the compositor isn't repainting huge blurs per frame. */
+html[data-scrolling='1'] .cdt-blob,
+html[data-scrolling='1'] .cdt-drift,
+html[data-scrolling='1'] .cdt-drift-slow,
+html[data-scrolling='1'] .cdt-float,
+html[data-scrolling='1'] .cdt-float-slow,
+html[data-scrolling='1'] .cdt-marquee,
+html[data-scrolling='1'] .cdt-aurora,
+html[data-scrolling='1'] .cdt-aurora-alt {
+  animation-play-state: paused;
+}
+
+/* Skip rendering offscreen sections until scrolled near (big win on
+   long pages). Intrinsic size reserves layout so no jump occurs. */
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 700px;
+}
+
+/* ── admin motion control ────────────────────────────────── */
+html[data-anim='off'] [data-cdt-reveal] {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+html[data-anim='off'] .cdt-float,
+html[data-anim='off'] .cdt-float-slow,
+html[data-anim='off'] .cdt-drift,
+html[data-anim='off'] .cdt-blob,
+html[data-anim='off'] .cdt-breathe,
+html[data-anim='off'] .cdt-marquee {
+  animation: none;
+}
+html[data-anim='subtle'] .cdt-float,
+html[data-anim='subtle'] .cdt-float-slow,
+html[data-anim='subtle'] .cdt-drift {
+  animation-duration: 24s;
+}
+html[data-floats='off'] .cdt-float,
+html[data-floats='off'] .cdt-float-slow {
+  display: none;
+}
+
+/* ── chat message motion ─────────────────────────────────── */
+@keyframes cdt-msg-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.msg-in {
+  animation: cdt-msg-in 0.28s var(--ease-snap) both;
+}
+.msg-leave {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  opacity: 0 !important;
+  transform: scale(0.94) translateY(6px);
+}
+html[data-anim='off'] .msg-in {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .msg-in {
+    animation: none;
+  }
+}
+
+/* ── page transition ─────────────────────────────────────── */
+@keyframes cdt-page-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.page-enter {
+  animation: cdt-page-in 0.45s var(--ease-snap) both;
+}
+html[data-anim='off'] .page-enter {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .page-enter {
+    animation: none;
+  }
+}
+
+/* ── scroll reveal on intersect ──────────────────────────── */
+[data-cdt-reveal] {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.7s var(--ease-snap), transform 0.7s var(--ease-snap);
+}
+[data-cdt-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-cdt-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

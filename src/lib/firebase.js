@@ -1,26 +1,35 @@
 import { initializeApp } from 'firebase/app'
 import { getAnalytics, isSupported } from 'firebase/analytics'
 import { getDatabase } from 'firebase/database'
+import { getAuth, GoogleAuthProvider } from 'firebase/auth'
 
-// Firebase is optional — configure via .env (VITE_FIREBASE_*) and the
-// marketing site lights up with Google Analytics + realtime event/traffic
-// tracking. Without config the app runs fully static with graceful no-ops.
+// Codetern LMS MVP — Realtime Database only (no Storage).
+// Config falls back to the bundled codetern-2c7ea project so the
+// Google-Form-style lead capture works out of the box.
+// Override via .env (VITE_FIREBASE_*) if needed.
 const env = import.meta.env
 
-export const firebaseReady =
-  Boolean(env.VITE_FIREBASE_API_KEY) && Boolean(env.VITE_FIREBASE_PROJECT_ID)
+const FALLBACK_CONFIG = {
+  apiKey: 'AIzaSyC6stsJp0jdR5oiAF5mhCGvecVQrf83C_o',
+  authDomain: 'codetern-2c7ea.firebaseapp.com',
+  databaseURL: 'https://codetern-2c7ea-default-rtdb.asia-southeast1.firebasedatabase.app',
+  projectId: 'codetern-2c7ea',
+  storageBucket: 'codetern-2c7ea.firebasestorage.app',
+  messagingSenderId: '637590394706',
+  appId: '1:637590394706:web:20baf2b7e1a286ef7e0c8b',
+}
 
-export const firebaseConfig = firebaseReady
-  ? {
-      apiKey: env.VITE_FIREBASE_API_KEY,
-      authDomain: env.VITE_FIREBASE_AUTH_DOMAIN,
-      projectId: env.VITE_FIREBASE_PROJECT_ID,
-      storageBucket: env.VITE_FIREBASE_STORAGE_BUCKET,
-      messagingSenderId: env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-      appId: env.VITE_FIREBASE_APP_ID,
-      databaseURL: env.VITE_FIREBASE_DATABASE_URL,
-    }
-  : null
+export const firebaseConfig = {
+  apiKey: env.VITE_FIREBASE_API_KEY || FALLBACK_CONFIG.apiKey,
+  authDomain: env.VITE_FIREBASE_AUTH_DOMAIN || FALLBACK_CONFIG.authDomain,
+  databaseURL: env.VITE_FIREBASE_DATABASE_URL || FALLBACK_CONFIG.databaseURL,
+  projectId: env.VITE_FIREBASE_PROJECT_ID || FALLBACK_CONFIG.projectId,
+  storageBucket: env.VITE_FIREBASE_STORAGE_BUCKET || FALLBACK_CONFIG.storageBucket,
+  messagingSenderId: env.VITE_FIREBASE_MESSAGING_SENDER_ID || FALLBACK_CONFIG.messagingSenderId,
+  appId: env.VITE_FIREBASE_APP_ID || FALLBACK_CONFIG.appId,
+}
+
+export const firebaseReady = Boolean(firebaseConfig.apiKey && firebaseConfig.projectId)
 
 export const app = firebaseReady ? initializeApp(firebaseConfig) : null
 
@@ -29,3 +38,10 @@ export const analyticsPromise = firebaseReady
   : Promise.resolve(null)
 
 export const db = firebaseReady ? getDatabase(app) : null
+
+export const auth = firebaseReady ? getAuth(app) : null
+export const googleProvider = new GoogleAuthProvider()
+
+export const ADMIN_EMAIL = 'shreybhangale@gmail.com'
+export const roleFor = (email) =>
+  String(email || '').toLowerCase().trim() === ADMIN_EMAIL ? 'admin' : 'student'
