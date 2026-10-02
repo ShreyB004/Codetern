@@ -119,10 +119,10 @@ function MessageRow({ m, profile, own, canEdit, onSave, onDelete, saving, deleti
         </span>
         {canEdit && !editing && (
           <span className={cn('absolute top-1.5 flex gap-1 opacity-0 transition group-hover:opacity-100 focus-within:opacity-100', own ? '-left-[4.25rem]' : '-right-[4.25rem]')}>
-            <button onClick={() => { setDraft(m.text); setEditing(true) }} title="Edit" className="rounded-full bg-ink/70 p-1.5 text-white shadow-card backdrop-blur hover:scale-110 dark:bg-paper/85 dark:text-ink">
+            <button onClick={() => { setDraft(m.text); setEditing(true) }} title="Edit message" aria-label="Edit message" className="rounded-full bg-ink/70 p-1.5 text-white shadow-card backdrop-blur hover:scale-110 dark:bg-paper/85 dark:text-ink">
               <Pencil size={12} />
             </button>
-            <button onClick={remove} disabled={deleting} title="Delete" className="rounded-full bg-ink/70 p-1.5 text-white shadow-card backdrop-blur transition hover:scale-110 hover:!bg-rose-600 dark:bg-paper/85 dark:text-ink">
+            <button onClick={remove} disabled={deleting} title="Delete message" aria-label="Delete message" className="rounded-full bg-ink/70 p-1.5 text-white shadow-card backdrop-blur transition hover:scale-110 hover:!bg-rose-600 dark:bg-paper/85 dark:text-ink">
               {deleting ? <Loader2 size={12} className="animate-spin" /> : <Trash2 size={12} />}
             </button>
           </span>
@@ -130,12 +130,6 @@ function MessageRow({ m, profile, own, canEdit, onSave, onDelete, saving, deleti
       </div>
     </div>
   )
-}
-
-function sameDay(a, b) {
-  const x = new Date(a)
-  const y = new Date(b)
-  return x.getFullYear() === y.getFullYear() && x.getMonth() === y.getMonth() && x.getDate() === y.getDate()
 }
 
 // Oldest on top, newest at the bottom (WhatsApp order) + stick to bottom.
@@ -315,6 +309,7 @@ export function MessageThread({ path, sendTo, sendUid, title, subtitle, announce
           <input
             value={text} onChange={(e) => setText(e.target.value)}
             placeholder={`Message ${title}…`}
+            aria-label={`Message ${title}`}
             maxLength={800}
             className="cdt-input min-w-0 flex-1 rounded-full px-4 py-2.5 text-sm"
           />

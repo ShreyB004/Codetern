@@ -8,7 +8,7 @@ const SIZES = {
   lg: 'h-14 w-14 text-lg',
 }
 
-function Face({ name, photo, size }) {
+function Face({ name, photo }) {
   const [broken, setBroken] = useState(false)
   const initial = String(name || '?').trim().slice(0, 1).toUpperCase()
   if (!photo || broken) return <span aria-hidden>{initial}</span>
@@ -33,7 +33,7 @@ export function Avatar({ name, photo, size = 'sm', role, className }) {
         className,
       )}
     >
-      <Face name={name} photo={photo} size={size} />
+      <Face name={name} photo={photo} />
     </span>
   )
 }

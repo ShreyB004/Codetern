@@ -58,7 +58,7 @@ export function JoinForm({ compact = false, onDone, initialCourse }) {
     return (
       <div className="flex flex-col items-center p-8 text-center">
         <span className="grid h-16 w-16 place-items-center rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-300"><CheckCircle2 size={28} /></span>
-        <h3 className="mt-4 font-display text-2xl font-bold">You're on the list, {form.fullName.split(' ')[0]}.</h3>
+        <h3 className="mt-4 font-display text-2xl font-bold">You’re on the list, {form.fullName.split(' ')[0]}.</h3>
         <p className="mt-2 max-w-md text-sm opacity-60">
           We opened the Google Form in a new tab — finish it and the admin approves you.
           After approval, sign in and your LMS appears automatically.
@@ -78,15 +78,15 @@ export function JoinForm({ compact = false, onDone, initialCourse }) {
   return (
     <form onSubmit={submit} className={cn('grid gap-4', compact && 'sm:grid-cols-2')}>
       <div className={compact ? 'sm:col-span-1' : ''}>
-        <input value={form.fullName} onChange={(e) => set('fullName', e.target.value)} placeholder="Full name *" className={input(errors.fullName)} />
+        <input value={form.fullName} onChange={(e) => set('fullName', e.target.value)} placeholder="Full name *" aria-label="Full name" className={input(errors.fullName)} />
         {errors.fullName && <p className="mt-1 text-xs text-rose-500">{errors.fullName}</p>}
       </div>
       <div>
-        <input value={form.email} onChange={(e) => set('email', e.target.value)} placeholder="Email *" type="email" className={input(errors.email)} />
+        <input value={form.email} onChange={(e) => set('email', e.target.value)} placeholder="Email *" aria-label="Email" type="email" className={input(errors.email)} />
         {errors.email && <p className="mt-1 text-xs text-rose-500">{errors.email}</p>}
       </div>
       <div>
-        <input value={form.phone} onChange={(e) => set('phone', e.target.value)} placeholder="Mobile number *" type="tel" className={input(errors.phone)} />
+        <input value={form.phone} onChange={(e) => set('phone', e.target.value)} placeholder="Mobile number *" aria-label="Mobile number" type="tel" className={input(errors.phone)} />
         {errors.phone && <p className="mt-1 text-xs text-rose-500">{errors.phone}</p>}
       </div>
       <div>
@@ -94,11 +94,11 @@ export function JoinForm({ compact = false, onDone, initialCourse }) {
         {errors.education && <p className="mt-1 text-xs text-rose-500">{errors.education}</p>}
       </div>
       <div>
-        <input value={form.linkedin} onChange={(e) => set('linkedin', e.target.value)} placeholder="LinkedIn profile link (optional)" type="url" className={input(errors.linkedin)} />
+        <input value={form.linkedin} onChange={(e) => set('linkedin', e.target.value)} placeholder="LinkedIn profile link (optional)" aria-label="LinkedIn profile link" type="url" className={input(errors.linkedin)} />
         {errors.linkedin && <p className="mt-1 text-xs text-rose-500">{errors.linkedin}</p>}
       </div>
       <div>
-        <input value={form.github} onChange={(e) => set('github', e.target.value)} placeholder="GitHub profile link (optional)" type="url" className={input(errors.github)} />
+        <input value={form.github} onChange={(e) => set('github', e.target.value)} placeholder="GitHub profile link (optional)" aria-label="GitHub profile link" type="url" className={input(errors.github)} />
         {errors.github && <p className="mt-1 text-xs text-rose-500">{errors.github}</p>}
       </div>
       <div className={compact ? 'sm:col-span-2' : ''}>
@@ -117,13 +117,17 @@ export function JoinForm({ compact = false, onDone, initialCourse }) {
         </div>
       </div>
       <div className={compact ? 'sm:col-span-2' : ''}>
-        <textarea value={form.message} onChange={(e) => set('message', e.target.value)} rows={3} maxLength={1000} placeholder="Anything we should know? (goals, experience, timing…)" className={input(false)} />
+        <textarea value={form.message} onChange={(e) => set('message', e.target.value)} rows={3} maxLength={1000} placeholder="Anything we should know? (goals, experience, timing…)" aria-label="Anything we should know" className={input(false)} />
       </div>
       {errors.submit && <p className={compact ? 'text-xs text-rose-500 sm:col-span-2' : 'text-xs text-rose-500'}>{errors.submit}</p>}
       <button disabled={sending} className={cn('flex items-center justify-center gap-2 rounded-full bg-ink py-3.5 text-sm font-bold text-white transition hover:-translate-y-0.5 disabled:opacity-50 dark:bg-paper dark:text-ink', compact && 'sm:col-span-2')}>
         {sending ? <><Loader2 size={16} className="animate-spin" /> Saving…</> : <>Continue to Google Form <ArrowRight size={16} /></>}
       </button>
-      <p className={cn('text-center text-[11px] opacity-50', compact && 'sm:col-span-2')}>Step 1 of 2 here · Step 2 is the Google Form · Admin approves → LMS unlocks</p>
+      <p className={cn('text-center text-[11px] opacity-50', compact && 'sm:col-span-2')}>
+        Step 1 of 2 here · Step 2 is the Google Form · Admin approves → LMS unlocks<br />
+        By applying you agree to our <a href="/terms" target="_blank" rel="noreferrer" className="font-bold underline">Terms</a> and{' '}
+        <a href="/privacy" target="_blank" rel="noreferrer" className="font-bold underline">Privacy Policy</a>
+      </p>
     </form>
   )
 }

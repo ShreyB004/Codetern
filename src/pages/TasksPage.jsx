@@ -118,8 +118,8 @@ function TaskCard({ task }) {
         )}
         {formOpen && (
           <form onSubmit={send} className="mt-2 grid gap-2 rounded-2xl border border-ink/10 p-3 dark:border-paper/10">
-            <input value={link} onChange={(e) => setLink(e.target.value)} placeholder="Work link * (GitHub repo / PR / live URL)" className="cdt-input rounded-xl px-3 py-2 text-sm" />
-            <input value={note} onChange={(e) => setNote(e.target.value)} placeholder="Note for your mentor (optional)" maxLength={300} className="cdt-input rounded-xl px-3 py-2 text-sm" />
+            <input value={link} onChange={(e) => setLink(e.target.value)} placeholder="Work link * (GitHub repo / PR / live URL)" aria-label="Work link" className="cdt-input rounded-xl px-3 py-2 text-sm" />
+            <input value={note} onChange={(e) => setNote(e.target.value)} placeholder="Note for your mentor (optional)" aria-label="Note for your mentor" maxLength={300} className="cdt-input rounded-xl px-3 py-2 text-sm" />
             <div className="flex gap-2">
               <button disabled={busy === 'send'} className="flex items-center gap-1.5 rounded-full bg-ink px-4 py-2 text-xs font-bold text-white disabled:opacity-50 dark:bg-paper dark:text-ink">
                 {busy === 'send' ? <Loader2 size={13} className="animate-spin" /> : <Send size={13} />} {busy === 'send' ? 'Sending…' : 'Ask mentor to check'}

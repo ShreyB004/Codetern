@@ -62,7 +62,7 @@ export default function ReviewsPage() {
                   options={COURSES.filter((c) => myCourses.includes(c.id)).map((c) => ({ value: c.id, label: c.title, sub: c.sub }))}
                   placeholder="Course"
                 />
-                <input value={form.prUrl} onChange={(e) => setForm({ ...form, prUrl: e.target.value })} placeholder="https://github.com/you/repo/pull/12 *" className="cdt-input rounded-2xl px-4 py-2.5 text-sm" />
+                <input value={form.prUrl} onChange={(e) => setForm({ ...form, prUrl: e.target.value })} placeholder="https://github.com/you/repo/pull/12 *" aria-label="GitHub PR link" className="cdt-input rounded-2xl px-4 py-2.5 text-sm" />
               </div>
               {recentLinks.length > 0 && (
                 <div className="flex flex-wrap items-center gap-1.5">
@@ -78,7 +78,7 @@ export default function ReviewsPage() {
                   })}
                 </div>
               )}
-              <textarea value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} placeholder="What should the reviewer focus on? (tests, perf, API design…)" rows={2} maxLength={1000} className="cdt-input w-full rounded-2xl px-4 py-3 text-sm" />
+              <textarea value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} placeholder="What should the reviewer focus on? (tests, perf, API design…)" aria-label="Reviewer focus notes" rows={2} maxLength={1000} className="cdt-input w-full rounded-2xl px-4 py-3 text-sm" />
               <div>
                 <button disabled={busy} className="flex items-center gap-1.5 rounded-full bg-ink px-5 py-2.5 text-sm font-bold text-white transition hover:-translate-y-0.5 disabled:opacity-50 dark:bg-paper dark:text-ink">
                   {busy ? <Loader2 size={14} className="animate-spin" /> : <Send size={14} />} {busy ? 'Submitting…' : 'Submit PR for review'}

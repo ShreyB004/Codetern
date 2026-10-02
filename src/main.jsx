@@ -6,7 +6,11 @@ import App from './App.jsx'
 import { Providers } from './context/Providers.jsx'
 import { load } from './lib/store.js'
 import { initSiteTheme } from './lib/siteTheme.js'
+import { initSentry } from './lib/sentry.js'
 import './index.css'
+
+// Crash reporting (Sentry) — no-op unless VITE_SENTRY_DSN is set.
+initSentry()
 
 // Admin-chosen palette + motion, before first paint (cached, then live).
 try {

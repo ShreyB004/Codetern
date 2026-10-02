@@ -60,12 +60,13 @@ export default function LearnPage() {
   )
   const courseTasks = useMemo(() => tasks.filter((t) => t.courseId === course.id), [tasks, course.id])
 
+  const firstUnitId = course.units[0].id
   useEffect(() => {
-    setActive(course.units[0].id)
+    setActive(firstUnitId)
     if (enrolled) {
       try { localStorage.setItem('cdt:lastCourse', course.id) } catch { /* noop */ }
     }
-  }, [course.id, enrolled])
+  }, [course.id, enrolled, firstUnitId])
 
   const doneCount = useMemo(() => course.units.filter((u) => done[`${course.id}:${u.id}`]).length, [done, course])
   const pct = Math.round((doneCount / course.units.length) * 100)

@@ -65,10 +65,10 @@ export default function ContactPage() {
         ) : (
           <form onSubmit={submit} className="rounded-[2rem] border border-ink/10 bg-white p-6 shadow-card sm:p-8 dark:border-paper/10 dark:bg-ink-soft dark:shadow-none">
             <div className="grid gap-4 sm:grid-cols-2">
-              <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Full name *" className={inputCls} />
-              <input value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="Email *" type="email" className={inputCls} />
+              <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Full name *" aria-label="Full name" className={inputCls} />
+              <input value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="Email *" aria-label="Email" type="email" className={inputCls} />
             </div>
-            <textarea value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} rows={5} maxLength={2000} placeholder="What's on your mind? *" className={cn(inputCls, 'mt-4 resize-none')} />
+            <textarea value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} rows={5} maxLength={2000} placeholder="What's on your mind? *" aria-label="Your message" className={cn(inputCls, 'mt-4 resize-none')} />
             <button disabled={sending} className="mt-5 flex w-full items-center justify-center gap-2 rounded-full bg-ink py-3.5 text-sm font-bold text-white transition hover:-translate-y-0.5 disabled:opacity-50 sm:w-auto sm:px-8 dark:bg-paper dark:text-ink">
               {sending ? <><Loader2 size={16} className="animate-spin" /> Sending…</> : <>Send message <Send size={15} /></>}
             </button>

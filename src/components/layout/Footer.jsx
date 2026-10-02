@@ -26,6 +26,8 @@ const COLUMNS = [
       { label: 'Pricing', to: '/pricing' },
       { label: 'About', to: '/about' },
       { label: 'Join now', to: '/join' },
+      { label: 'Privacy', to: '/privacy' },
+      { label: 'Terms', to: '/terms' },
     ],
   },
 ]

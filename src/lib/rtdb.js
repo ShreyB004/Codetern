@@ -228,9 +228,12 @@ export async function setFee(uid, idx, status) {
   await update(ref(mustDb(), `fees/${safeKey(uid)}`), { [`i${idx}`]: status, updatedAt: Date.now() })
 }
 
-export async function setUserEnrollments(uid, status, allEnrollments) {
+export async function setUserEnrollments(uid, status, allEnrollments, email = null) {
   const database = mustDb()
-  const mine = (allEnrollments || []).filter((e) => e.uid === uid)
+  // match by uid, falling back to email so never-logged-in rows flip too
+  const mine = (allEnrollments || []).filter(
+    (e) => e.uid === uid || (email && sameEmail(e.email, email)),
+  )
   await Promise.all(mine.map((e) => update(ref(database, `enrollments/${e.id}`), { status })))
   return mine.length
 }

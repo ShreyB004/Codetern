@@ -1,8 +1,13 @@
-/* SSR smoke test: renders public, authenticated-student, and authenticated-admin routes. */
+/* SSR smoke test (no browser, no network):
+   - App-level routes that render without lazy suspension (/, guards, 404
+     is covered separately) render through <App />.
+   - Lazy public pages are loaded explicitly and rendered directly inside
+     router + providers.
+   - Failing case = throw during render OR missing copy markers. */
 import { createServer } from 'vite'
 import { renderToStaticMarkup } from 'react-dom/server'
 import React from 'react'
-import { MemoryRouter } from 'react-router-dom'
+import { MemoryRouter, Routes, Route } from 'react-router-dom'
 
 const server = await createServer({ server: { middlewareMode: true }, appType: 'custom' })
 const { default: App } = await server.ssrLoadModule('/src/App.jsx')
@@ -10,111 +15,62 @@ const { Providers } = await server.ssrLoadModule('/src/context/Providers.jsx')
 
 function storage(entries = {}) {
   const map = new Map(Object.entries(entries))
-  return { getItem: (k) => (map.has(k) ? map.get(k) : null), setItem: (k, v) => map.set(k, String(v)) }
+  return {
+    getItem: (k) => (map.has(k) ? map.get(k) : null),
+    setItem: (k, v) => map.set(k, String(v)),
+    removeItem: (k) => map.delete(k),
+  }
 }
 
 globalThis.window = {
-  matchMedia: () => ({ matches: true }),
+  matchMedia: () => ({ matches: false, addEventListener: () => {}, removeEventListener: () => {} }),
   addEventListener: () => {},
   removeEventListener: () => {},
+  scrollTo: () => {},
+  location: { origin: 'http://localhost', pathname: '/' },
 }
-window.scrollTo = () => {}
-window.document = { documentElement: { addEventListener: () => {}, removeEventListener: () => {} } }
+globalThis.sessionStorage = storage({ 'cdt:seen': '1' })
+globalThis.localStorage = storage({})
 
-const baseCandidate = (id, name, extra = {}) => ({
-  id,
-  name,
-  email: `${id}@codetern.dev`,
-  domain: 'mern',
-  domainTitle: 'Full-Stack Development',
-  step: 1,
-  quizScore: null,
-  quizPassed: false,
-  interviewScore: null,
-  appliedAt: '2026-01-01',
-  status: 'pending',
-  profile: null,
-  quiz: null,
-  interview: null,
-  booking: null,
-  cert: null,
-  workspace: null,
-  ...extra,
-})
+const shell = (route, children) =>
+  renderToStaticMarkup(
+    React.createElement(MemoryRouter, { initialEntries: [route] }, React.createElement(Providers, null, children)),
+  )
 
-const scenarios = [
-  {
-    name: 'public',
-    storage: {},
-    routes: [
-      ['/', ['real work done', 'Codetern', 'Seat countdown']],
-      ['/about', ['About Codetern', 'mentor network']],
-      ['/domains', ['Fourteen ways', 'Career tracks']],
-      ['/portfolio', ['Live project gallery', 'actually shipped']],
-      ['/certification', ['Employer verification', 'unique ID']],
-      ['/pricing', ['One flat batch price', 'Pick a domain', 'Book this batch', 'launch marker']],
-      ['/contact', ['Talk to a', 'mentor']],
-    ],
-  },
-  {
-    name: 'student',
-    storage: {
-      'codetern:current:v2': JSON.stringify('u-smoke'),
-      'codetern:users:v2': JSON.stringify([{ id: 'u-smoke', name: 'Smoke Tester', email: 'u-smoke@codetern.dev', password: 'x', role: 'student', createdAt: '2026-01-01' }]),
-      'codetern:candidates:v2': JSON.stringify([baseCandidate('u-smoke', 'Smoke Tester')]),
-    },
-    routes: [['/dashboard', ['Welcome back', 'Book your seat', 'Choose your track domain']]],
-  },
-  {
-    name: 'student-advanced',
-    storage: {
-      'codetern:current:v2': JSON.stringify('u-adv'),
-      'codetern:users:v2': JSON.stringify([{ id: 'u-adv', name: 'Advanced Tester', email: 'u-adv@codetern.dev', password: 'x', role: 'student', createdAt: '2026-01-01' }]),
-      'codetern:candidates:v2': JSON.stringify([
-        baseCandidate('u-adv', 'Advanced Tester', {
-          step: 5,
-          quizScore: 87,
-          quizPassed: true,
-          interviewScore: 84,
-          status: 'active',
-          profile: { name: 'Advanced Tester', email: 'u-adv@codetern.dev', domain: 'mern', resumeName: 'r.pdf' },
-          quiz: { bank: 'mern', score: 87, passed: true },
-          interview: { score: 84, done: true },
-          booking: { domain: 'mern', duration: 3 },
-          cert: { id: 'CDT-2026-9999', at: '2026-07-01' },
-        }),
-      ]),
-    },
-    routes: [
-      ['/dashboard', ['Welcome back', 'Certificate issued', 'Letter of Recommendation']],
-      ['/certification', ['Employer verification', 'Not sure what to enter']],
-    ],
-  },
-  {
-    name: 'admin',
-    storage: { 'codetern:current:v2': JSON.stringify('admin-1') },
-    routes: [['/admin', ['Admin suite', 'Candidate Roster', 'Seat Controller']]],
-  },
+const checks = [
+  // through the real <App /> (guards + home render before any suspension)
+  ['app:/', () => shell('/', React.createElement(App)), ['stop practising', 'start shipping']],
+  ['app:/dashboard', () => shell('/dashboard', React.createElement(App)), ['checking your login']],
+  ['app:/admin', () => shell('/admin', React.createElement(App)), ['checking admin access']],
+  // lazy pages rendered directly (markers in CMS-default copy)
+  ['page:/courses', async () => shell('/courses', React.createElement(await page('/src/pages/CoursesPage.jsx'))), ['four deep ends', 'ai &amp; llms']],
+  ['page:/pricing', async () => shell('/pricing', React.createElement(await page('/src/pages/PricingPage.jsx'))), ['choose pricing plan']],
+  ['page:/about', async () => shell('/about', React.createElement(await page('/src/pages/AboutPage.jsx'))), ['classroom code gets you views']],
+  ['page:/contact', async () => shell('/contact', React.createElement(await page('/src/pages/ContactPage.jsx'))), ['talk to a mentor']],
+  ['page:/login', async () => shell('/login', React.createElement(await page('/src/pages/LoginPage.jsx'))), ['sign in to codetern']],
+  ['page:/join', async () => shell('/join', React.createElement(await page('/src/pages/JoinPage.jsx'))), ['join codetern in 2 steps']],
+  ['page:/privacy', async () => shell('/privacy', React.createElement(await page('/src/pages/PrivacyPage.jsx'))), ['privacy policy']],
+  ['page:/terms', async () => shell('/terms', React.createElement(await page('/src/pages/TermsPage.jsx'))), ['terms of service']],
+  ['page:404', async () => shell('/no-such-page-xyz', React.createElement(await page('/src/pages/NotFound.jsx'))), ['doesn\u2019t exist']],
 ]
+
+async function page(path) {
+  const mod = await server.ssrLoadModule(path)
+  return mod.default
+}
 
 let failed = 0
 let passed = 0
-for (const scenario of scenarios) {
-  globalThis.sessionStorage = storage({ 'cdt:seen': '1' })
-  globalThis.localStorage = storage(scenario.storage)
-  for (const [route, markers] of scenario.routes) {
-    try {
-      const html = renderToStaticMarkup(
-        React.createElement(MemoryRouter, { initialEntries: [route] }, React.createElement(Providers, null, React.createElement(App))),
-      )
-      const missing = markers.filter((m) => !html.toLowerCase().includes(m.toLowerCase()))
-      if (missing.length) throw new Error(`missing markers: ${missing.join(' | ')}`)
-      passed++
-      console.log(`PASS [${scenario.name}] ${route}  (${html.length} chars)`)
-    } catch (err) {
-      failed++
-      console.error(`FAIL [${scenario.name}] ${route}  → ${err.message}`)
-    }
+for (const [name, render, markers] of checks) {
+  try {
+    const html = await render()
+    const missing = markers.filter((m) => !html.toLowerCase().includes(m.toLowerCase()))
+    if (missing.length) throw new Error(`missing markers: ${missing.join(' | ')}`)
+    passed++
+    console.log(`PASS ${name}  (${html.length} chars)`)
+  } catch (err) {
+    failed++
+    console.error(`FAIL ${name}  → ${err.message.split('\n')[0]}`)
   }
 }
 

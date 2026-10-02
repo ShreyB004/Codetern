@@ -1,8 +1,10 @@
 import { Suspense, lazy } from 'react'
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { PublicLayout } from './components/layout/Layout.jsx'
 import { RequireAuth, RequireAdmin } from './context/AuthContext.jsx'
 import { SkeletonPage } from './components/ui/Skeleton.jsx'
+import { ErrorBoundary } from './components/ui/ErrorBoundary.jsx'
+import { useRouteMeta } from './lib/meta.js'
 import HomePage from './pages/HomePage.jsx'
 
 const CoursesPage = lazy(() => import('./pages/CoursesPage.jsx'))
@@ -19,15 +21,21 @@ const ReviewsPage = lazy(() => import('./pages/ReviewsPage.jsx'))
 const MessagesPage = lazy(() => import('./pages/MessagesPage.jsx'))
 const ProfilePage = lazy(() => import('./pages/ProfilePage.jsx'))
 const AdminPage = lazy(() => import('./pages/AdminPage.jsx'))
+const NotFound = lazy(() => import('./pages/NotFound.jsx'))
+const PrivacyPage = lazy(() => import('./pages/PrivacyPage.jsx'))
+const TermsPage = lazy(() => import('./pages/TermsPage.jsx'))
 
 function Fallback() {
   return <SkeletonPage rows={3} />
 }
 
 export default function App() {
+  const { pathname } = useLocation()
+  useRouteMeta()
   return (
-    <Suspense fallback={<Fallback />}>
-      <Routes>
+    <ErrorBoundary resetKey={pathname}>
+      <Suspense fallback={<Fallback />}>
+        <Routes>
         <Route element={<PublicLayout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/courses" element={<CoursesPage />} />
@@ -37,6 +45,8 @@ export default function App() {
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/join" element={<JoinPage />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
+          <Route path="/terms" element={<TermsPage />} />
 
           {/* legacy redirects */}
           <Route path="/apply" element={<Navigate to="/join" replace />} />
@@ -59,8 +69,9 @@ export default function App() {
           <Route path="/admin/:tab" element={<RequireAdmin><AdminPage /></RequireAdmin>} />
         </Route>
 
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </Suspense>
+        <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Suspense>
+    </ErrorBoundary>
   )
 }

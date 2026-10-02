@@ -42,6 +42,10 @@ export const db = firebaseReady ? getDatabase(app) : null
 export const auth = firebaseReady ? getAuth(app) : null
 export const googleProvider = new GoogleAuthProvider()
 
-export const ADMIN_EMAIL = 'shreybhangale@gmail.com'
-export const roleFor = (email) =>
-  String(email || '').toLowerCase().trim() === ADMIN_EMAIL ? 'admin' : 'student'
+// Admin allowlist — add a second address here (and mirror it in
+// database.rules.json) so there is always a recovery path.
+export const ADMIN_EMAILS = ['shreybhangale@gmail.com']
+export const ADMIN_EMAIL = ADMIN_EMAILS[0]
+export const isAdminEmail = (email) =>
+  ADMIN_EMAILS.includes(String(email || '').toLowerCase().trim())
+export const roleFor = (email) => (isAdminEmail(email) ? 'admin' : 'student')

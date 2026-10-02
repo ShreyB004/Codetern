@@ -1,36 +1,17 @@
 {
   "rules": {
-    // Codetern LMS — least-privilege Realtime Database rules.
-    // Deploy: firebase deploy --only database
-    // (or paste into Console → Realtime Database → Rules).
-    //
-    // Model:
-    // - Public can READ published site copy and CREATE join/contact requests.
-    // - Signed-in users can read app data and write ONLY their own rows.
-    // - The admin inbox (shreybhangale@gmail.com) is the only writer
-    //   for approvals, tasks, attendance, fees, content and reviews.
-    // - Roles in the React app are UX conveniences; THESE RULES are the
-    //   real enforcement — never rely on client-side checks alone.
-
     ".read": false,
     ".write": false,
-
-    // Published marketing copy — world-readable, admin-writable.
     "siteContent": {
       ".read": true,
       ".write": "auth != null && auth.token.email == 'shreybhangale@gmail.com'"
     },
-
-    // Anonymous analytics pings (page views, clicks). Create-only.
     "events": {
       "$sid": {
         ".write": "!data.exists()",
         ".validate": "newData.hasChildren()"
       }
     },
-
-    // Join form (filled BEFORE login) — anyone may create a "requested"
-    // row; only the admin may read the queue or change status.
     "joinRequests": {
       ".read": "auth != null && auth.token.email == 'shreybhangale@gmail.com'",
       "$id": {
@@ -38,41 +19,28 @@
         ".validate": "newData.hasChildren(['fullName', 'email', 'status']) && newData.child('email').isString() && newData.child('fullName').isString()"
       }
     },
-
-    // Contact form — same create-only pattern as join requests.
     "contacts": {
       ".read": "auth != null && auth.token.email == 'shreybhangale@gmail.com'",
       "$id": {
         ".write": "(!data.exists() && newData.child('status').val() == 'new') || (auth != null && auth.token.email == 'shreybhangale@gmail.com')"
       }
     },
-
-    // Legacy lead inbox — admin only.
     "leads": {
       ".read": "auth != null && auth.token.email == 'shreybhangale@gmail.com'",
       ".write": "auth != null && auth.token.email == 'shreybhangale@gmail.com'"
     },
-
-    // User profiles — any signed-in user may read the directory (needed
-    // for avatars/names in chat); each user may write ONLY their own row.
     "users": {
       ".read": "auth != null",
       "$uid": {
         ".write": "auth != null && (auth.uid == $uid || auth.token.email == 'shreybhangale@gmail.com')"
       }
     },
-
-    // Enrollments — signed-in reads (claim flow matches by email);
-    // student may only stamp their OWN uid onto an email-matched row;
-    // everything else (approve/remove) is admin-only.
     "enrollments": {
       ".read": "auth != null",
       "$id": {
         ".write": "auth != null && (auth.token.email == 'shreybhangale@gmail.com' || (newData.child('email').val() == auth.token.email && newData.child('uid').val() == auth.uid && data.child('email').val() == auth.token.email))"
       }
     },
-
-    // Tasks / attendance / fees — signed-in reads; admin writes.
     "tasks": {
       ".read": "auth != null",
       ".write": "auth != null && auth.token.email == 'shreybhangale@gmail.com'"
@@ -89,9 +57,6 @@
       ".read": "auth != null",
       ".write": "auth != null && auth.token.email == 'shreybhangale@gmail.com'"
     },
-
-    // Per-student task state — the student may move ONLY their own row,
-    // and only between started/submitted states; "completed" is admin-only.
     "taskState": {
       ".read": "auth != null",
       "$task": {
@@ -104,27 +69,22 @@
       ".read": "auth != null",
       "$task": {
         "$id": {
-          ".write": "auth != null && (!data.exists() && newData.child('uid').val() == auth.uid || auth.token.email == 'shreybhangale@gmail.com')"
+          ".write": "auth != null && ((!data.exists() && newData.child('uid').val() == auth.uid) || auth.token.email == 'shreybhangale@gmail.com')"
         }
       }
     },
-
-    // Course/unit progress — own rows only (or admin).
     "progress": {
       ".read": "auth != null",
       "$u": {
         ".write": "auth != null && (auth.uid == $u || auth.token.email == 'shreybhangale@gmail.com')"
       }
     },
-
-    // PR reviews — any signed-in student may submit; decisions are admin.
     "reviews": {
       ".read": "auth != null",
-      ".write": "auth != null && (auth.token.email == 'shreybhangale@gmail.com' || (!data.exists() && newData.child('status').val() == 'pending' && newData.child('uid').val() == auth.uid))"
+      "$id": {
+        ".write": "auth != null && ((!data.exists() && newData.child('status').val() == 'pending' && newData.child('uid').val() == auth.uid) || auth.token.email == 'shreybhangale@gmail.com')"
+      }
     },
-
-    // Chat — signed-in users may post (≤800 chars); edits/deletes only
-    // by the author or the admin.
     "messages": {
       ".read": "auth != null",
       "$scope": {

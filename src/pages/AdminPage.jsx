@@ -37,7 +37,7 @@ const TABS = [
 
 function useBusy() {
   const [busy, setBusy] = useState(null)
-  const run = async (key, fn, okMsg) => {
+  const run = async (key, fn) => {
     setBusy(key)
     try {
       await fn()
@@ -106,7 +106,7 @@ export default function AdminPage() {
         {active === 'attendance' && <AttendanceAdmin students={allStudents} enrollments={enrollments} busy={busy} run={run} push={push} />}
         {active === 'reviews' && <ReviewsAdmin pending={pendingPRs} done={donePRs} busy={busy} onDecide={decidePR} />}
         {active === 'messages' && <MessagesAdmin />}
-        {active === 'inbox' && <Inbox leads={leads} contacts={contacts} busy={busy} run={run} push={push} />}
+        {active === 'inbox' && <Inbox leads={leads} contacts={contacts} run={run} push={push} />}
         {active === 'content' && <ContentAdmin busy={busy} run={run} push={push} />}
       </AdminShell>
     </Page>
@@ -275,12 +275,12 @@ function Students({ users, enrollments, loading, busy, run, push }) {
 
   const revoke = async (u) => {
     if (!confirm(`Remove ${u.name || u.email} from the LMS? Their courses, tasks and messages lock immediately.`)) return
-    const ok = await run(`access-${u.uid}`, () => setUserEnrollments(u.uid, 'removed', enrollments))
+    const ok = await run(`access-${u.uid}`, () => setUserEnrollments(u.uid, 'removed', enrollments, u.email))
     push(ok ? 'Access removed — LMS locked for this student' : 'Remove failed', ok ? 'success' : 'error')
   }
 
   const restore = async (u) => {
-    const ok = await run(`access-${u.uid}`, () => setUserEnrollments(u.uid, 'active', enrollments))
+    const ok = await run(`access-${u.uid}`, () => setUserEnrollments(u.uid, 'active', enrollments, u.email))
     push(ok ? 'Access restored' : 'Restore failed', ok ? 'success' : 'error')
   }
 
@@ -308,7 +308,7 @@ function Students({ users, enrollments, loading, busy, run, push }) {
         <div className="flex flex-wrap items-center gap-2">
           <div className="relative min-w-44 flex-1">
             <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 opacity-40" />
-            <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search name or email…" className="cdt-input w-full rounded-full py-2 pl-9 pr-3 text-sm" />
+            <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search name or email…" aria-label="Search students" className="cdt-input w-full rounded-full py-2 pl-9 pr-3 text-sm" />
           </div>
           <span className="w-40"><CustomSelect value={sort} onChange={setSort} compact
             options={[{ value: 'newest', label: 'Newest first' }, { value: 'oldest', label: 'Oldest first' }, { value: 'name', label: 'Name A–Z' }]} /></span>
@@ -360,7 +360,7 @@ function Students({ users, enrollments, loading, busy, run, push }) {
                   <td className="px-4 py-3">
                     <span className="flex items-center gap-1" title={(feePlan.installments || []).map((x, i) => `${x.label}: ${x.amount} — ${fee.states[i]}`).join('\n')}>
                       {fee.states.map((st, i) => (
-                        <button key={i} disabled={busy === `fee-${s.uid}-${i + 1}`} onClick={() => toggleFee(s.uid, i + 1, st)} title={`Installment ${i + 1}: ${st} — click to flip`}
+                        <button key={i} disabled={busy === `fee-${s.uid}-${i + 1}`} onClick={() => toggleFee(s.uid, i + 1, st)} title={`Installment ${i + 1}: ${st} — click to flip`} aria-label={`Toggle installment ${i + 1} for ${s.name || s.email}, currently ${st}`}
                           className={cn('h-4 w-4 rounded-full border-2 transition hover:scale-125 disabled:opacity-50',
                             st === 'paid' ? 'border-emerald-500 bg-emerald-500' : 'border-amber-500/60 bg-transparent')}>
                           {busy === `fee-${s.uid}-${i + 1}` && <Loader2 size={8} className="animate-spin" />}
@@ -399,7 +399,7 @@ function Students({ users, enrollments, loading, busy, run, push }) {
 }
 
 /* ── tasks admin: rich briefs + per-student completion (strictly admin) ── */
-function TasksAdmin({ tasks, enrollments, users, busy, run, push }) {
+function TasksAdmin({ tasks, enrollments, busy, run, push }) {
   const [form, setForm] = useState({ courseId: 'ai-llms', title: '', detailHTML: '', due: '' })
   const [editing, setEditing] = useState(null)
   const [openId, setOpenId] = useState(null)
@@ -431,9 +431,9 @@ function TasksAdmin({ tasks, enrollments, users, busy, run, push }) {
         <div className="grid gap-2.5 sm:grid-cols-[200px_1fr_180px]">
           <CustomSelect value={form.courseId} onChange={(v) => setForm({ ...form, courseId: v })}
             options={COURSES.map((c) => ({ value: c.id, label: c.title }))} placeholder="Course" />
-          <input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder="Task title * (e.g. RAG retriever v1)" className="cdt-input rounded-2xl px-4 py-2.5 text-sm" />
+          <input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder="Task title * (e.g. RAG retriever v1)" aria-label="Task title" className="cdt-input rounded-2xl px-4 py-2.5 text-sm" />
           <input type="date" value={form.due} onChange={(e) => setForm({ ...form, due: e.target.value })}
-            title="Due date * — past-due incomplete tasks are marked failed"
+            title="Due date * — past-due incomplete tasks are marked failed" aria-label="Task due date"
             className="cdt-input rounded-2xl border border-ink/12 bg-white px-4 py-2.5 text-sm text-ink dark:border-paper/15 dark:bg-ink dark:text-paper" />
         </div>
         <RichEditor value={form.detailHTML} onChange={(v) => setForm({ ...form, detailHTML: v })} />
@@ -449,7 +449,7 @@ function TasksAdmin({ tasks, enrollments, users, busy, run, push }) {
       {tasks.length === 0 && <Empty text="No tasks yet — post the first one above." />}
       {tasks.map((t) => (
         <TaskProgressRow key={t.id} task={t} open={openId === t.id} onToggle={() => setOpenId(openId === t.id ? null : t.id)}
-          enrollments={enrollments} users={users} busy={busy} run={run} push={push}
+          enrollments={enrollments} busy={busy} run={run} push={push}
           onEdit={() => { setEditing(t.id); setForm({ courseId: t.courseId, title: t.title, detailHTML: t.detailHTML || '', due: t.due || '' }); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
           onDelete={() => del(t.id)} />
       ))}
@@ -457,7 +457,7 @@ function TasksAdmin({ tasks, enrollments, users, busy, run, push }) {
   )
 }
 
-function TaskProgressRow({ task, open, onToggle, enrollments, users, busy, run, push, onEdit, onDelete }) {
+function TaskProgressRow({ task, open, onToggle, enrollments, busy, run, push, onEdit, onDelete }) {
   const { rows: states } = useRtdbList(`taskState/${task.id}`)
   const { rows: subs } = useRtdbList(`taskSubmissions/${task.id}`)
   const roster = useMemo(() => enrollments.filter((e) => e.courseId === task.courseId && e.status === 'active'), [enrollments, task.courseId])
@@ -551,7 +551,7 @@ function AttendanceAdmin({ students, enrollments, busy, run, push }) {
           <CustomSelect value={courseId} onChange={setCourseId} compact
             options={COURSES.map((c) => ({ value: c.id, label: c.title }))} placeholder="Course" />
         </div>
-        <input type="date" value={date} max={today()} onChange={(e) => setDate(e.target.value)}
+        <input type="date" value={date} max={today()} onChange={(e) => setDate(e.target.value)} aria-label="Attendance date"
           className="cdt-input rounded-2xl border border-ink/12 bg-white px-4 py-2 text-sm text-ink dark:border-paper/15 dark:bg-ink dark:text-paper" />
       </div>
       {loading && <Loader text="Loading that day…" />}
@@ -688,7 +688,7 @@ function MessagesAdmin() {
         </button>
         <div className="relative mt-3">
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 opacity-40" />
-          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search a student…" className="cdt-input w-full rounded-full py-2 pl-9 pr-3 text-sm" />
+          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search a student…" aria-label="Search a student to message" className="cdt-input w-full rounded-full py-2 pl-9 pr-3 text-sm" />
         </div>
         <div className="cdt-scroll-slim mt-2 max-h-72 space-y-1 overflow-y-auto">
           {students.map((s) => (
@@ -728,7 +728,7 @@ function MessagesAdmin() {
             )}
           </div>
           <div className="mt-2 flex gap-2">
-            <input value={text} onChange={(e) => setText(e.target.value)} placeholder="https://meet.google.com/… or any update" className="cdt-input min-w-0 flex-1 rounded-full px-4 py-2.5 text-sm" />
+            <input value={text} onChange={(e) => setText(e.target.value)} placeholder="https://meet.google.com/… or any update" aria-label="Quick message text" className="cdt-input min-w-0 flex-1 rounded-full px-4 py-2.5 text-sm" />
             <label className="flex shrink-0 cursor-pointer items-center gap-1.5 text-xs font-bold text-rose-600 dark:text-rose-400">
               <input type="checkbox" checked={important} onChange={(e) => setImportant(e.target.checked)} className="h-4 w-4 accent-rose-600" /> Important
             </label>
@@ -743,7 +743,7 @@ function MessagesAdmin() {
 }
 
 /* ── legacy inbox ── */
-function Inbox({ leads, contacts, busy, run, push }) {
+function Inbox({ leads, contacts, run, push }) {
   const all = [...leads.map((l) => ({ ...l, kind: 'lead' })), ...contacts.map((c) => ({ ...c, kind: 'contact', fullName: c.name }))]
   const setStatus = (r, status) => run(`inbox-${r.id}`, () => updateLeadStatus(`${r.kind}s`, r.id, status))
     .then((ok) => { if (!ok) push('Update failed', 'error') })
@@ -862,7 +862,7 @@ function ContentAdmin({ busy, run, push }) {
                 options={COURSES.map((c) => ({ value: c.id, label: c.title }))} /></span>
               <input value={f.blurb} onChange={(e) => set('featured', form.featured.map((x, j) => (j === i ? { ...x, blurb: e.target.value } : x)))}
                 placeholder="Your one-line description" className={cn(inputCls, 'min-w-52 flex-1')} />
-              <button type="button" onClick={() => set('featured', form.featured.filter((_, j) => j !== i))} className="rounded-full p-2 text-rose-600 hover:bg-rose-500/10"><Trash2 size={14} /></button>
+              <button type="button" onClick={() => set('featured', form.featured.filter((_, j) => j !== i))} title="Remove course from strip" aria-label="Remove course from strip" className="rounded-full p-2 text-rose-600 hover:bg-rose-500/10"><Trash2 size={14} /></button>
             </div>
           ))}
           {(!form.featured || form.featured.length < 4) && (

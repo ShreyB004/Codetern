@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /learn
+Disallow: /tasks
+Disallow: /attendance
+Disallow: /reviews
+Disallow: /messages
+Disallow: /profile
+Disallow: /admin
+Disallow: /login
+
+Sitemap: https://codetern.in/sitemap.xml

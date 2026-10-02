@@ -2,6 +2,7 @@ import { Outlet, useLocation } from 'react-router-dom'
 import { Navbar } from './Navbar.jsx'
 import { Footer } from './Footer.jsx'
 import { StickyCTA } from './StickyCTA.jsx'
+import { CookieNotice } from './CookieNotice.jsx'
 
 export function PublicLayout() {
   const { pathname } = useLocation()
@@ -15,6 +16,7 @@ export function PublicLayout() {
       </div>
       {!bare && <Footer />}
       {!bare && <StickyCTA />}
+      <CookieNotice />
     </div>
   )
 }
